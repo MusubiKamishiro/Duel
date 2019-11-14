@@ -1,0 +1,67 @@
+#include "ResultScene.h"
+#include <DxLib.h>
+#include <string>
+#include "../Peripheral.h"
+#include "SceneManager.h"
+#include "TitleScene.h"
+
+
+void ResultScene::FadeinUpdate(const Peripheral & p)
+{
+	if (pal >= 255)
+	{
+		pal = 255;
+		updater = &ResultScene::WaitUpdate;
+	}
+	else
+	{
+		pal +=20;
+	}
+}
+
+void ResultScene::FadeoutUpdate(const Peripheral & p)
+{
+	if (pal <= 0)
+	{
+		SceneManager::Instance().ChangeScene(std::make_unique <TitleScene>());
+	}
+	else
+	{
+		pal -= 20;
+	}
+}
+
+void ResultScene::WaitUpdate(const Peripheral & p)
+{
+	if (p.IsTrigger(0, PAD_INPUT_1))
+	{
+		pal = 255;
+		updater = &ResultScene::FadeoutUpdate;
+	}
+}
+
+ResultScene::ResultScene()
+{
+	pal = 0;
+	updater = &ResultScene::FadeinUpdate;
+}
+
+
+ResultScene::~ResultScene()
+{
+}
+
+void ResultScene::Update(const Peripheral& p)
+{
+	(this->*updater)(p);
+}
+
+void ResultScene::Draw()
+{
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, pal);
+
+	DxLib::DrawString(0, 0, "ƒŠƒUƒ‹ƒg", 0x00ff00);
+
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(pal - 255));
+	DxLib::DrawBox(0, 0, ssize.x, ssize.y, 0x000000, true);
+}
