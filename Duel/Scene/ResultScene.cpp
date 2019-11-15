@@ -33,7 +33,7 @@ void ResultScene::FadeoutUpdate(const Peripheral & p)
 
 void ResultScene::WaitUpdate(const Peripheral & p)
 {
-	if (p.IsTrigger(0, PAD_INPUT_1))
+	if (p.IsTrigger(0, "decide"))
 	{
 		pal = 255;
 		updater = &ResultScene::FadeoutUpdate;

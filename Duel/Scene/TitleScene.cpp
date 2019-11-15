@@ -32,7 +32,7 @@ void TitleScene::FadeoutUpdate(const Peripheral & p)
 
 void TitleScene::WaitUpdate(const Peripheral & p)
 {
-	if (p.IsTrigger(0, PAD_INPUT_1))
+	if (p.IsTrigger(0, "decide"))
 	{
 		updater = &TitleScene::FadeoutUpdate;
 	}

@@ -1,9 +1,10 @@
 #include "Game.h"
 
-void main(void)
+int main(void)
 {
 	Game& game = Game::Instance();
 	game.Initialize();
+	game.InitPeripheral();
 	game.Run();
 	game.Terminate();
 }

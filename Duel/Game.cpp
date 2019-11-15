@@ -45,11 +45,38 @@ void Game::Initialize()
 	DxLib::SetMainWindowText("Duel");		// タイトル
 	//DxLib::SetWindowIconID(IDI_ICON1);	// アイコン
 	DxLib::SetDrawScreen(DX_SCREEN_BACK);	// 裏画面に描画
+
+	peripheral.reset(new Peripheral());
+}
+
+void Game::InitPeripheral()
+{
+	// キーボード
+	peripheral->AddCommand(0, "ROCK",		0, KEY_INPUT_A);
+	peripheral->AddCommand(0, "SCISSORS",	0, KEY_INPUT_S);
+	peripheral->AddCommand(0, "PAPER",		0, KEY_INPUT_D);
+	peripheral->AddCommand(0, "decide",		0, KEY_INPUT_Z);
+	peripheral->AddCommand(0, "pause",		0, KEY_INPUT_W);
+	
+	peripheral->AddCommand(1, "ROCK",		0, KEY_INPUT_J);
+	peripheral->AddCommand(1, "SCISSORS",	0, KEY_INPUT_K);
+	peripheral->AddCommand(1, "PAPER",		0, KEY_INPUT_L);
+	peripheral->AddCommand(1, "decide",		0, KEY_INPUT_Z);
+	peripheral->AddCommand(1, "pause",		0, KEY_INPUT_W);
+	
+	for (int i = 0; i < 2; ++i)
+	{
+		// パッド
+		peripheral->AddCommand(i, "ROCK",		1, PAD_INPUT_2);
+		peripheral->AddCommand(i, "SCISSORS",	1, PAD_INPUT_3);
+		peripheral->AddCommand(i, "PAPER",		1, PAD_INPUT_4);
+		peripheral->AddCommand(i, "decide",		1, PAD_INPUT_1);
+		peripheral->AddCommand(i, "pause",		1, PAD_INPUT_8);
+	}
 }
 
 void Game::Run()
 {
-	Peripheral peripheral;
 	auto& scenes = SceneManager::Instance();
 	FrameFixity& ff = FrameFixity::Instance();
 	ff.FFInitialize();
@@ -75,8 +102,8 @@ void Game::Run()
 				break;
 			}
 
-			peripheral.Update();
-			scenes.Update(peripheral);
+			peripheral->Update();
+			scenes.Update(*peripheral);
 			scenes.Draw();
 
 			DxLib::ScreenFlip();

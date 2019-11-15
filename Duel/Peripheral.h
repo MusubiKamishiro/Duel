@@ -1,12 +1,32 @@
 #pragma once
-#include<array>
+#include <vector>
+#include <array>
+#include <map>
+#include <string>
+
+// 入力情報
+struct PeripheralInfo
+{
+	PeripheralInfo() {};
+	PeripheralInfo(int no, int c) : padNo(no), code(c) {};
+
+	int padNo = 0;	// パッド番号
+	int code = 0;	// 入力コード
+};
 
 // 周辺機器(キーボード&パッド)の入力を制御
 class Peripheral
 {
 private:
-	std::array<int, 2> padState;		// 現在の入力情報
-	std::array<int, 2> lastPadState;	// 直前フレームの入力状態
+	std::array<char, 256> keyState;		// キーボードの入力情報
+	std::array<char, 256> oldKeyState;
+	std::array<int, 2> padState;		// パッドの入力情報
+	std::array<int, 2> oldPadState;
+
+	// 入力対応テーブル
+	//@param string			コマンド文字列
+	//@param PeripheralInfo	入力情報
+	std::vector<std::multimap<std::string, PeripheralInfo>> inputTable;
 
 public:
 	Peripheral();
@@ -16,12 +36,22 @@ public:
 	void Update();
 
 	// 現在の押下状態の検出
-	// @param pno	プレイヤー番号
-	// @param keyid	調べたいキー番号
-	// @pretval true 押してる, false 押してない
-	bool IsPressing(int pno, int keyid)const;
+	//@param pno	プレイヤー番号
+	//@param cmd	調べたいコマンド文字列
+	//@pretval true 押してる, false 押してない
+	bool IsPressing(int pno, const char* cmd)const;
 
 	// 現在のトリガー状態(押した瞬間)の検出
-	bool IsTrigger(int pno, int keyid)const;
+	//@param pno	プレイヤー番号
+	//@param cmd	調べたいコマンド文字列
+	//@pretval true 押した, false 押してない
+	bool IsTrigger(int pno, const char* cmd)const;
+
+	// コマンド設定
+	//@param pno	プレイヤー番号
+	//@param cmd	コマンド文字列
+	//@param preiNo	パッド番号
+	//@param code	入力コード
+	void AddCommand(unsigned short pno, const char* cmd, int padNo, unsigned int code);
 };
 

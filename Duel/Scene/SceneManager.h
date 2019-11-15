@@ -22,7 +22,8 @@ public:
 	}
 	~SceneManager();
 
-	// @param newScene 新しいシーン
+	// シーンの変更
+	//@param newScene 新しいシーン
 	// 基本的に古いシーンは自動的に削除される
 	void ChangeScene(std::unique_ptr<Scene> newScene);
 

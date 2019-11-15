@@ -64,7 +64,7 @@ struct Size {
 /// 矩形を表現する構造体
 struct Rect {
 	Rect() : center(0, 0), size(0, 0) {}
-	Rect(float x, float y, int inw, int inh) : center(x, y), size(inw, inh) {}
+	Rect(int x, int y, int inw, int inh) : center(x, y), size(inw, inh) {}
 	Rect(const Vector2<int>& inc, const Size& ins) : center(inc), size(ins) {}
 
 	Vector2<int> center;	// 中心

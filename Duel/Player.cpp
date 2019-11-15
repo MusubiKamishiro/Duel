@@ -15,18 +15,31 @@ Player::~Player()
 
 void Player::Update(int pno, const Peripheral& p)
 {
-	if (p.IsTrigger(pno, PAD_INPUT_2))
+	if (p.IsTrigger(pno, "ROCK"))
 	{
 		hand[pno] = Hand::ROCK;
 	}
-	else if (p.IsTrigger(pno, PAD_INPUT_3))
+	else if (p.IsTrigger(pno, "SCISSORS"))
 	{
 		hand[pno] = Hand::SCISSORS;
 	}
-	else if (p.IsTrigger(pno, PAD_INPUT_4))
+	else if (p.IsTrigger(pno, "PAPER"))
 	{
 		hand[pno] = Hand::PAPER;
 	}
+
+	/*if (p.IsPressing(pno, KEY_INPUT_A))
+	{
+		hand[pno] = Hand::ROCK;
+	}
+	else if (p.IsPressing(pno, KEY_INPUT_S))
+	{
+		hand[pno] = Hand::SCISSORS;
+	}
+	else if (p.IsPressing(pno, KEY_INPUT_D))
+	{
+		hand[pno] = Hand::PAPER;
+	}*/
 }
 
 void Player::Draw()
