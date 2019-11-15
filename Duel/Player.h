@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+
 class Peripheral;
 
 // プレイヤーの使える技
@@ -11,14 +12,6 @@ enum class Hand
 	MAX
 };
 
-// じゃんけんの結果
-enum class Result
-{
-	WIN,
-	DRAW,
-	LOSE,
-	MAX
-};
 
 class Player
 {
@@ -30,7 +23,9 @@ public:
 	Player();
 	~Player();
 
-	void Update(int pno, const Peripheral& p);
+	void Update(const int& pno, const Peripheral& p);
 
 	void Draw();
+
+	const int GetHand(const int& pno)const;
 };

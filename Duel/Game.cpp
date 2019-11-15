@@ -64,14 +64,14 @@ void Game::InitPeripheral()
 	peripheral->AddCommand(1, "decide",		0, KEY_INPUT_Z);
 	peripheral->AddCommand(1, "pause",		0, KEY_INPUT_W);
 	
+	// パッド
 	for (int i = 0; i < 2; ++i)
 	{
-		// パッド
-		peripheral->AddCommand(i, "ROCK",		1, PAD_INPUT_2);
-		peripheral->AddCommand(i, "SCISSORS",	1, PAD_INPUT_3);
-		peripheral->AddCommand(i, "PAPER",		1, PAD_INPUT_4);
-		peripheral->AddCommand(i, "decide",		1, PAD_INPUT_1);
-		peripheral->AddCommand(i, "pause",		1, PAD_INPUT_8);
+		peripheral->AddCommand(i, "ROCK",		i + 1, PAD_INPUT_2);
+		peripheral->AddCommand(i, "SCISSORS",	i + 1, PAD_INPUT_3);
+		peripheral->AddCommand(i, "PAPER",		i + 1, PAD_INPUT_4);
+		peripheral->AddCommand(i, "decide",		i + 1, PAD_INPUT_1);
+		peripheral->AddCommand(i, "pause",		i + 1, PAD_INPUT_8);
 	}
 }
 

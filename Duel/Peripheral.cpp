@@ -30,7 +30,7 @@ void Peripheral::Update()
 	}
 }
 
-bool Peripheral::IsPressing(int pno, const char* cmd) const
+bool Peripheral::IsPressing(const int& pno, const char* cmd) const
 {
 	auto it = inputTable[pno].find(cmd);
 	if (it == inputTable[pno].end())
@@ -39,7 +39,7 @@ bool Peripheral::IsPressing(int pno, const char* cmd) const
 		return false;
 	}
 
-	for (int i = 0; i < inputTable[pno].count(cmd); ++i)
+	for (unsigned int i = 0; i < inputTable[pno].count(cmd); ++i)
 	{
 		// キーボードだった場合
 		if (it->second.padNo == 0)
@@ -59,7 +59,7 @@ bool Peripheral::IsPressing(int pno, const char* cmd) const
 	return false;
 }
 
-bool Peripheral::IsTrigger(int pno, const char* cmd) const
+bool Peripheral::IsTrigger(const int& pno, const char* cmd) const
 {
 	auto it = inputTable[pno].find(cmd);
 	if (it == inputTable[pno].end())
@@ -68,7 +68,7 @@ bool Peripheral::IsTrigger(int pno, const char* cmd) const
 		return false;
 	}
 
-	for (int i = 0; i < inputTable[pno].count(cmd); ++i)
+	for (unsigned int i = 0; i < inputTable[pno].count(cmd); ++i)
 	{
 		// キーボードだった場合
 		if (it->second.padNo == 0)
@@ -89,10 +89,8 @@ bool Peripheral::IsTrigger(int pno, const char* cmd) const
 	return false;
 }
 
-void Peripheral::AddCommand(unsigned short pno, const char* cmd, int padNo, unsigned int code)
+void Peripheral::AddCommand(const int& pno, const char* cmd, const unsigned int& padNo, const unsigned int& code)
 {
 	assert(pno < inputTable.size());
 	inputTable[pno].emplace(cmd, PeripheralInfo(padNo, code));
 }
-
-

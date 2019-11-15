@@ -130,6 +130,7 @@
     <ClCompile Include="FrameFixity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Judge.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Peripheral.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="FrameFixity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Judge.h" />
     <ClInclude Include="Peripheral.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene\GamePlayingScene.h" />

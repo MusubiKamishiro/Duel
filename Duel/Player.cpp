@@ -13,7 +13,7 @@ Player::~Player()
 {
 }
 
-void Player::Update(int pno, const Peripheral& p)
+void Player::Update(const int& pno, const Peripheral& p)
 {
 	if (p.IsTrigger(pno, "ROCK"))
 	{
@@ -27,19 +27,6 @@ void Player::Update(int pno, const Peripheral& p)
 	{
 		hand[pno] = Hand::PAPER;
 	}
-
-	/*if (p.IsPressing(pno, KEY_INPUT_A))
-	{
-		hand[pno] = Hand::ROCK;
-	}
-	else if (p.IsPressing(pno, KEY_INPUT_S))
-	{
-		hand[pno] = Hand::SCISSORS;
-	}
-	else if (p.IsPressing(pno, KEY_INPUT_D))
-	{
-		hand[pno] = Hand::PAPER;
-	}*/
 }
 
 void Player::Draw()
@@ -59,4 +46,9 @@ void Player::Draw()
 			DxLib::DrawString(150 * (i + 1), 150, "ÉpÅ[", 0xff0000);
 		}
 	}
+}
+
+const int Player::GetHand(const int& pno) const
+{
+	return static_cast<int>(hand[pno]);
 }

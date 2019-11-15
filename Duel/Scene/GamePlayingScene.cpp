@@ -6,6 +6,7 @@
 #include "PauseScene.h"
 
 #include "../Player.h"
+#include "../Judge.h"
 
 
 void GamePlayingScene::FadeinUpdate(const Peripheral & p)
@@ -35,23 +36,30 @@ void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 
 void GamePlayingScene::WaitUpdate(const Peripheral & p)
 {
-	if (p.IsTrigger(0, "decide"))
-	{
-		updater = &GamePlayingScene::FadeoutUpdate;
-	}
-	if (p.IsTrigger(0, "pause"))
-	{
-		SceneManager::Instance().PushScene(std::make_unique<PauseScene>());
-	}
 	for (int i = 0; i < 2; ++i)
 	{
+		if (p.IsTrigger(i, "decide"))
+		{
+			updater = &GamePlayingScene::FadeoutUpdate;
+			break;
+		}
+		if (p.IsTrigger(i, "pause"))
+		{
+			SceneManager::Instance().PushScene(std::make_unique<PauseScene>());
+			break;
+		}
+	
 		player->Update(i, p);
 	}
+
+	judge->JudgeResult(player->GetHand(0), player->GetHand(1));
 }
 
 GamePlayingScene::GamePlayingScene()
 {
 	player.reset(new Player());
+	judge.reset(new Judge());
+
 	updater = &GamePlayingScene::FadeinUpdate;
 }
 
@@ -70,6 +78,7 @@ void GamePlayingScene::Draw()
 
 	DxLib::DrawString(0, 0, "ゲームシーン", 0xff0000);
 	player->Draw();
+	judge->Draw();
 
 	// フェードイン,アウトのための幕
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(pal - 255));

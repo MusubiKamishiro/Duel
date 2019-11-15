@@ -4,6 +4,7 @@
 #include "../Geometry.h"
 
 class Player;
+class Judge;
 
 class GamePlayingScene : public Scene
 {
@@ -15,6 +16,7 @@ private:
 	void WaitUpdate(const Peripheral& p);
 
 	std::shared_ptr<Player> player;
+	std::unique_ptr<Judge> judge;
 
 public:
 	GamePlayingScene();
