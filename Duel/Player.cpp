@@ -31,7 +31,7 @@ void Player::Update(const int& pno, const Peripheral& p)
 
 void Player::Draw()
 {
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < (sizeof(hand) / sizeof(hand[0])); ++i)
 	{
 		if (hand[i] == Hand::ROCK)
 		{
@@ -55,7 +55,7 @@ const int Player::GetHand(const int& pno) const
 
 void Player::SetHand()
 {
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < (sizeof(hand) / sizeof(hand[0])); ++i)
 	{
 		hand[i] = Hand::MAX;
 	}
