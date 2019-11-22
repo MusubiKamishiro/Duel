@@ -28,4 +28,5 @@ public:
 	void Draw();
 
 	const int GetHand(const int& pno)const;
+	void SetHand();
 };

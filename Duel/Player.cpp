@@ -52,3 +52,11 @@ const int Player::GetHand(const int& pno) const
 {
 	return static_cast<int>(hand[pno]);
 }
+
+void Player::SetHand()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		hand[i] = Hand::MAX;
+	}
+}

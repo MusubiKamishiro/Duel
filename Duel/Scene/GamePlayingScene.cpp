@@ -14,7 +14,7 @@ void GamePlayingScene::FadeinUpdate(const Peripheral & p)
 	if (pal > 255)
 	{
 		pal = 255;
-		updater = &GamePlayingScene::WaitUpdate;
+		updater = &GamePlayingScene::RoundUpdate;
 	}
 	else
 	{
@@ -52,7 +52,58 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 		player->Update(i, p);
 	}
 
-	judge->JudgeResult(player->GetHand(0), player->GetHand(1));
+	if ((player->GetHand(0) != 3) && ((player->GetHand(1) != 3)))
+	{
+		judge->JudgeResult(player->GetHand(0), player->GetHand(1));
+		updater = &GamePlayingScene::ResultUpdate;
+		drawer = &GamePlayingScene::ResultDraw;
+	}
+}
+
+void GamePlayingScene::RoundUpdate(const Peripheral& p)
+{
+	if (count > 60)
+	{
+		updater = &GamePlayingScene::WaitUpdate;
+		count = 0;
+	}
+	else
+	{
+		++count;
+	}
+}
+
+void GamePlayingScene::ResultUpdate(const Peripheral& p)
+{
+	if (count > 60)
+	{
+		++roundCount;
+		player->SetHand();
+		updater = &GamePlayingScene::RoundUpdate;
+		drawer = &GamePlayingScene::RoundDraw;
+		count = 0;
+	}
+	else
+	{
+		++count;
+	}
+}
+
+void GamePlayingScene::RoundDraw()
+{
+	std::string s = "ラウンド";
+	s += std::to_string(roundCount);
+	DxLib::DrawString(500, 0, s.c_str(), 0x00ff00);
+}
+
+void GamePlayingScene::GameDraw()
+{
+}
+
+void GamePlayingScene::ResultDraw()
+{
+	player->Draw();
+	judge->Draw();
 }
 
 GamePlayingScene::GamePlayingScene()
@@ -61,6 +112,7 @@ GamePlayingScene::GamePlayingScene()
 	judge.reset(new Judge());
 
 	updater = &GamePlayingScene::FadeinUpdate;
+	drawer = &GamePlayingScene::RoundDraw;
 }
 
 GamePlayingScene::~GamePlayingScene()
@@ -77,8 +129,8 @@ void GamePlayingScene::Draw()
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
 	DxLib::DrawString(0, 0, "ゲームシーン", 0xff0000);
-	player->Draw();
-	judge->Draw();
+	
+	(this->*drawer)();
 
 	// フェードイン,アウトのための幕
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(pal - 255));
