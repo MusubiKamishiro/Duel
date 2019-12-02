@@ -11,32 +11,32 @@
 
 void GamePlayingScene::FadeinUpdate(const Peripheral & p)
 {
-	if (pal > 255)
+	if (_pal > 255)
 	{
-		pal = 255;
+		_pal = 255;
 		updater = &GamePlayingScene::RoundUpdate;
 	}
 	else
 	{
-		pal += 20;
+		_pal += 20;
 	}
 }
 
 void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 {
-	if (pal <= 0)
+	if (_pal <= 0)
 	{
 		SceneManager::Instance().ChangeScene(std::make_unique<ResultScene>());
 	}
 	else
 	{
-		pal -= 20;
+		_pal -= 20;
 	}
 }
 
 void GamePlayingScene::WaitUpdate(const Peripheral & p)
 {
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < players.size(); ++i)
 	{
 		if (p.IsTrigger(i, "decide"))
 		{
@@ -48,13 +48,12 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 			SceneManager::Instance().PushScene(std::make_unique<PauseScene>());
 			break;
 		}
-	
-		player->Update(i, p);
+		players[i]->Update(i, p);
 	}
 
-	if ((player->GetHand(0) != 3) && ((player->GetHand(1) != 3)))
+	if ((players[0]->GetHand() != 3) && ((players[1]->GetHand() != 3)))
 	{
-		judge->JudgeResult(player->GetHand(0), player->GetHand(1));
+		judge->JudgeResult(players[0]->GetHand(), players[1]->GetHand());
 		updater = &GamePlayingScene::ResultUpdate;
 		drawer = &GamePlayingScene::ResultDraw;
 	}
@@ -62,37 +61,40 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 
 void GamePlayingScene::RoundUpdate(const Peripheral& p)
 {
-	if (count > 60)
+	if (_count > 60)
 	{
 		updater = &GamePlayingScene::WaitUpdate;
-		count = 0;
+		_count = 0;
 	}
 	else
 	{
-		++count;
+		++_count;
 	}
 }
 
 void GamePlayingScene::ResultUpdate(const Peripheral& p)
 {
-	if (count > 60)
+	if (_count > 60)
 	{
-		++roundCount;
-		player->SetHand();
+		++_roundCount;
+		for (auto player : players)
+		{
+			player->SetHand();
+		}
 		updater = &GamePlayingScene::RoundUpdate;
 		drawer = &GamePlayingScene::RoundDraw;
-		count = 0;
+		_count = 0;
 	}
 	else
 	{
-		++count;
+		++_count;
 	}
 }
 
 void GamePlayingScene::RoundDraw()
 {
 	std::string s = "ラウンド";
-	s += std::to_string(roundCount);
+	s += std::to_string(_roundCount);
 	DxLib::DrawString(500, 0, s.c_str(), 0x00ff00);
 }
 
@@ -102,17 +104,23 @@ void GamePlayingScene::GameDraw()
 
 void GamePlayingScene::ResultDraw()
 {
-	player->Draw();
+	for (auto player : players)
+	{
+		player->Draw();
+	}
 	judge->Draw();
 }
 
 GamePlayingScene::GamePlayingScene()
 {
-	player.reset(new Player());
+	for (int i = 0; i < players.size(); ++i)
+	{
+		players[i].reset(new Player(Vector2<int>(150 * (i + 1), 150)));
+	}
 	judge.reset(new Judge());
 
 	updater = &GamePlayingScene::FadeinUpdate;
-	drawer = &GamePlayingScene::RoundDraw;
+	drawer  = &GamePlayingScene::RoundDraw;
 }
 
 GamePlayingScene::~GamePlayingScene()
@@ -133,6 +141,6 @@ void GamePlayingScene::Draw()
 	(this->*drawer)();
 
 	// フェードイン,アウトのための幕
-	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(pal - 255));
-	DxLib::DrawBox(0, 0, ssize.x, ssize.y, 0x000000, true);
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
+	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0x000000, true);
 }

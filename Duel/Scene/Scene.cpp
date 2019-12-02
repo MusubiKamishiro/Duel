@@ -4,8 +4,8 @@
 
 Scene::Scene()
 {
-	pal = 255;
-	ssize = Game::Instance().GetScreenSize();
+	_pal = 255;
+	_scrSize = Game::Instance().GetScreenSize();
 }
 
 

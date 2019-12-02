@@ -7,7 +7,7 @@
 
 void PauseScene::FadeinUpdate(const Peripheral & p)
 {
-	pal = 255;
+	_pal = 255;
 	updater = &PauseScene::WaitUpdate;
 }
 
@@ -41,11 +41,11 @@ void PauseScene::Update(const Peripheral& p)
 
 void PauseScene::Draw()
 {
-	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, pal);
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, _pal);
 	
 	DxLib::DrawString(100, 100, "É|Å[ÉYíÜ", 0x0000ff);
 
-	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(pal - 255));
-	DxLib::DrawBox(0, 0, ssize.x, ssize.y, 0x000000, true);
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
+	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0x000000, true);
 
 }

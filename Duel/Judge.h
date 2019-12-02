@@ -13,7 +13,7 @@ enum class Result
 class Judge
 {
 private:
-	Result result;
+	Result _result;
 
 public:
 	Judge();

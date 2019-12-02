@@ -4,14 +4,14 @@
 
 class Peripheral;
 
-// (純粋仮想ｸﾗｽ)
+// (純粋仮想クラス)
 class Scene
 {
 protected:
 	// 描画ブレンドモードのパラメータ(0~255)
-	int pal;
+	int _pal;
 	// 画面のサイズ
-	Vector2<int> ssize;
+	Vector2<int> _scrSize;
 
 public:
 	Scene();

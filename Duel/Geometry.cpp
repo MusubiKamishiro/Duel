@@ -1,6 +1,4 @@
 #include "Geometry.h"
-#include <cmath>
-
 
 Geometry::Geometry()
 {

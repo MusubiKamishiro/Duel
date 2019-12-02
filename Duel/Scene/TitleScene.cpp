@@ -7,26 +7,26 @@
 
 void TitleScene::FadeinUpdate(const Peripheral & p)
 {
-	if (pal >= 255)
+	if (_pal >= 255)
 	{
-		pal = 255;
+		_pal = 255;
 		updater = &TitleScene::WaitUpdate;
 	}
 	else
 	{
-		pal += 20;
+		_pal += 20;
 	}
 }
 
 void TitleScene::FadeoutUpdate(const Peripheral & p)
 {
-	if (pal <= 0)
+	if (_pal <= 0)
 	{
 		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>());
 	}
 	else
 	{
-		pal -= 20;
+		_pal -= 20;
 	}
 }
 
@@ -40,7 +40,7 @@ void TitleScene::WaitUpdate(const Peripheral & p)
 
 TitleScene::TitleScene()
 {
-	pal = 0;
+	_pal = 0;
 
 	updater = &TitleScene::FadeinUpdate;
 }
@@ -57,10 +57,10 @@ void TitleScene::Update(const Peripheral& p)
 
 void TitleScene::Draw()
 {
-	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, pal);
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, _pal);
 
 	DxLib::DrawString(0, 0, "ƒ^ƒCƒgƒ‹", 0x00ff00);
 
-	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(pal - 255));
-	DxLib::DrawBox(0, 0, ssize.x, ssize.y, 0x000000, true);
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
+	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0x000000, true);
 }

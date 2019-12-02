@@ -2,11 +2,10 @@
 #include <DxLib.h>
 #include "Peripheral.h"
 
-Player::Player()
+Player::Player(const Vector2<int>& pos)
 {
-	flag = false;
-	hand[0] = Hand::MAX;
-	hand[1] = Hand::MAX;
+	_hand = Hand::MAX;
+	_pos = pos;
 }
 
 Player::~Player()
@@ -17,46 +16,40 @@ void Player::Update(const int& pno, const Peripheral& p)
 {
 	if (p.IsTrigger(pno, "ROCK"))
 	{
-		hand[pno] = Hand::ROCK;
+		_hand = Hand::ROCK;
 	}
 	else if (p.IsTrigger(pno, "SCISSORS"))
 	{
-		hand[pno] = Hand::SCISSORS;
+		_hand = Hand::SCISSORS;
 	}
 	else if (p.IsTrigger(pno, "PAPER"))
 	{
-		hand[pno] = Hand::PAPER;
+		_hand = Hand::PAPER;
 	}
 }
 
 void Player::Draw()
 {
-	for (int i = 0; i < (sizeof(hand) / sizeof(hand[0])); ++i)
+	if (_hand == Hand::ROCK)
 	{
-		if (hand[i] == Hand::ROCK)
-		{
-			DxLib::DrawString(150 * (i + 1), 150, "グー", 0xff0000);
-		}
-		else if (hand[i] == Hand::SCISSORS)
-		{
-			DxLib::DrawString(150 * (i + 1), 150, "チョキ", 0xff0000);
-		}
-		else if (hand[i] == Hand::PAPER)
-		{
-			DxLib::DrawString(150 * (i + 1), 150, "パー", 0xff0000);
-		}
+		DxLib::DrawString(_pos.x, _pos.y, "グー", 0xff0000);
+	}
+	else if (_hand == Hand::SCISSORS)
+	{
+		DxLib::DrawString(_pos.x, _pos.y, "チョキ", 0xff0000);
+	}
+	else if (_hand == Hand::PAPER)
+	{
+		DxLib::DrawString(_pos.x, _pos.y, "パー", 0xff0000);
 	}
 }
 
-const int Player::GetHand(const int& pno) const
+const int Player::GetHand() const
 {
-	return static_cast<int>(hand[pno]);
+	return static_cast<int>(_hand);
 }
 
 void Player::SetHand()
 {
-	for (int i = 0; i < (sizeof(hand) / sizeof(hand[0])); ++i)
-	{
-		hand[i] = Hand::MAX;
-	}
+	_hand = Hand::MAX;
 }

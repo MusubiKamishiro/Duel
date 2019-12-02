@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include "Geometry.h"
 
 class Peripheral;
 
@@ -13,20 +14,20 @@ enum class Hand
 };
 
 
+
 class Player
 {
-private:
-	bool flag;
-	std::array<Hand, 2> hand;
+	Hand _hand;
 
+	Vector2<int> _pos;
 public:
-	Player();
+	Player(const Vector2<int>& pos);
 	~Player();
 
 	void Update(const int& pno, const Peripheral& p);
 
 	void Draw();
 
-	const int GetHand(const int& pno)const;
+	const int GetHand()const;
 	void SetHand();
 };

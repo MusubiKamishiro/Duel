@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <array>
 #include "Scene.h"
 #include "../Geometry.h"
 
@@ -21,12 +22,11 @@ private:
 	void GameDraw();
 	void ResultDraw();
 
-	std::shared_ptr<Player> player;
+	std::array<std::shared_ptr<Player>, 2> players;	
 	std::unique_ptr<Judge> judge;
 
-	int count = 0;
-	int roundCount = 1;
-
+	int _count		= 0;	
+	int _roundCount = 1;
 public:
 	GamePlayingScene();
 	~GamePlayingScene();
