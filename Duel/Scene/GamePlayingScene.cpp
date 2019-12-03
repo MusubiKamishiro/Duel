@@ -1,9 +1,9 @@
-#include "GamePlayingScene.h"
 #include <DxLib.h>
-#include "../Peripheral.h"
-#include "SceneManager.h"
+#include "GamePlayingScene.h"
 #include "ResultScene.h"
+#include "SceneManager.h"
 #include "PauseScene.h"
+#include "../Peripheral.h"
 
 #include "../Player.h"
 #include "../Judge.h"

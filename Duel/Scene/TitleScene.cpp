@@ -1,9 +1,8 @@
-#include "TitleScene.h"
 #include <DxLib.h>
-#include "../Peripheral.h"
+#include "TitleScene.h"
+#include "SelectScene.h"
 #include "SceneManager.h"
-#include "GamePlayingScene.h"
-
+#include "../Peripheral.h"
 
 void TitleScene::FadeinUpdate(const Peripheral & p)
 {
@@ -22,7 +21,7 @@ void TitleScene::FadeoutUpdate(const Peripheral & p)
 {
 	if (_pal <= 0)
 	{
-		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>());
+		SceneManager::Instance().ChangeScene(std::make_unique <SelectScene>());
 	}
 	else
 	{

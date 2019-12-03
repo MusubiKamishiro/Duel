@@ -63,6 +63,9 @@
     <ClCompile Include="Judge.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\SelectScene.cpp">
+      <Filter>シーン ファイル\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\GamePlayingScene.h">
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="Judge.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SelectScene.h">
+      <Filter>シーン ファイル\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

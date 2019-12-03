@@ -1,10 +1,8 @@
-#include "ResultScene.h"
 #include <DxLib.h>
-#include <string>
-#include "../Peripheral.h"
+#include "ResultScene.h"
 #include "SceneManager.h"
 #include "TitleScene.h"
-
+#include "../Peripheral.h"
 
 void ResultScene::FadeinUpdate(const Peripheral & p)
 {
