@@ -38,7 +38,7 @@ void SelectScene::WaitUpdate(const Peripheral& p)
 	}
 }
 
-SelectScene::SelectScene()
+SelectScene::SelectScene() : _charID(10), _boxSize(150, 150)
 {
 	_pal = 0;
 
@@ -59,7 +59,18 @@ void SelectScene::Draw()
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, _pal);
 
 	DxLib::DrawString(0, 0, "セレクト", 0x00ff00);
+	DxLib::DrawExtendString(_scrSize.x / 3, _scrSize.y / 10, 2.5, 2.5, "キャラクターを選んでね！", 0xffffff);
+
+	for (int i = 0; i < _charID; ++i)
+	{
+		DxLib::DrawBox(_scrSize.x / 4 + _boxSize.x * (i % (_charID / 2)), _scrSize.y / 2 + _boxSize.y * (i / (_charID / 2)),
+					   _scrSize.x / 4 + _boxSize.x * (i % (_charID / 2) + 1), _scrSize.y / 2 + _boxSize.y * (i / (_charID / 2) + 1),
+					    0xff0000, false);
+	}
 
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
+	
 	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0x000000, true);
+
+
 }
