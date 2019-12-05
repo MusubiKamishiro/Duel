@@ -14,7 +14,7 @@ void GamePlayingScene::FadeinUpdate(const Peripheral & p)
 	if (_pal > 255)
 	{
 		_pal = 255;
-		updater = &GamePlayingScene::RoundUpdate;
+		_updater = &GamePlayingScene::RoundUpdate;
 	}
 	else
 	{
@@ -36,11 +36,11 @@ void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 
 void GamePlayingScene::WaitUpdate(const Peripheral & p)
 {
-	for (int i = 0; i < players.size(); ++i)
+	for (int i = 0; i < _players.size(); ++i)
 	{
 		if (p.IsTrigger(i, "decide"))
 		{
-			updater = &GamePlayingScene::FadeoutUpdate;
+			_updater = &GamePlayingScene::FadeoutUpdate;
 			break;
 		}
 		if (p.IsTrigger(i, "pause"))
@@ -48,14 +48,14 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 			SceneManager::Instance().PushScene(std::make_unique<PauseScene>());
 			break;
 		}
-		players[i]->Update(i, p);
+		_players[i]->Update(i, p);
 	}
 
-	if ((players[0]->GetHand() != 3) && ((players[1]->GetHand() != 3)))
+	if ((_players[0]->GetHand() != 3) && ((_players[1]->GetHand() != 3)))
 	{
-		judge->JudgeResult(players[0]->GetHand(), players[1]->GetHand());
-		updater = &GamePlayingScene::ResultUpdate;
-		drawer = &GamePlayingScene::ResultDraw;
+		_judge->JudgeResult(_players[0]->GetHand(), _players[1]->GetHand());
+		_updater = &GamePlayingScene::ResultUpdate;
+		_drawer = &GamePlayingScene::ResultDraw;
 	}
 }
 
@@ -63,7 +63,7 @@ void GamePlayingScene::RoundUpdate(const Peripheral& p)
 {
 	if (_count > 60)
 	{
-		updater = &GamePlayingScene::WaitUpdate;
+		_updater = &GamePlayingScene::WaitUpdate;
 		_count = 0;
 	}
 	else
@@ -76,13 +76,26 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 {
 	if (_count > 60)
 	{
-		++_roundCount;
-		for (auto player : players)
+		if (_turnCount == 3)
+		{
+			for (auto player : _players)
+			{
+				player->ResetCount();
+			}
+			++_roundCount;
+			_turnCount = 1;
+		}
+		else
+		{
+			++_turnCount;
+		}
+
+		for (auto player : _players)
 		{
 			player->SetHand();
 		}
-		updater = &GamePlayingScene::RoundUpdate;
-		drawer = &GamePlayingScene::RoundDraw;
+		_updater = &GamePlayingScene::RoundUpdate;
+		_drawer = &GamePlayingScene::RoundDraw;
 		_count = 0;
 	}
 	else
@@ -93,9 +106,17 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 
 void GamePlayingScene::RoundDraw()
 {
-	std::string s = "ラウンド";
-	s += std::to_string(_roundCount);
-	DxLib::DrawString(500, 0, s.c_str(), 0x00ff00);
+	std::string round = "ラウンド";
+	std::string turn = "ターン";
+	round += std::to_string(_roundCount);
+	turn += std::to_string(_turnCount);
+	DxLib::DrawString(500, 0, round.c_str(), 0x00ff00);
+	DxLib::DrawString(500, 20, turn.c_str(), 0x00ff00);
+
+	for (auto player : _players)
+	{
+		player->HandDraw();
+	}
 }
 
 void GamePlayingScene::GameDraw()
@@ -104,23 +125,23 @@ void GamePlayingScene::GameDraw()
 
 void GamePlayingScene::ResultDraw()
 {
-	for (auto player : players)
+	for (auto player : _players)
 	{
 		player->Draw();
 	}
-	judge->Draw();
+	_judge->Draw();
 }
 
 GamePlayingScene::GamePlayingScene()
 {
-	for (int i = 0; i < players.size(); ++i)
+	for (int i = 0; i < _players.size(); ++i)
 	{
-		players[i].reset(new Player(Vector2<int>(150 * (i + 1), 150)));
+		_players[i].reset(new Player(Vector2<int>(150 * (i + 1), 150)));
 	}
-	judge.reset(new Judge());
+	_judge.reset(new Judge());
 
-	updater = &GamePlayingScene::FadeinUpdate;
-	drawer  = &GamePlayingScene::RoundDraw;
+	_updater = &GamePlayingScene::FadeinUpdate;
+	_drawer  = &GamePlayingScene::RoundDraw;
 }
 
 GamePlayingScene::~GamePlayingScene()
@@ -129,7 +150,7 @@ GamePlayingScene::~GamePlayingScene()
 
 void GamePlayingScene::Update(const Peripheral& p)
 {
-	(this->*updater)(p);
+	(this->*_updater)(p);
 }
 
 void GamePlayingScene::Draw()
@@ -138,7 +159,7 @@ void GamePlayingScene::Draw()
 
 	DxLib::DrawString(0, 0, "ゲームシーン", 0xff0000);
 	
-	(this->*drawer)();
+	(this->*_drawer)();
 
 	// フェードイン,アウトのための幕
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
