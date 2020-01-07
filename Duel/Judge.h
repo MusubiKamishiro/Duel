@@ -22,4 +22,6 @@ public:
 	void JudgeResult(const int& p1hand, const int& p2hand);
 
 	void Draw();
+
+	Result GetResult()const;
 };

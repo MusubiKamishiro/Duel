@@ -30,3 +30,8 @@ void Judge::Draw()
 		DxLib::DrawString(500, 0, "player2‚ÌŸ‚¿", 0x00ff00);
 	}
 }
+
+Result Judge::GetResult() const
+{
+	return _result;
+}

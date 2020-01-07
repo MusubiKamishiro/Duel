@@ -21,7 +21,12 @@ class Player
 	std::array<int, static_cast<int>(Hand::MAX)> _handCount;
 	Hand _hand;
 
+	int _hp;	// 体力
+	std::array<int, static_cast<int>(Hand::MAX)> _power;	// 攻撃力
+
+
 	Vector2<int> _pos;
+	bool _decideFlag;
 
 	void Check(const Hand& hand);
 
@@ -33,10 +38,13 @@ public:
 
 	void Draw();
 
+	void Damage(const int& power);
+
 	// 
 	void HandDraw();
 
 	const int GetHand()const;
+	const int GetPower()const;
 	void SetHand();
 	// Handの使用回数をリセットする
 	// ラウンドが移行する際に使用する

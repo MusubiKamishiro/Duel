@@ -90,6 +90,20 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 			++_turnCount;
 		}
 
+		if (_judge->GetResult() == Result::DRAW)
+		{
+			_players[0]->Damage(_players[1]->GetPower());
+			_players[1]->Damage(_players[0]->GetPower());
+		}
+		else if(_judge->GetResult() == Result::PLAYER1WIN)
+		{
+			_players[1]->Damage(_players[0]->GetPower());
+		}
+		else if (_judge->GetResult() == Result::PLAYER2WIN)
+		{
+			_players[0]->Damage(_players[1]->GetPower());
+		}
+
 		for (auto player : _players)
 		{
 			player->SetHand();
