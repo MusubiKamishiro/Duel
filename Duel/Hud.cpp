@@ -1,14 +1,16 @@
 #include "Hud.h"
 #include <DxLib.h>
 #include <string>
-
+#include "Game.h"
 
 
 Hud::Hud()
 {
 	_roundCount = 1;
 	_turnCount = 1;
-	_maxHpLenght = Vector2<int>(500, 50);
+	_maxHpLenght = Vector2<int>(550, 50);
+
+	ssize = Game::Instance().GetScreenSize();
 }
 
 Hud::~Hud()
@@ -21,16 +23,19 @@ void Hud::DrawRoundAndTurn()const
 	std::string turnStr = "É^Å[Éì";
 	roundStr += std::to_string(_roundCount);
 	turnStr += std::to_string(_turnCount);
-	DxLib::DrawString(600, 0, roundStr.c_str(), 0x00ff00);
-	DxLib::DrawString(600, 20, turnStr.c_str(), 0x00ff00);
+	DxLib::DrawString(GetStringCenterPosx(roundStr.c_str()), 0, roundStr.c_str(), 0x00ff00);
+	DxLib::DrawString(GetStringCenterPosx(turnStr.c_str()), 20, turnStr.c_str(), 0x00ff00);
 }
 
 void Hud::DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const
 {
-	DxLib::DrawBox(500 - (_maxHpLenght.x * (static_cast<float>(rPlayerData.hp) / static_cast<float>(rPlayerData.maxHp))), 0, 500, _maxHpLenght.y, 0x00ff00, true);
+	int center = ssize.x / 2;
+	int hurfHudLenght = 100;
+
+	DxLib::DrawBox((center - hurfHudLenght) - (_maxHpLenght.x * (static_cast<float>(rPlayerData.hp) / static_cast<float>(rPlayerData.maxHp))), 0, (center - hurfHudLenght), _maxHpLenght.y, 0x00ff00, true);
 	DxLib::DrawFormatString(30, 10, 0xff0000, "HP:%d", rPlayerData.hp);
 
-	DxLib::DrawBox(900, 0, 900 + (_maxHpLenght.x * (static_cast<float>(lPlayerData.hp) / static_cast<float>(lPlayerData.maxHp))), _maxHpLenght.y, 0x00ff00, true);
+	DxLib::DrawBox((center + hurfHudLenght), 0, (center + hurfHudLenght) + (_maxHpLenght.x * (static_cast<float>(lPlayerData.hp) / static_cast<float>(lPlayerData.maxHp))), _maxHpLenght.y, 0x00ff00, true);
 	DxLib::DrawFormatString(920, 10, 0xff0000, "HP:%d", lPlayerData.hp);
 }
 
@@ -59,6 +64,11 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 	}
 }
 
+int Hud::GetStringCenterPosx(const std::string& name)const
+{
+	return (ssize.x / 2 - DxLib::GetDrawStringWidth(name.c_str(), std::strlen(name.c_str())) / 2);
+}
+
 bool Hud::AdvanceTheTurn()
 {
 	if (_turnCount == 3)
@@ -81,4 +91,6 @@ void Hud::Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData)
 	DrawRoundAndTurn();
 	DrawHp(rPlayerData, lPlayerData);
 	DrawPlayerSkill(rPlayerData, lPlayerData);
+
+	DxLib::DrawLine(ssize.x / 2, 0, ssize.x / 2, ssize.y, 0x0000ff);
 }
