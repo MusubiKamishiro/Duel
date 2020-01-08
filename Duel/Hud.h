@@ -18,6 +18,12 @@ private:
 	// プレイヤーの技の描画
 	void DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const;
 
+	// 引数の文字列を画面の中央に揃える座標を返す
+	int GetStringCenterPosx(const std::string& name)const;
+	
+	// ゲーム画面のサイズ
+	Vector2<int> ssize;
+
 public:
 	Hud();
 	~Hud();
