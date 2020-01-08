@@ -141,6 +141,7 @@
     </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Judge.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Peripheral.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="FrameFixity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Hud.h" />
     <ClInclude Include="Judge.h" />
     <ClInclude Include="Peripheral.h" />
     <ClInclude Include="Player.h" />
