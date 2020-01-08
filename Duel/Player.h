@@ -5,7 +5,7 @@
 class Peripheral;
 
 // プレイヤーの使える技
-enum class Hand
+enum class Skill
 {
 	ROCK,		// グー
 	SCISSORS,	// チョキ
@@ -13,22 +13,40 @@ enum class Hand
 	MAX
 };
 
+// プレイヤーの初期ステータス
+// セレクトシーンから持ってくるもの
+struct InitStatus
+{
+	int hp;		// 体力
+	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// 技名
+	std::array<int, static_cast<int>(Skill::MAX)> power;	// 攻撃力
+	int goodSkill;	// 得意技
+};
+
+// プレイヤーの基本データ
+struct PlayerData
+{
+	int hp;		// 体力
+	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// 技名
+	std::array<int, static_cast<int>(Skill::MAX)> power;	// 攻撃力
+	int goodSkill;	// 得意技
+
+	std::array<int, static_cast<int>(Skill::MAX)> initSkillCount;
+	std::array<int, static_cast<int>(Skill::MAX)> skillCount;
+	bool decideFlag;
+	Skill skill;
+};
 
 
 class Player
 {
-	std::array<int, static_cast<int>(Hand::MAX)> _initHandCount;
-	std::array<int, static_cast<int>(Hand::MAX)> _handCount;
-	Hand _hand;
-
-	int _hp;	// 体力
-	std::array<int, static_cast<int>(Hand::MAX)> _power;	// 攻撃力
+	PlayerData _playerData;
 
 
 	Vector2<int> _pos;
-	bool _decideFlag;
-
-	void Check(const Hand& hand);
+	
+	// 技が使用可能か
+	void Check(const Skill& hand);
 
 public:
 	Player(const Vector2<int>& pos);
@@ -40,11 +58,9 @@ public:
 
 	void Damage(const int& power);
 
-	// 
-	void HandDraw();
-
-	const int GetHand()const;
 	const int GetPower()const;
+	const PlayerData& GetPlayerData()const;
+
 	void SetHand();
 	// Handの使用回数をリセットする
 	// ラウンドが移行する際に使用する

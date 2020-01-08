@@ -18,7 +18,7 @@ void PauseScene::FadeoutUpdate(const Peripheral & p)
 
 void PauseScene::WaitUpdate(const Peripheral & p)
 {
-	if (p.IsTrigger(0, "pause"))
+	if (p.IsTrigger(0, "PAUSE"))
 	{
 		updater = &PauseScene::FadeoutUpdate;
 	}

@@ -31,7 +31,7 @@ void SelectScene::FadeoutUpdate(const Peripheral& p)
 
 void SelectScene::WaitUpdate(const Peripheral& p)
 {
-	if (p.IsTrigger(0, "decide"))
+	if (p.IsTrigger(0, "DECIDE"))
 	{
 		_pal = 255;
 		updater = &SelectScene::FadeoutUpdate;

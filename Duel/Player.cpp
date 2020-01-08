@@ -5,32 +5,34 @@
 
 Player::Player(const Vector2<int>& pos)
 {
-	for (int i = 0; i < static_cast<int>(Hand::MAX); ++i)
+	for (int i = 0; i < static_cast<int>(Skill::MAX); ++i)
 	{
-		_handCount[i] = 1;
-		_initHandCount[i] = 1;
+		_playerData.skillCount[i] = 1;
+		_playerData.initSkillCount[i] = 1;
 	}
-	_hand = Hand::MAX;
+	_playerData.skill = Skill::MAX;
+	_playerData.decideFlag = false;
 	_pos = pos;
-	_decideFlag = false;
-
-	_hp = 300;
-	_power[0] = 50;
-	_power[1] = 20;
-	_power[2] = 80;
+	
+	_playerData.hp = 300;
+	_playerData.power[0] = 50;
+	_playerData.power[1] = 20;
+	_playerData.power[2] = 80;
+	_playerData.skillName[0] = "パンチ";
+	_playerData.skillName[1] = "目つぶし";
+	_playerData.skillName[2] = "ハリセン";
 }
 
 Player::~Player()
 {
 }
 
-void Player::Check(const Hand& hand)
+void Player::Check(const Skill& hand)
 {
-	if ((_handCount[static_cast<int>(hand)] > 0) && (_decideFlag == false))
+	if ((_playerData.skillCount[static_cast<int>(hand)] > 0) && (_playerData.decideFlag == false))
 	{
-		_hand = hand;
-		--_handCount[static_cast<int>(hand)];
-		_decideFlag = true;
+		_playerData.skill = hand;
+		_playerData.decideFlag = true;
 	}
 }
 
@@ -38,29 +40,29 @@ void Player::Update(const int& pno, const Peripheral& p)
 {
 	if (p.IsTrigger(pno, "ROCK"))
 	{
-		Check(Hand::ROCK);
+		Check(Skill::ROCK);
 	}
 	else if (p.IsTrigger(pno, "SCISSORS"))
 	{
-		Check(Hand::SCISSORS);
+		Check(Skill::SCISSORS);
 	}
 	else if (p.IsTrigger(pno, "PAPER"))
 	{
-		Check(Hand::PAPER);
+		Check(Skill::PAPER);
 	}
 }
 
 void Player::Draw()
 {
-	if (_hand == Hand::ROCK)
+	if (_playerData.skill == Skill::ROCK)
 	{
 		DxLib::DrawString(_pos.x, _pos.y, "グー", 0xff0000);
 	}
-	else if (_hand == Hand::SCISSORS)
+	else if (_playerData.skill == Skill::SCISSORS)
 	{
 		DxLib::DrawString(_pos.x, _pos.y, "チョキ", 0xff0000);
 	}
-	else if (_hand == Hand::PAPER)
+	else if (_playerData.skill == Skill::PAPER)
 	{
 		DxLib::DrawString(_pos.x, _pos.y, "パー", 0xff0000);
 	}
@@ -68,56 +70,27 @@ void Player::Draw()
 
 void Player::Damage(const int& power)
 {
-	_hp -= power;
-}
-
-void Player::HandDraw()
-{
-	if (_decideFlag == false)
-	{
-		for (int i = 0; i < static_cast<int>(Hand::MAX); ++i)
-		{
-			std::string hand;
-			if (i == 0)
-			{
-				hand = "グー";
-			}
-			else if (i == 1)
-			{
-				hand = "チョキ";
-			}
-			else if (i == 2)
-			{
-				hand = "パー";
-			}
-
-			if (_handCount[i] > 0)
-			{
-				DxLib::DrawString(_pos.x, _pos.y + 50 + (i * 30), hand.c_str(), 0x00ff00);
-			}
-		}
-	}
-
-	DxLib::DrawFormatString(_pos.x, _pos.y + 150, 0x00ff00, "HP:%d", _hp);
-}
-
-const int Player::GetHand() const
-{
-	return static_cast<int>(_hand);
+	_playerData.hp -= power;
 }
 
 const int Player::GetPower() const
 {
-	return _power[static_cast<int>(_hand)];
+	return _playerData.power[static_cast<int>(_playerData.skill)];
+}
+
+const PlayerData& Player::GetPlayerData() const
+{
+	return _playerData;
 }
 
 void Player::SetHand()
 {
-	_decideFlag = false;
-	_hand = Hand::MAX;
+	_playerData.decideFlag = false;
+	--_playerData.skillCount[static_cast<int>(_playerData.skill)];
+	_playerData.skill = Skill::MAX;
 }
 
 void Player::ResetCount()
 {
-	_handCount = _initHandCount;
+	_playerData.skillCount = _playerData.initSkillCount;
 }

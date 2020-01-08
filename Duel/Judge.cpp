@@ -19,15 +19,15 @@ void Judge::Draw()
 {
 	if (_result == Result::DRAW)
 	{
-		DxLib::DrawString(500, 0, "ˆø‚«•ª‚¯", 0x00ff00);
+		DxLib::DrawString(500, 400, "ˆø‚«•ª‚¯", 0x00ff00);
 	}
 	else if (_result == Result::PLAYER1WIN)
 	{
-		DxLib::DrawString(500, 0, "player1‚ÌŸ‚¿", 0x00ff00);
+		DxLib::DrawString(500, 400, "player1‚ÌŸ‚¿", 0x00ff00);
 	}
 	else if (_result == Result::PLAYER2WIN)
 	{
-		DxLib::DrawString(500, 0, "player2‚ÌŸ‚¿", 0x00ff00);
+		DxLib::DrawString(500, 400, "player2‚ÌŸ‚¿", 0x00ff00);
 	}
 }
 

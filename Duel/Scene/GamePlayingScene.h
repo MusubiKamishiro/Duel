@@ -6,6 +6,7 @@
 
 class Player;
 class Judge;
+class Hud;
 
 class GamePlayingScene : public Scene
 {
@@ -24,10 +25,10 @@ private:
 
 	std::array<std::shared_ptr<Player>, 2> _players;	
 	std::unique_ptr<Judge> _judge;
+	std::unique_ptr<Hud> _hud;
 
-	int _count		= 0;	
-	int _roundCount = 1;
-	int _turnCount	= 1;
+	int _count = 0;	
+
 public:
 	GamePlayingScene();
 	~GamePlayingScene();
