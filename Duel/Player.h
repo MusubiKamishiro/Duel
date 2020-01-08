@@ -26,6 +26,7 @@ struct InitStatus
 // プレイヤーの基本データ
 struct PlayerData
 {
+	int maxHp;	// 最大体力
 	int hp;		// 体力
 	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// 技名
 	std::array<int, static_cast<int>(Skill::MAX)> power;	// 攻撃力
@@ -49,7 +50,7 @@ class Player
 	void Check(const Skill& hand);
 
 public:
-	Player(const Vector2<int>& pos);
+	Player(const Vector2<int>& pos, const InitStatus initStatus);
 	~Player();
 
 	void Update(const int& pno, const Peripheral& p);

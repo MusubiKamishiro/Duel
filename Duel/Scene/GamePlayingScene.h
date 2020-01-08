@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "../Geometry.h"
 
-class Player;
+#include "../Player.h"
 class Judge;
 class Hud;
 
@@ -30,7 +30,7 @@ private:
 	int _count = 0;	
 
 public:
-	GamePlayingScene();
+	GamePlayingScene(const std::array<InitStatus, 2>& initStatus);
 	~GamePlayingScene();
 
 	void Update(const Peripheral& p);

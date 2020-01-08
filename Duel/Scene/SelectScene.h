@@ -2,6 +2,8 @@
 #include <array>
 #include "Scene.h"
 
+#include "../Player.h"
+
 class SelectScene : public Scene
 {
 private:
@@ -16,6 +18,9 @@ private:
 
 	/// キャラクター枠のデバッグ描画用
 	const Vector2<int> _boxSize;
+
+	// 
+	std::array<InitStatus, 2> _initStatus;
 public:
 	SelectScene();
 	~SelectScene();

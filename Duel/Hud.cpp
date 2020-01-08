@@ -8,6 +8,7 @@ Hud::Hud()
 {
 	_roundCount = 1;
 	_turnCount = 1;
+	_maxHpLenght = Vector2<int>(500, 50);
 }
 
 Hud::~Hud()
@@ -24,13 +25,13 @@ void Hud::DrawRoundAndTurn()const
 	DxLib::DrawString(600, 20, turnStr.c_str(), 0x00ff00);
 }
 
-void Hud::DrawHp(const int& rightHp, const int& leftHp)const
+void Hud::DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const
 {
-	DxLib::DrawBox((300 - rightHp), 0, 500, 50, 0x00ff00, true);
-	DxLib::DrawFormatString(30, 10, 0xff0000, "HP:%d", rightHp);
+	DxLib::DrawBox(500 - (_maxHpLenght.x * (static_cast<float>(rPlayerData.hp) / static_cast<float>(rPlayerData.maxHp))), 0, 500, _maxHpLenght.y, 0x00ff00, true);
+	DxLib::DrawFormatString(30, 10, 0xff0000, "HP:%d", rPlayerData.hp);
 
-	DxLib::DrawBox(900, 0, 1400 - (300 - leftHp), 50, 0x00ff00, true);
-	DxLib::DrawFormatString(920, 10, 0xff0000, "HP:%d", leftHp);
+	DxLib::DrawBox(900, 0, 900 + (_maxHpLenght.x * (static_cast<float>(lPlayerData.hp) / static_cast<float>(lPlayerData.maxHp))), _maxHpLenght.y, 0x00ff00, true);
+	DxLib::DrawFormatString(920, 10, 0xff0000, "HP:%d", lPlayerData.hp);
 }
 
 void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData) const
@@ -43,7 +44,7 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			{
 				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 64);
 			}
-			DxLib::DrawString(50, 500 + (i * 30), rPlayerData.skillName[i].c_str(), 0x00ff00);
+			DxLib::DrawString(50, 600 + (i * 30), rPlayerData.skillName[i].c_str(), 0x00ff00);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 		}
 		if (lPlayerData.skillCount[i] > 0)
@@ -52,7 +53,7 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			{
 				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 64);
 			}
-			DxLib::DrawString(800, 500 + (i * 30), lPlayerData.skillName[i].c_str(), 0x00ff00);
+			DxLib::DrawString(800, 600 + (i * 30), lPlayerData.skillName[i].c_str(), 0x00ff00);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 		}
 	}
@@ -78,6 +79,6 @@ bool Hud::AdvanceTheTurn()
 void Hud::Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData)
 {
 	DrawRoundAndTurn();
-	DrawHp(rPlayerData.hp, lPlayerData.hp);
+	DrawHp(rPlayerData, lPlayerData);
 	DrawPlayerSkill(rPlayerData, lPlayerData);
 }

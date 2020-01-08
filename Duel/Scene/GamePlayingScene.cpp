@@ -5,7 +5,6 @@
 #include "PauseScene.h"
 #include "../Peripheral.h"
 
-#include "../Player.h"
 #include "../Judge.h"
 #include "../Hud.h"
 
@@ -81,14 +80,18 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 		{
 			_players[0]->Damage(_players[1]->GetPower());
 			_players[1]->Damage(_players[0]->GetPower());
+			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 3000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 3000);
 		}
 		else if(_judge->GetResult() == Result::PLAYER1WIN)
 		{
 			_players[1]->Damage(_players[0]->GetPower());
+			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 3000);
 		}
 		else if (_judge->GetResult() == Result::PLAYER2WIN)
 		{
 			_players[0]->Damage(_players[1]->GetPower());
+			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 3000);
 		}
 
 		for (auto player : _players)
@@ -132,11 +135,11 @@ void GamePlayingScene::ResultDraw()
 	_judge->Draw();
 }
 
-GamePlayingScene::GamePlayingScene()
+GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus)
 {
 	for (int i = 0; i < _players.size(); ++i)
 	{
-		_players[i].reset(new Player(Vector2<int>(150 * (i + 1), 150)));
+		_players[i].reset(new Player(Vector2<int>(150 * (i + 1), 150), initStatus[i]));
 	}
 	_judge.reset(new Judge());
 	_hud.reset(new Hud());
@@ -159,7 +162,6 @@ void GamePlayingScene::Draw()
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
 	_hud->Draw(_players[0]->GetPlayerData(), _players[1]->GetPlayerData());
-	//_hud->DrawHp(_players[0]->GetHp(), _players[1]->GetHp());
 
 	(this->*_drawer)();
 

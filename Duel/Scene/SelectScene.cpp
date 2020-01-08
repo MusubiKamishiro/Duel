@@ -21,7 +21,23 @@ void SelectScene::FadeoutUpdate(const Peripheral& p)
 {
 	if (_pal <= 0)
 	{
-		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>());
+		_initStatus[0].hp = 1000;
+		_initStatus[0].power[0] = 250;
+		_initStatus[0].power[1] = 200;
+		_initStatus[0].power[2] = 300;
+		_initStatus[0].skillName[0] = "腹パン";
+		_initStatus[0].skillName[1] = "喉切";
+		_initStatus[0].skillName[2] = "ビンタ";
+		_initStatus[1].hp = 1200;
+		_initStatus[1].power[0] = 200;
+		_initStatus[1].power[1] = 1000;
+		_initStatus[1].power[2] = 250;
+		_initStatus[1].skillName[0] = "ふくろだたき";
+		_initStatus[1].skillName[1] = "ハサミギロチン";
+		_initStatus[1].skillName[2] = "はっけい";
+		
+
+		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>(_initStatus));
 	}
 	else
 	{
@@ -71,6 +87,4 @@ void SelectScene::Draw()
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
 	
 	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0x000000, true);
-
-
 }

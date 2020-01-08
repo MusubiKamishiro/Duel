@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include "Player.h"
+#include "Geometry.h"
 
 class Hud
 {
@@ -10,7 +11,9 @@ private:
 	int _roundCount;
 	int _turnCount;
 
-	void DrawHp(const int& rightHp, const int& leftHp)const;
+	// HP‚Ì•`‰æ
+	void DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const;
+	Vector2<int> _maxHpLenght;
 
 	// ƒvƒŒƒCƒ„[‚Ì‹Z‚Ì•`‰æ
 	void DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const;

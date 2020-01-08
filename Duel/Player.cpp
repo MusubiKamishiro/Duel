@@ -3,7 +3,7 @@
 #include "Peripheral.h"
 
 
-Player::Player(const Vector2<int>& pos)
+Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 {
 	for (int i = 0; i < static_cast<int>(Skill::MAX); ++i)
 	{
@@ -14,13 +14,10 @@ Player::Player(const Vector2<int>& pos)
 	_playerData.decideFlag = false;
 	_pos = pos;
 	
-	_playerData.hp = 300;
-	_playerData.power[0] = 50;
-	_playerData.power[1] = 20;
-	_playerData.power[2] = 80;
-	_playerData.skillName[0] = "パンチ";
-	_playerData.skillName[1] = "目つぶし";
-	_playerData.skillName[2] = "ハリセン";
+	_playerData.maxHp = initStatus.hp;
+	_playerData.hp = _playerData.maxHp;
+	_playerData.power = initStatus.power;
+	_playerData.skillName = initStatus.skillName;
 }
 
 Player::~Player()
