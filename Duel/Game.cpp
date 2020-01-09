@@ -63,21 +63,34 @@ void Game::InitPeripheral()
 	_peripheral->AddCommand(0, "PAPER",		0, KEY_INPUT_D);
 	_peripheral->AddCommand(0, "DECIDE",	0, KEY_INPUT_Z);
 	_peripheral->AddCommand(0, "PAUSE",		0, KEY_INPUT_W);
+	_peripheral->AddCommand(0, "UP",		0, KEY_INPUT_UP);
+	_peripheral->AddCommand(0, "RIGHT",		0, KEY_INPUT_RIGHT);
+	_peripheral->AddCommand(0, "DOWN",		0, KEY_INPUT_DOWN);
+	_peripheral->AddCommand(0, "LEFT",		0, KEY_INPUT_LEFT);
 	
 	_peripheral->AddCommand(1, "ROCK",		0, KEY_INPUT_J);
 	_peripheral->AddCommand(1, "SCISSORS",	0, KEY_INPUT_K);
 	_peripheral->AddCommand(1, "PAPER",		0, KEY_INPUT_L);
 	_peripheral->AddCommand(1, "DECIDE",	0, KEY_INPUT_Z);
 	_peripheral->AddCommand(1, "PAUSE",		0, KEY_INPUT_W);
+	_peripheral->AddCommand(1, "UP",		0, KEY_INPUT_F);
+	_peripheral->AddCommand(1, "RIGHT",		0, KEY_INPUT_X);
+	_peripheral->AddCommand(1, "DOWN",		0, KEY_INPUT_C);
+	_peripheral->AddCommand(1, "LEFT",		0, KEY_INPUT_V);
 	
 	// ƒpƒbƒh
 	for (int i = 0; i < 2; ++i)
 	{
-		_peripheral->AddCommand(i, "ROCK",		i + 1, PAD_INPUT_2);
+		_peripheral->AddCommand(i, "PAPER",		i + 1, PAD_INPUT_2);
 		_peripheral->AddCommand(i, "SCISSORS",	i + 1, PAD_INPUT_3);
-		_peripheral->AddCommand(i, "PAPER",		i + 1, PAD_INPUT_4);
+		_peripheral->AddCommand(i, "ROCK",		i + 1, PAD_INPUT_4);
 		_peripheral->AddCommand(i, "DECIDE",	i + 1, PAD_INPUT_1);
 		_peripheral->AddCommand(i, "PAUSE",		i + 1, PAD_INPUT_8);
+		
+		_peripheral->AddCommand(i, "UP",		i + 1, PAD_INPUT_UP);
+		_peripheral->AddCommand(i, "RIGHT",		i + 1, PAD_INPUT_RIGHT);
+		_peripheral->AddCommand(i, "DOWN",		i + 1, PAD_INPUT_DOWN);
+		_peripheral->AddCommand(i, "LEFT",		i + 1, PAD_INPUT_LEFT);
 	}
 }
 
