@@ -121,8 +121,4 @@ void Hud::Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData)
 	DrawRoundAndTurn();
 	DrawPlayerSkill(rPlayerData, lPlayerData);
 	DrawType();
-
-#ifdef _DEBUG
-	DxLib::DrawLine(_ssize.x / 2, 0, _ssize.x / 2, _ssize.y, 0x0000ff);
-#endif // DEBUG
 }
