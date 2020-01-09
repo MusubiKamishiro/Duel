@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <DxLib.h>
+#include <random>
 #include "Peripheral.h"
 #include "Game.h"
 
@@ -36,6 +37,9 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 	_frameImg = Game::Instance().GetFileSystem()->Load("img/frame.png");
 	_decideSound = Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
 	_damageSound = Game::Instance().GetFileSystem()->Load("sound/se/damage.mp3");
+
+	_swing = Vector2<float>(0, 0);
+	_damageFlag = false;
 }
 
 Player::~Player()
@@ -67,6 +71,40 @@ void Player::Update(const int& pno, const Peripheral& p)
 	{
 		Check(Skill::PAPER);
 	}
+
+	if (_damageFlag)
+	{
+		_swing = Vector2<float>(10, 10);
+		_damageFlag = false;
+	}
+
+	if (std::abs(_swing.x) < 0.5f)
+	{
+		_swing = Vector2<float>(0, 0);
+	}
+	else
+	{
+		_swing *= 0.95f;
+
+		std::random_device seed_gen;
+		std::mt19937 engine(seed_gen());
+		if ((engine() % 4) == 0)
+		{
+			_swing = Vector2<float>(_swing.x, _swing.y);
+		}
+		else if ((engine() % 4) == 1)
+		{
+			_swing = Vector2<float>(-_swing.x, _swing.y);
+		}
+		else if ((engine() % 4) == 2)
+		{
+			_swing = Vector2<float>(_swing.x, -_swing.y);
+		}
+		else if ((engine() % 4) == 3)
+		{
+			_swing = Vector2<float>(-_swing.x, -_swing.y);
+		}
+	}
 }
 
 void Player::Draw()
@@ -84,14 +122,15 @@ void Player::Draw()
 		DxLib::DrawString(_pos.x, _pos.y, "ÉpÅ[", 0xff0000);
 	}*/
 
-	DxLib::DrawExtendGraph(_pos.x - 450/2, _pos.y, _pos.x + 450/2, _pos.y + 600, _playerData.img, true);
-	DxLib::DrawExtendGraph(_pos.x - 500/2, _pos.y - 50, _pos.x + 500/2, _pos.y + 600, _frameImg, true);
+	DxLib::DrawExtendGraph(_pos.x - 450/2 + _swing.x, _pos.y + _swing.y, _pos.x + 450/2 + _swing.x, _pos.y + 600 + _swing.y, _playerData.img, true);
+	DxLib::DrawExtendGraph(_pos.x - 500/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 500/2 + _swing.x, _pos.y + 600 + _swing.y, _frameImg, true);
 }
 
 void Player::Damage(const int& power)
 {
 	DxLib::PlaySoundMem(_damageSound, DX_PLAYTYPE_BACK);
 
+	_damageFlag = true;
 	_playerData.hp -= power;
 	if (_playerData.hp < 0)
 	{

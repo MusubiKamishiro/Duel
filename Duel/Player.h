@@ -55,6 +55,10 @@ class Player
 	int _decideSound;
 	int _damageSound;
 
+	// —h‚êŠÖŒW
+	Vector2<float> _swing;
+	bool _damageFlag;
+
 public:
 	Player(const Vector2<int>& pos, const InitStatus initStatus);
 	~Player();

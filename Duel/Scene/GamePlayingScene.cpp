@@ -62,15 +62,8 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 
 void GamePlayingScene::RoundUpdate(const Peripheral& p)
 {
-	if (_count > 60)
-	{
-		_updater = &GamePlayingScene::WaitUpdate;
-		_count = 0;
-	}
-	else
-	{
-		++_count;
-	}
+	_updater = &GamePlayingScene::WaitUpdate;
+	_count = 0;
 }
 
 void GamePlayingScene::ResultUpdate(const Peripheral& p)
@@ -161,7 +154,7 @@ void GamePlayingScene::Update(const Peripheral& p)
 {
 	if (!DxLib::CheckSoundMem(_bgm))
 	{
-		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_BACK);
+		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_LOOP);
 	}
 
 	(this->*_updater)(p);

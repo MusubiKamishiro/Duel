@@ -61,7 +61,7 @@ void ResultScene::Update(const Peripheral& p)
 {
 	if (!DxLib::CheckSoundMem(_bgm))
 	{
-		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_BACK);
+		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_LOOP);
 	}
 
 	(this->*updater)(p);
