@@ -1,8 +1,11 @@
 #pragma once
+#include <memory>
 #include <array>
 #include "Scene.h"
 
 #include "../Player.h"
+
+class TrimString;
 
 class SelectScene : public Scene
 {
@@ -21,6 +24,8 @@ private:
 
 	// 
 	std::array<InitStatus, 2> _initStatus;
+	std::unique_ptr<TrimString> _trimString;
+
 public:
 	SelectScene();
 	~SelectScene();

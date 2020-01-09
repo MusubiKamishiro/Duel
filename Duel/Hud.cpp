@@ -31,7 +31,7 @@ void Hud::DrawRoundAndTurn()const
 	DxLib::DrawBox(_center.x - 100, 0, _center.x + 100, _topHudHeight - _topHudEdge, 0x0000ff, true);
 	DxLib::DrawBox(_center.x - 100, (_topHudHeight - _topHudEdge) / 2 - 2, _center.x + 100, (_topHudHeight - _topHudEdge) / 2 + 2, 0xffffff, true);
 
-	DxLib::SetFontSize(25);
+	_trimString->ChangeFontSize(25);
 	std::string roundStr = "ラウンド";
 	std::string turnStr = "ターン";
 	roundStr += std::to_string(_roundCount);
@@ -42,7 +42,7 @@ void Hud::DrawRoundAndTurn()const
 
 void Hud::DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const
 {
-	DxLib::SetFontSize(35);
+	_trimString->ChangeFontSize(35);
 	int hurfHudLenght = 100;
 
 	DxLib::DrawBox(0, 0, _ssize.x, _topHudHeight,  0x000000, true);
@@ -64,10 +64,11 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 {
 	DxLib::DrawBox(0, _ssize.y - 200, _ssize.x, _ssize.y, 0x0000ff, true);
 
-	int fontSize = 40;
-	DxLib::SetFontSize(fontSize);
+	_trimString->ChangeFontSize(40);
 	for (int i = 0; i < static_cast<int>(Skill::MAX); ++i)
 	{
+		int fontSize = _trimString->GetFontSize();
+
 		if (rPlayerData.skillCount[i] > 0)
 		{
 			if (rPlayerData.decideFlag)

@@ -5,6 +5,7 @@
 TrimString::TrimString()
 {
 	ssize = Game::Instance().GetScreenSize();
+	_fontSize = 10;
 }
 
 TrimString::~TrimString()
@@ -19,4 +20,15 @@ int TrimString::GetStringCenterPosx(const std::string& name)const
 int TrimString::GetStringRightPosx(const std::string& name, const int& rpos)
 {
 	return (rpos - DxLib::GetDrawStringWidth(name.c_str(), std::strlen(name.c_str())));
+}
+
+void TrimString::ChangeFontSize(const int& fontSize)
+{
+	_fontSize = fontSize;
+	DxLib::SetFontSize(_fontSize);
+}
+
+int TrimString::GetFontSize() const
+{
+	return _fontSize;
 }

@@ -49,7 +49,6 @@ void Game::Initialize()
 	// フォントの変更
 	AddFontResourceEx("fonts/PixelMplus10-Regular.ttf", FR_PRIVATE, nullptr);
 	DxLib::ChangeFont("PixelMplus10", DX_CHARSET_DEFAULT);
-	DxLib::SetFontSize(24);
 
 	peripheral.reset(new Peripheral());
 }

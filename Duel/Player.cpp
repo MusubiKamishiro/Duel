@@ -19,8 +19,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 			_playerData.initSkillCount[i] = 2;
 		}
 	}
-	//_playerData.img = ImageLoader::Instance().Load("img/char" + std::to_string(initStatus.charNum) + ".png");
-	_playerData.img = ImageLoader::Instance().Load("img/char" + std::to_string(rand() % 5 + 1) + ".png");
+	_playerData.img = ImageLoader::Instance().Load("img/char" + std::to_string(initStatus.charNum) + ".png");
 	_playerData.maxHp = initStatus.hp;
 	_playerData.hp = _playerData.maxHp;
 	_playerData.power = initStatus.power;

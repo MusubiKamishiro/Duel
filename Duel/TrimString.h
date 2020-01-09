@@ -8,6 +8,8 @@ class TrimString
 private:
 	// ゲーム画面のサイズ
 	Vector2<int> ssize;
+	// フォントサイズ
+	int _fontSize;
 
 public:
 	TrimString();
@@ -18,5 +20,11 @@ public:
 
 	// 引数の文字列を右詰めにする座標を返す
 	int GetStringRightPosx(const std::string& name, const int& rpos);
+
+	// フォントサイズの変更
+	void ChangeFontSize(const int& fontSize);
+
+	// 現在のフォントサイズの獲得
+	int GetFontSize()const;
 };
 
