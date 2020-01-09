@@ -1,3 +1,5 @@
+#include "CharData.h"
+
 int _charData[10][static_cast<int>(Data::MAX)] =
 {
      {100,    150,    200,     100 },
