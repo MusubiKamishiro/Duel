@@ -1,7 +1,10 @@
 #pragma once
+#include <memory>
 #include <array>
 #include "Player.h"
 #include "Geometry.h"
+
+class TrimString;
 
 class Hud
 {
@@ -18,11 +21,17 @@ private:
 	// プレイヤーの技の描画
 	void DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const;
 
-	// 引数の文字列を画面の中央に揃える座標を返す
-	int GetStringCenterPosx(const std::string& name)const;
-	
 	// ゲーム画面のサイズ
-	Vector2<int> ssize;
+	Vector2<int> _ssize;
+	// 画面の中央
+	Vector2<int> _center;
+
+	// 上のHudの縦幅
+	int _topHudHeight;
+	// 上のHudの縁幅
+	int _topHudEdge;
+
+	std::unique_ptr<TrimString> _trimString;
 
 public:
 	Hud();

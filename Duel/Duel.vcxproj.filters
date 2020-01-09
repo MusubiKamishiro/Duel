@@ -22,6 +22,15 @@
     <Filter Include="シーン ファイル\ヘッダー ファイル">
       <UniqueIdentifier>{3cd38761-a0a3-4724-b5e1-f66dd4675623}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Loader">
+      <UniqueIdentifier>{829ae89a-90e6-44a3-b3bd-889380b87657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loader\ソース ファイル">
+      <UniqueIdentifier>{81625d36-8292-4121-a642-b7201d6c950d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loader\ヘッダー ファイル">
+      <UniqueIdentifier>{29db3e8d-e521-4963-b1c5-2459cad3c05f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -69,6 +78,12 @@
     <ClCompile Include="Hud.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="TrimString.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Loader\ImageLoader.cpp">
+      <Filter>Loader\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\GamePlayingScene.h">
@@ -112,6 +127,12 @@
     </ClInclude>
     <ClInclude Include="Hud.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TrimString.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Loader\ImageLoader.h">
+      <Filter>Loader\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

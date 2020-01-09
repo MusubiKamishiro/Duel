@@ -46,6 +46,11 @@ void Game::Initialize()
 	//DxLib::SetWindowIconID(IDI_ICON1);	// アイコン
 	DxLib::SetDrawScreen(DX_SCREEN_BACK);	// 裏画面に描画
 
+	// フォントの変更
+	AddFontResourceEx("fonts/PixelMplus10-Regular.ttf", FR_PRIVATE, nullptr);
+	DxLib::ChangeFont("PixelMplus10", DX_CHARSET_DEFAULT);
+	DxLib::SetFontSize(24);
+
 	peripheral.reset(new Peripheral());
 }
 

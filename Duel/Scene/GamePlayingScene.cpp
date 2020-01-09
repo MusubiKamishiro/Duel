@@ -80,18 +80,18 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 		{
 			_players[0]->Damage(_players[1]->GetPower());
 			_players[1]->Damage(_players[0]->GetPower());
-			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 3000);
-			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 3000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 2000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 2000);
 		}
 		else if(_judge->GetResult() == Result::PLAYER1WIN)
 		{
 			_players[1]->Damage(_players[0]->GetPower());
-			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 3000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 2000);
 		}
 		else if (_judge->GetResult() == Result::PLAYER2WIN)
 		{
 			_players[0]->Damage(_players[1]->GetPower());
-			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 3000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 2000);
 		}
 
 		for (auto player : _players)
@@ -106,8 +106,14 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 				player->ResetCount();
 			}
 		}
-
-		_updater = &GamePlayingScene::RoundUpdate;
+		if ((_players[0]->GetPlayerData().hp <= 0) || (_players[1]->GetPlayerData().hp <= 0))
+		{
+			_updater = &GamePlayingScene::FadeoutUpdate;
+		}
+		else
+		{
+			_updater = &GamePlayingScene::RoundUpdate;
+		}
 		_drawer = &GamePlayingScene::RoundDraw;
 		_count = 0;
 	}

@@ -17,7 +17,8 @@ enum class Skill
 // セレクトシーンから持ってくるもの
 struct InitStatus
 {
-	int hp;		// 体力
+	int charNum;	// キャラ番号
+	int hp;			// 体力
 	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// 技名
 	std::array<int, static_cast<int>(Skill::MAX)> power;	// 攻撃力
 	int goodSkill;	// 得意技
@@ -26,6 +27,7 @@ struct InitStatus
 // プレイヤーの基本データ
 struct PlayerData
 {
+	int img;	// キャラ画像
 	int maxHp;	// 最大体力
 	int hp;		// 体力
 	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// 技名

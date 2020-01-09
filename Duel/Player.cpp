@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <DxLib.h>
 #include "Peripheral.h"
+#include "Loader/ImageLoader.h"
 
 
 Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
@@ -14,6 +15,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 	_playerData.decideFlag = false;
 	_pos = pos;
 	
+	_playerData.img = ImageLoader::Instance().Load("img/char" + std::to_string(initStatus.charNum) + ".png");
 	_playerData.maxHp = initStatus.hp;
 	_playerData.hp = _playerData.maxHp;
 	_playerData.power = initStatus.power;
@@ -63,11 +65,17 @@ void Player::Draw()
 	{
 		DxLib::DrawString(_pos.x, _pos.y, "ÉpÅ[", 0xff0000);
 	}
+
+	DxLib::DrawGraph(_pos.x, _pos.y, _playerData.img, true);
 }
 
 void Player::Damage(const int& power)
 {
 	_playerData.hp -= power;
+	if (_playerData.hp < 0)
+	{
+		_playerData.hp = 0;
+	}
 }
 
 const int Player::GetPower() const

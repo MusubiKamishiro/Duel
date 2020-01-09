@@ -2,15 +2,21 @@
 #include <DxLib.h>
 #include <string>
 #include "Game.h"
+#include "TrimString.h"
 
 
 Hud::Hud()
 {
 	_roundCount = 1;
 	_turnCount = 1;
-	_maxHpLenght = Vector2<int>(550, 50);
+	_maxHpLenght = Vector2<int>(550, 15);
+	_topHudHeight = 75;
+	_topHudEdge = 5;
 
-	ssize = Game::Instance().GetScreenSize();
+	_ssize = Game::Instance().GetScreenSize();
+	_center = Vector2<int>(_ssize.x / 2, _ssize.y / 2);
+
+	_trimString = (std::make_unique<TrimString>());
 }
 
 Hud::~Hud()
@@ -19,24 +25,31 @@ Hud::~Hud()
 
 void Hud::DrawRoundAndTurn()const
 {
+	DxLib::DrawBox(_center.x - 100, 0, _center.x + 100, _topHudHeight - _topHudEdge, 0x0000ff, true);
+	DxLib::DrawBox(_center.x - 100, (_topHudHeight - _topHudEdge) / 2 - 2, _center.x + 100, (_topHudHeight - _topHudEdge) / 2 + 2, 0xffffff, true);
+
+	DxLib::SetFontSize(25);
 	std::string roundStr = "ラウンド";
 	std::string turnStr = "ターン";
 	roundStr += std::to_string(_roundCount);
 	turnStr += std::to_string(_turnCount);
-	DxLib::DrawString(GetStringCenterPosx(roundStr.c_str()), 0, roundStr.c_str(), 0x00ff00);
-	DxLib::DrawString(GetStringCenterPosx(turnStr.c_str()), 20, turnStr.c_str(), 0x00ff00);
+	DxLib::DrawString(_trimString->GetStringCenterPosx(roundStr.c_str()), 5, roundStr.c_str(), 0x00ff00);
+	DxLib::DrawString(_trimString->GetStringCenterPosx(turnStr.c_str()), 40, turnStr.c_str(), 0x00ff00);
 }
 
 void Hud::DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const
 {
-	int center = ssize.x / 2;
+	DxLib::SetFontSize(35);
 	int hurfHudLenght = 100;
 
-	DxLib::DrawBox((center - hurfHudLenght) - (_maxHpLenght.x * (static_cast<float>(rPlayerData.hp) / static_cast<float>(rPlayerData.maxHp))), 0, (center - hurfHudLenght), _maxHpLenght.y, 0x00ff00, true);
-	DxLib::DrawFormatString(30, 10, 0xff0000, "HP:%d", rPlayerData.hp);
+	DxLib::DrawBox(0, 0, _ssize.x, _topHudHeight,  0x000000, true);
+	DxLib::DrawBox(_topHudEdge, 0, _ssize.x - _topHudEdge, _topHudHeight - _topHudEdge,  0xffffff, true);
 
-	DxLib::DrawBox((center + hurfHudLenght), 0, (center + hurfHudLenght) + (_maxHpLenght.x * (static_cast<float>(lPlayerData.hp) / static_cast<float>(lPlayerData.maxHp))), _maxHpLenght.y, 0x00ff00, true);
-	DxLib::DrawFormatString(920, 10, 0xff0000, "HP:%d", lPlayerData.hp);
+	DxLib::DrawBox((_center.x - hurfHudLenght) - (_maxHpLenght.x * (static_cast<float>(rPlayerData.hp) / static_cast<float>(rPlayerData.maxHp))), 10, (_center.x - hurfHudLenght), _maxHpLenght.y + 10, 0x00ff00, true);
+	DxLib::DrawFormatString(_trimString->GetStringRightPosx("HP:" + std::to_string(rPlayerData.hp), (_center.x - hurfHudLenght - 10)), _maxHpLenght.y + 10, 0xff0000, "HP:%d", rPlayerData.hp);
+
+	DxLib::DrawBox((_center.x + hurfHudLenght), 10, (_center.x + hurfHudLenght) + (_maxHpLenght.x * (static_cast<float>(lPlayerData.hp) / static_cast<float>(lPlayerData.maxHp))), _maxHpLenght.y + 10, 0x00ff00, true);
+	DxLib::DrawFormatString((_center.x + hurfHudLenght)+ 10, _maxHpLenght.y + 10, 0xff0000, "HP:%d", lPlayerData.hp);
 }
 
 void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData) const
@@ -64,11 +77,6 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 	}
 }
 
-int Hud::GetStringCenterPosx(const std::string& name)const
-{
-	return (ssize.x / 2 - DxLib::GetDrawStringWidth(name.c_str(), std::strlen(name.c_str())) / 2);
-}
-
 bool Hud::AdvanceTheTurn()
 {
 	if (_turnCount == 3)
@@ -88,9 +96,9 @@ bool Hud::AdvanceTheTurn()
 
 void Hud::Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData)
 {
-	DrawRoundAndTurn();
 	DrawHp(rPlayerData, lPlayerData);
+	DrawRoundAndTurn();
 	DrawPlayerSkill(rPlayerData, lPlayerData);
 
-	DxLib::DrawLine(ssize.x / 2, 0, ssize.x / 2, ssize.y, 0x0000ff);
+	DxLib::DrawLine(_ssize.x / 2, 0, _ssize.x / 2, _ssize.y, 0x0000ff);
 }

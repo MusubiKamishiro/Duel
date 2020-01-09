@@ -143,6 +143,7 @@
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Judge.cpp" />
+    <ClCompile Include="Loader\ImageLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Peripheral.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\SelectScene.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="TrimString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameFixity.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Hud.h" />
     <ClInclude Include="Judge.h" />
+    <ClInclude Include="Loader\ImageLoader.h" />
     <ClInclude Include="Peripheral.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene\GamePlayingScene.h" />
@@ -169,6 +172,7 @@
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\SelectScene.h" />
     <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="TrimString.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
