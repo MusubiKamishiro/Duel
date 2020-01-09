@@ -3,6 +3,7 @@
 #include <string>
 #include "Game.h"
 #include "TrimString.h"
+#include "Loader/ImageLoader.h"
 
 
 Hud::Hud()
@@ -17,6 +18,8 @@ Hud::Hud()
 	_center = Vector2<int>(_ssize.x / 2, _ssize.y / 2);
 
 	_trimString = (std::make_unique<TrimString>());
+
+	_typeImg = ImageLoader::Instance().Load("img/type.png");
 }
 
 Hud::~Hud()
@@ -52,8 +55,17 @@ void Hud::DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)co
 	DxLib::DrawFormatString((_center.x + hurfHudLenght)+ 10, _maxHpLenght.y + 10, 0xff0000, "HP:%d", lPlayerData.hp);
 }
 
+void Hud::DrawType()
+{
+	DxLib::DrawGraph(_center.x - 100, _ssize.y - 200, _typeImg, true);
+}
+
 void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData) const
 {
+	DxLib::DrawBox(0, _ssize.y - 200, _ssize.x, _ssize.y, 0x0000ff, true);
+
+	int fontSize = 40;
+	DxLib::SetFontSize(fontSize);
 	for (int i = 0; i < static_cast<int>(Skill::MAX); ++i)
 	{
 		if (rPlayerData.skillCount[i] > 0)
@@ -62,7 +74,7 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			{
 				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 64);
 			}
-			DxLib::DrawString(50, 600 + (i * 30), rPlayerData.skillName[i].c_str(), 0x00ff00);
+			DxLib::DrawString(_trimString->GetStringRightPosx(rPlayerData.skillName[i].c_str(), _center.x - 150), _ssize.y - 175 + (i * (fontSize + 15)), rPlayerData.skillName[i].c_str(), 0x00ff00);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 		}
 		if (lPlayerData.skillCount[i] > 0)
@@ -71,7 +83,7 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			{
 				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 64);
 			}
-			DxLib::DrawString(800, 600 + (i * 30), lPlayerData.skillName[i].c_str(), 0x00ff00);
+			DxLib::DrawString(_center.x + 150, _ssize.y - 175 + (i * (fontSize + 15)), lPlayerData.skillName[i].c_str(), 0x00ff00);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 		}
 	}
@@ -99,6 +111,9 @@ void Hud::Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData)
 	DrawHp(rPlayerData, lPlayerData);
 	DrawRoundAndTurn();
 	DrawPlayerSkill(rPlayerData, lPlayerData);
+	DrawType();
 
+#ifdef _DEBUG
 	DxLib::DrawLine(_ssize.x / 2, 0, _ssize.x / 2, _ssize.y, 0x0000ff);
+#endif // DEBUG
 }

@@ -49,7 +49,7 @@ class Player
 	Vector2<int> _pos;
 	
 	// 技が使用可能か
-	void Check(const Skill& hand);
+	void Check(const Skill& skill);
 
 public:
 	Player(const Vector2<int>& pos, const InitStatus initStatus);
@@ -64,8 +64,8 @@ public:
 	const int GetPower()const;
 	const PlayerData& GetPlayerData()const;
 
-	void SetHand();
-	// Handの使用回数をリセットする
+	void SetSkill();
+	// Skillの使用回数をリセットする
 	// ラウンドが移行する際に使用する
 	void ResetCount();
 };

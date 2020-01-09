@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 // ‚¶‚á‚ñ‚¯‚ñ‚ÌŒ‹‰Ê
 enum class Result
@@ -19,7 +20,7 @@ public:
 	Judge();
 	~Judge();
 
-	void JudgeResult(const int& p1hand, const int& p2hand);
+	void JudgeResult(const int& rSkill, const int& lSkill);
 
 	void Draw();
 

@@ -38,11 +38,6 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 {
 	for (int i = 0; i < _players.size(); ++i)
 	{
-		if (p.IsTrigger(i, "DECIDE"))
-		{
-			_updater = &GamePlayingScene::FadeoutUpdate;
-			break;
-		}
 		if (p.IsTrigger(i, "PAUSE"))
 		{
 			SceneManager::Instance().PushScene(std::make_unique<PauseScene>());
@@ -96,7 +91,7 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 
 		for (auto player : _players)
 		{
-			player->SetHand();
+			player->SetSkill();
 		}
 
 		if (_hud->AdvanceTheTurn())
@@ -134,19 +129,18 @@ void GamePlayingScene::GameDraw()
 
 void GamePlayingScene::ResultDraw()
 {
-	for (auto player : _players)
+	/*for (auto player : _players)
 	{
 		player->Draw();
-	}
+	}*/
 	_judge->Draw();
 }
 
 GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus)
 {
-	for (int i = 0; i < _players.size(); ++i)
-	{
-		_players[i].reset(new Player(Vector2<int>(150 * (i + 1), 150), initStatus[i]));
-	}
+	_players[0].reset(new Player(Vector2<int>(_scrSize.x / 4, 150), initStatus[0]));
+	_players[1].reset(new Player(Vector2<int>(_scrSize.x / 4 * 3, 150), initStatus[1]));
+	
 	_judge.reset(new Judge());
 	_hud.reset(new Hud());
 
@@ -166,7 +160,12 @@ void GamePlayingScene::Update(const Peripheral& p)
 void GamePlayingScene::Draw()
 {
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0xffffff, true);
 
+	for (auto& player : _players)
+	{
+		player->Draw();
+	}
 	_hud->Draw(_players[0]->GetPlayerData(), _players[1]->GetPlayerData());
 
 	(this->*_drawer)();

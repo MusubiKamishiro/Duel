@@ -18,6 +18,10 @@ private:
 	void DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const;
 	Vector2<int> _maxHpLenght;
 
+	// ‘Š«•\‚Ì•`‰æ
+	void DrawType();
+	int _typeImg;
+
 	// ƒvƒŒƒCƒ„[‚Ì‹Z‚Ì•`‰æ
 	void DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const;
 

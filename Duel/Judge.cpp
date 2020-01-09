@@ -10,9 +10,9 @@ Judge::~Judge()
 {
 }
 
-void Judge::JudgeResult(const int& p1hand, const int& p2hand)
+void Judge::JudgeResult(const int& rSkill, const int& lSkill)
 {
-	_result = static_cast<Result>((p2hand - p1hand + 3) % 3);
+	_result = static_cast<Result>((lSkill - rSkill + 3) % 3);
 }
 
 void Judge::Draw()
