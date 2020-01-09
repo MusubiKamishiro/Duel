@@ -3,6 +3,8 @@
 #include <string>
 #include "Game.h"
 #include "TrimString.h"
+
+#include "Loader/FileSystem.h"
 #include "Loader/ImageLoader.h"
 
 
@@ -19,7 +21,7 @@ Hud::Hud()
 
 	_trimString = (std::make_unique<TrimString>());
 
-	_typeImg = ImageLoader::Instance().Load("img/type.png");
+	_typeImg = Game::Instance().GetFileSystem()->Load("img/type.png");
 }
 
 Hud::~Hud()

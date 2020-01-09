@@ -2,11 +2,12 @@
 #include <DxLib.h>
 #include "Peripheral.h"
 #include "Scene/SceneManager.h"
+#include "Loader/FileSystem.h"
 #include "FrameFixity.h"
 //#include "resource.h"
 
 
-Game::Game() : ScreenSize(1440, 810)
+Game::Game() : _screenSize(1440, 810)
 {
 }
 
@@ -35,7 +36,7 @@ void Game::Initialize()
 	}
 #endif // DEBUG
 
-	DxLib::SetGraphMode(ScreenSize.x, ScreenSize.y, 32);
+	DxLib::SetGraphMode(_screenSize.x, _screenSize.y, 32);
 
 	if (DxLib::DxLib_Init() == -1)
 	{
@@ -50,32 +51,33 @@ void Game::Initialize()
 	AddFontResourceEx("fonts/PixelMplus10-Regular.ttf", FR_PRIVATE, nullptr);
 	DxLib::ChangeFont("PixelMplus10", DX_CHARSET_DEFAULT);
 
-	peripheral.reset(new Peripheral());
+	_peripheral.reset(new Peripheral());
+	_fileSystem.reset(new FileSystem());
 }
 
 void Game::InitPeripheral()
 {
 	// キーボード
-	peripheral->AddCommand(0, "ROCK",		0, KEY_INPUT_A);
-	peripheral->AddCommand(0, "SCISSORS",	0, KEY_INPUT_S);
-	peripheral->AddCommand(0, "PAPER",		0, KEY_INPUT_D);
-	peripheral->AddCommand(0, "DECIDE",		0, KEY_INPUT_Z);
-	peripheral->AddCommand(0, "PAUSE",		0, KEY_INPUT_W);
+	_peripheral->AddCommand(0, "ROCK",		0, KEY_INPUT_A);
+	_peripheral->AddCommand(0, "SCISSORS",	0, KEY_INPUT_S);
+	_peripheral->AddCommand(0, "PAPER",		0, KEY_INPUT_D);
+	_peripheral->AddCommand(0, "DECIDE",	0, KEY_INPUT_Z);
+	_peripheral->AddCommand(0, "PAUSE",		0, KEY_INPUT_W);
 	
-	peripheral->AddCommand(1, "ROCK",		0, KEY_INPUT_J);
-	peripheral->AddCommand(1, "SCISSORS",	0, KEY_INPUT_K);
-	peripheral->AddCommand(1, "PAPER",		0, KEY_INPUT_L);
-	peripheral->AddCommand(1, "DECIDE",		0, KEY_INPUT_Z);
-	peripheral->AddCommand(1, "PAUSE",		0, KEY_INPUT_W);
+	_peripheral->AddCommand(1, "ROCK",		0, KEY_INPUT_J);
+	_peripheral->AddCommand(1, "SCISSORS",	0, KEY_INPUT_K);
+	_peripheral->AddCommand(1, "PAPER",		0, KEY_INPUT_L);
+	_peripheral->AddCommand(1, "DECIDE",	0, KEY_INPUT_Z);
+	_peripheral->AddCommand(1, "PAUSE",		0, KEY_INPUT_W);
 	
 	// パッド
 	for (int i = 0; i < 2; ++i)
 	{
-		peripheral->AddCommand(i, "ROCK",		i + 1, PAD_INPUT_2);
-		peripheral->AddCommand(i, "SCISSORS",	i + 1, PAD_INPUT_3);
-		peripheral->AddCommand(i, "PAPER",		i + 1, PAD_INPUT_4);
-		peripheral->AddCommand(i, "DECIDE",		i + 1, PAD_INPUT_1);
-		peripheral->AddCommand(i, "PAUSE",		i + 1, PAD_INPUT_8);
+		_peripheral->AddCommand(i, "ROCK",		i + 1, PAD_INPUT_2);
+		_peripheral->AddCommand(i, "SCISSORS",	i + 1, PAD_INPUT_3);
+		_peripheral->AddCommand(i, "PAPER",		i + 1, PAD_INPUT_4);
+		_peripheral->AddCommand(i, "DECIDE",	i + 1, PAD_INPUT_1);
+		_peripheral->AddCommand(i, "PAUSE",		i + 1, PAD_INPUT_8);
 	}
 }
 
@@ -106,8 +108,8 @@ void Game::Run()
 				break;
 			}
 
-			peripheral->Update();
-			scenes.Update(*peripheral);
+			_peripheral->Update();
+			scenes.Update(*_peripheral);
 			scenes.Draw();
 
 			DxLib::ScreenFlip();
@@ -122,7 +124,12 @@ void Game::Terminate()
 	DxLib::DxLib_End();
 }
 
+const std::shared_ptr<FileSystem> Game::GetFileSystem() const
+{
+	return _fileSystem;
+}
+
 const Vector2<int>& Game::GetScreenSize()const
 {
-	return ScreenSize;
+	return _screenSize;
 }

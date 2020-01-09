@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include "Geometry.h"
 
+class FileSystem;
 class Peripheral;
 
 // ゲーム全体を制御するクラス
@@ -13,8 +14,9 @@ private:
 	Game(const Game&);				// コピー禁止
 	void operator=(const Game&);	// 代入禁止
 
-	const Vector2<int> ScreenSize;
-	std::unique_ptr<Peripheral> peripheral;
+	const Vector2<int> _screenSize;
+	std::unique_ptr<Peripheral> _peripheral;
+	std::shared_ptr<FileSystem> _fileSystem;
 
 public:
 	static Game& Instance()
@@ -37,6 +39,8 @@ public:
 
 	// ライブラリの後処理など
 	void Terminate();
+
+	const std::shared_ptr <FileSystem> GetFileSystem()const;
 
 	const Vector2<int>& GetScreenSize()const;
 };

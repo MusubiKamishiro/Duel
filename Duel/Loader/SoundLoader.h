@@ -3,14 +3,14 @@
 #include <map>
 
 
-class ImageLoader : public Loader
+class SoundLoader : public Loader
 {
 private:
 	std::map<std::string, int> table;
 
 public:
-	ImageLoader();
-	~ImageLoader();
+	SoundLoader();
+	~SoundLoader();
 
 	int Load(const std::string& path)override final;
 

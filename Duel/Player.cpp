@@ -1,6 +1,9 @@
 #include "Player.h"
 #include <DxLib.h>
 #include "Peripheral.h"
+#include "Game.h"
+
+#include "Loader/FileSystem.h"
 #include "Loader/ImageLoader.h"
 
 
@@ -19,7 +22,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 			_playerData.initSkillCount[i] = 2;
 		}
 	}
-	_playerData.img = ImageLoader::Instance().Load("img/char" + std::to_string(initStatus.charNum) + ".png");
+	_playerData.img = Game::Instance().GetFileSystem()->Load("img/char" + std::to_string(initStatus.charNum) + ".png");
 	_playerData.maxHp = initStatus.hp;
 	_playerData.hp = _playerData.maxHp;
 	_playerData.power = initStatus.power;
