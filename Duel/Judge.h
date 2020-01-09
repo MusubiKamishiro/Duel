@@ -1,5 +1,8 @@
 #pragma once
+#include <memory>
 #include <string>
+
+class TrimString;
 
 // ‚¶‚á‚ñ‚¯‚ñ‚ÌŒ‹‰Ê
 enum class Result
@@ -15,6 +18,8 @@ class Judge
 {
 private:
 	Result _result;
+
+	std::unique_ptr<TrimString> _trimString;
 
 public:
 	Judge();

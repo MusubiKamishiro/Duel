@@ -5,6 +5,7 @@
 
 #include "Loader/FileSystem.h"
 #include "Loader/ImageLoader.h"
+#include "Loader/SoundLoader.h"
 
 
 Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
@@ -31,6 +32,10 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 	_playerData.skill = Skill::MAX;
 	_playerData.decideFlag = false;
 	_pos = pos;
+
+	_frameImg = Game::Instance().GetFileSystem()->Load("img/frame.png");
+	_decideSound = Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
+	_damageSound = Game::Instance().GetFileSystem()->Load("sound/se/damage.mp3");
 }
 
 Player::~Player()
@@ -43,6 +48,8 @@ void Player::Check(const Skill& skill)
 	{
 		_playerData.skill = skill;
 		_playerData.decideFlag = true;
+
+		DxLib::PlaySoundMem(_decideSound, DX_PLAYTYPE_BACK);
 	}
 }
 
@@ -77,12 +84,14 @@ void Player::Draw()
 		DxLib::DrawString(_pos.x, _pos.y, "ÉpÅ[", 0xff0000);
 	}*/
 
-	//DxLib::DrawGraph(_pos.x, _pos.y, _playerData.img, true);
 	DxLib::DrawExtendGraph(_pos.x - 450/2, _pos.y, _pos.x + 450/2, _pos.y + 600, _playerData.img, true);
+	DxLib::DrawExtendGraph(_pos.x - 500/2, _pos.y - 50, _pos.x + 500/2, _pos.y + 600, _frameImg, true);
 }
 
 void Player::Damage(const int& power)
 {
+	DxLib::PlaySoundMem(_damageSound, DX_PLAYTYPE_BACK);
+
 	_playerData.hp -= power;
 	if (_playerData.hp < 0)
 	{

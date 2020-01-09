@@ -3,13 +3,18 @@
 #include "SelectScene.h"
 #include "SceneManager.h"
 #include "../Peripheral.h"
+#include "../Game.h"
+
+#include "../Loader/FileSystem.h"
+#include "../Loader/ImageLoader.h"
+#include "../Loader/SoundLoader.h"
 
 void TitleScene::FadeinUpdate(const Peripheral & p)
 {
 	if (_pal >= 255)
 	{
 		_pal = 255;
-		updater = &TitleScene::WaitUpdate;
+		_updater = &TitleScene::WaitUpdate;
 	}
 	else
 	{
@@ -21,6 +26,7 @@ void TitleScene::FadeoutUpdate(const Peripheral & p)
 {
 	if (_pal <= 0)
 	{
+		DxLib::StopSoundMem(_bgm);
 		SceneManager::Instance().ChangeScene(std::make_unique <SelectScene>());
 	}
 	else
@@ -33,15 +39,16 @@ void TitleScene::WaitUpdate(const Peripheral & p)
 {
 	if (p.IsTrigger(0, "DECIDE"))
 	{
-		updater = &TitleScene::FadeoutUpdate;
+		_updater = &TitleScene::FadeoutUpdate;
 	}
 }
 
 TitleScene::TitleScene()
 {
 	_pal = 0;
+	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/title.mp3");
 
-	updater = &TitleScene::FadeinUpdate;
+	_updater = &TitleScene::FadeinUpdate;
 }
 
 
@@ -51,7 +58,12 @@ TitleScene::~TitleScene()
 
 void TitleScene::Update(const Peripheral& p)
 {
-	(this->*updater)(p);
+	if (!DxLib::CheckSoundMem(_bgm))
+	{
+		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_BACK);
+	}
+
+	(this->*_updater)(p);
 }
 
 void TitleScene::Draw()

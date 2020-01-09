@@ -30,6 +30,9 @@ private:
 	// ‰æ–Ê‚Ì’†‰›
 	Vector2<int> _center;
 
+	// ‹Z‚ÌF(‚Ì‚¿‚É‰æ‘œ‚Åˆµ‚¢‚½‚¢)
+	std::array<int, 3> _typeColor;
+
 	// ã‚ÌHud‚Ìc•
 	int _topHudHeight;
 	// ã‚ÌHud‚Ì‰•

@@ -5,8 +5,13 @@
 #include "PauseScene.h"
 #include "../Peripheral.h"
 
+#include "../Game.h"
 #include "../Judge.h"
 #include "../Hud.h"
+
+#include "../Loader/FileSystem.h"
+#include "../Loader/ImageLoader.h"
+#include "../Loader/SoundLoader.h"
 
 
 void GamePlayingScene::FadeinUpdate(const Peripheral & p)
@@ -26,6 +31,7 @@ void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 {
 	if (_pal <= 0)
 	{
+		DxLib::StopSoundMem(_bgm);
 		SceneManager::Instance().ChangeScene(std::make_unique<ResultScene>());
 	}
 	else
@@ -129,10 +135,6 @@ void GamePlayingScene::GameDraw()
 
 void GamePlayingScene::ResultDraw()
 {
-	/*for (auto player : _players)
-	{
-		player->Draw();
-	}*/
 	_judge->Draw();
 }
 
@@ -144,6 +146,9 @@ GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus)
 	_judge.reset(new Judge());
 	_hud.reset(new Hud());
 
+	_count = 0;
+	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/game.mp3");
+
 	_updater = &GamePlayingScene::FadeinUpdate;
 	_drawer  = &GamePlayingScene::RoundDraw;
 }
@@ -154,6 +159,11 @@ GamePlayingScene::~GamePlayingScene()
 
 void GamePlayingScene::Update(const Peripheral& p)
 {
+	if (!DxLib::CheckSoundMem(_bgm))
+	{
+		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_BACK);
+	}
+
 	(this->*_updater)(p);
 }
 

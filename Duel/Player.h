@@ -44,12 +44,16 @@ struct PlayerData
 class Player
 {
 	PlayerData _playerData;
-
+	int _frameImg;
 
 	Vector2<int> _pos;
 	
 	// ‹Z‚ªŽg—p‰Â”\‚©
 	void Check(const Skill& skill);
+
+	// ‰¹ŠÖŒW
+	int _decideSound;
+	int _damageSound;
 
 public:
 	Player(const Vector2<int>& pos, const InitStatus initStatus);

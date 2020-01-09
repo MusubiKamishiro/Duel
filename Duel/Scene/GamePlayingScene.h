@@ -27,7 +27,9 @@ private:
 	std::unique_ptr<Judge> _judge;
 	std::unique_ptr<Hud> _hud;
 
-	int _count = 0;	
+	int _count;	
+
+	int _bgm;
 
 public:
 	GamePlayingScene(const std::array<InitStatus, 2>& initStatus);

@@ -4,6 +4,12 @@
 #include "TitleScene.h"
 #include "../Peripheral.h"
 
+#include "../Game.h"
+#include "../Loader/FileSystem.h"
+#include "../Loader/ImageLoader.h"
+#include "../Loader/SoundLoader.h"
+
+
 void ResultScene::FadeinUpdate(const Peripheral & p)
 {
 	if (_pal >= 255)
@@ -21,6 +27,7 @@ void ResultScene::FadeoutUpdate(const Peripheral & p)
 {
 	if (_pal <= 0)
 	{
+		DxLib::StopSoundMem(_bgm);
 		SceneManager::Instance().ChangeScene(std::make_unique <TitleScene>());
 	}
 	else
@@ -41,6 +48,7 @@ void ResultScene::WaitUpdate(const Peripheral & p)
 ResultScene::ResultScene()
 {
 	_pal = 0;
+	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/result.mp3");
 	updater = &ResultScene::FadeinUpdate;
 }
 
@@ -51,6 +59,11 @@ ResultScene::~ResultScene()
 
 void ResultScene::Update(const Peripheral& p)
 {
+	if (!DxLib::CheckSoundMem(_bgm))
+	{
+		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_BACK);
+	}
+
 	(this->*updater)(p);
 }
 

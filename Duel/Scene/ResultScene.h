@@ -10,6 +10,8 @@ private:
 	void FadeoutUpdate(const Peripheral& p);
 	void WaitUpdate(const Peripheral& p);
 
+	int _bgm;
+
 public:
 	ResultScene();
 	~ResultScene();
