@@ -18,15 +18,19 @@ private:
 
 	void ChangeCharacter(const Peripheral& p, const int& num);
 
+	std::array<InitStatus, 2> _initStatus;
+	std::unique_ptr<TrimString> _trimString;
+
+	int _bgm;
+	int _decideSE;
+	int _cancelSE;
+	int _selSE;
+
 	// キャラクターのID用(enum classで作ってもいいかも)
 	const int _charID;
 
 	/// キャラクター枠のデバッグ描画用
 	const Vector2<int> _boxSize;
-
-	// 
-	std::array<InitStatus, 2> _initStatus;
-	std::unique_ptr<TrimString> _trimString;
 
 public:
 	SelectScene();

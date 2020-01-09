@@ -15,6 +15,7 @@ private:
 	void WaitUpdate(const Peripheral& p);
 
 	int _bgm;
+	int _decideSE;
 
 	std::unique_ptr<TrimString> _trimString;
 

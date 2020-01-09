@@ -28,6 +28,7 @@ void SelectScene::FadeoutUpdate(const Peripheral& p)
 {
 	if (_pal <= 0)
 	{
+		DxLib::StopSoundMem(_bgm);
 		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>(_initStatus));
 	}
 	else
@@ -65,6 +66,7 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 	/// キャラクター選択をキャンセル
 	if (p.IsTrigger(num, "CANCEL"))
 	{
+		DxLib::PlaySoundMem(_cancelSE, DX_PLAYTYPE_BACK);
 		_isDecide[num] = false;
 	}
 
@@ -73,6 +75,7 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 		return;
 	}
 
+	int id = _initStatus[num].charNum;
 	/// キャラクターのIDを変更している
 	if (p.IsTrigger(num, "RIGHT"))
 	{
@@ -90,9 +93,16 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 	{
 		_initStatus[num].charNum += ((_initStatus[num].charNum - 1) / (_charID / 2) <= 0 ? _charID / 2 : 0);
 	}
+	else{}
+
+	if (id != _initStatus[num].charNum)
+	{
+		DxLib::PlaySoundMem(_selSE, DX_PLAYTYPE_BACK);
+	}
 
 	if (p.IsTrigger(num, "DECIDE"))
 	{
+		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
 		_isDecide[num] = true;
 		_initStatus[num].charNum -= 1;
 		_initStatus[num].hp = _charData[_initStatus[num].charNum][static_cast<int>(charData::HP)];
@@ -112,6 +122,11 @@ SelectScene::SelectScene() : _charID(10), _boxSize(150, 150)
 	_pal = 0;
 	_trimString = std::make_unique<TrimString>();
 
+	_bgm		= Game::Instance().GetFileSystem()->Load("sound/bgm/select.mp3");
+	_decideSE	= Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
+	_cancelSE	= Game::Instance().GetFileSystem()->Load("sound/se/cancel.mp3");
+	_selSE		= Game::Instance().GetFileSystem()->Load("sound/se/cursor.mp3");
+
 	/// キャラクターのID指定(とりあえず直値)　◆
 	_initStatus[0].charNum = 1;
 	_initStatus[1].charNum = 5;
@@ -128,6 +143,11 @@ SelectScene::~SelectScene()
 
 void SelectScene::Update(const Peripheral& p)
 {
+	if (!DxLib::CheckSoundMem(_bgm))
+	{
+		DxLib::PlaySoundMem(_bgm, DX_PLAYTYPE_LOOP);
+	}
+
 	(this->*updater)(p);
 }
 
@@ -135,8 +155,11 @@ void SelectScene::Draw()
 {
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, _pal);
 
+	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0xffffff, true);
+
 	_trimString->ChangeFontSize(50);
-	DxLib::DrawString(_trimString->GetStringCenterPosx("キャラクターを選んでね！"), _scrSize.y / 10, "キャラクターを選んでね！", 0xffffff);
+	DxLib::DrawString(_trimString->GetStringCenterPosx("キャラクターを選んでね！"), 
+					  _scrSize.y / 10, "キャラクターを選んでね！", 0x000000);
 
 	/// 画像読み込み用ID
 	int imageID = 0;
@@ -190,28 +213,28 @@ void SelectScene::Draw()
 		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2));
 
 		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
 
 		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::ROCK)] + " : " +
 				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK1)]);
 		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 2;
 
 		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
 
 		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::SCISSORS)] + " : " +
 				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK2)]);
 		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 3;
 
 		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
 
 		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::PAPER)] + " : " +
 				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK3)]);
 		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 4;
 
 		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
 
 		color = (i == 0 ? 0xff2055 : 0x3388ff);
 		DxLib::DrawBoxAA(points[0].x - _boxSize.x * 3 / 4, points[0].y, points[1].x - _boxSize.x / 4, points[1].y, color, false, 10.f);

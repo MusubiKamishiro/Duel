@@ -40,6 +40,7 @@ void TitleScene::WaitUpdate(const Peripheral & p)
 {
 	if (p.IsTrigger(0, "DECIDE"))
 	{
+		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
 		_updater = &TitleScene::FadeoutUpdate;
 	}
 }
@@ -48,6 +49,7 @@ TitleScene::TitleScene()
 {
 	_pal = 0;
 	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/title.mp3");
+	_decideSE = Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
 	_trimString = std::make_unique<TrimString>();
 
 	_updater = &TitleScene::FadeinUpdate;

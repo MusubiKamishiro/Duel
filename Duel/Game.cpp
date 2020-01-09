@@ -74,9 +74,9 @@ void Game::InitPeripheral()
 	_peripheral->AddCommand(1, "DECIDE",	0, KEY_INPUT_Z);
 	_peripheral->AddCommand(1, "PAUSE",		0, KEY_INPUT_W);
 	_peripheral->AddCommand(1, "UP",		0, KEY_INPUT_F);
-	_peripheral->AddCommand(1, "RIGHT",		0, KEY_INPUT_X);
+	_peripheral->AddCommand(1, "RIGHT",		0, KEY_INPUT_V);
 	_peripheral->AddCommand(1, "DOWN",		0, KEY_INPUT_C);
-	_peripheral->AddCommand(1, "LEFT",		0, KEY_INPUT_V);
+	_peripheral->AddCommand(1, "LEFT",		0, KEY_INPUT_X);
 	
 	// ƒpƒbƒh
 	for (int i = 0; i < 2; ++i)
