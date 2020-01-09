@@ -16,6 +16,8 @@ private:
 	void FadeoutUpdate(const Peripheral& p);
 	void WaitUpdate(const Peripheral& p);
 
+	void ChangeCharacter(const Peripheral& p, const int& num);
+
 	// キャラクターのID用(enum classで作ってもいいかも)
 	const int _charID;
 
@@ -32,5 +34,7 @@ public:
 
 	void Update(const Peripheral& p);
 	void Draw();
+
+	std::array<bool, 2> _isDecide;
 };
 
