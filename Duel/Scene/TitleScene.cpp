@@ -8,6 +8,7 @@
 #include "../Loader/FileSystem.h"
 #include "../Loader/ImageLoader.h"
 #include "../Loader/SoundLoader.h"
+#include "../TrimString.h"
 
 void TitleScene::FadeinUpdate(const Peripheral & p)
 {
@@ -47,6 +48,7 @@ TitleScene::TitleScene()
 {
 	_pal = 0;
 	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/title.mp3");
+	_trimString = std::make_unique<TrimString>();
 
 	_updater = &TitleScene::FadeinUpdate;
 }
@@ -69,8 +71,11 @@ void TitleScene::Update(const Peripheral& p)
 void TitleScene::Draw()
 {
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, _pal);
+	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0xffffff, true);
 
-	DxLib::DrawString(0, 0, "ƒ^ƒCƒgƒ‹", 0x00ff00);
+	_trimString->ChangeFontSize(150);
+	DxLib::DrawString(_trimString->GetStringCenterPosx("Buttle"), 200, "Buttle", 0x000000);
+	DxLib::DrawString(_trimString->GetStringCenterPosx("Fighters"), _trimString->GetFontSize() + 205, "Fighters", 0x000000);
 
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
 	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0x000000, true);

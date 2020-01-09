@@ -1,7 +1,9 @@
 #pragma once
 #include "Scene.h"
+#include <memory>
 #include "../Geometry.h"
 
+class TrimString;
 
 class TitleScene : public Scene
 {
@@ -13,6 +15,8 @@ private:
 	void WaitUpdate(const Peripheral& p);
 
 	int _bgm;
+
+	std::unique_ptr<TrimString> _trimString;
 
 public:
 	TitleScene();
