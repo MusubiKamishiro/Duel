@@ -26,11 +26,11 @@ void Judge::Draw()
 	}
 	else if (_result == Result::PLAYER1WIN)
 	{
-		DxLib::DrawString(_trimString->GetStringCenterPosx("player1‚ÌŸ‚¿"), 350, "player1‚ÌŸ‚¿", 0xff0000);
+		DxLib::DrawString(_trimString->GetStringCenterPosx("¶‚ÌŸ‚¿"), 350, "¶‚ÌŸ‚¿", 0xff0000);
 	}
 	else if (_result == Result::PLAYER2WIN)
 	{
-		DxLib::DrawString(_trimString->GetStringCenterPosx("player2‚ÌŸ‚¿"), 350, "player2‚ÌŸ‚¿", 0xff0000);
+		DxLib::DrawString(_trimString->GetStringCenterPosx("‰E‚ÌŸ‚¿"), 350, "‰E‚ÌŸ‚¿", 0xff0000);
 	}
 }
 

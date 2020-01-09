@@ -1,5 +1,10 @@
 #pragma once
 #include "Scene.h"
+#include <memory>
+#include "../Judge.h"
+#include "../Geometry.h"
+
+class TrimString;
 
 class ResultScene : public Scene
 {
@@ -10,10 +15,19 @@ private:
 	void FadeoutUpdate(const Peripheral& p);
 	void WaitUpdate(const Peripheral& p);
 
+	Vector2<int> _center;
+
 	int _bgm;
 
+	int _rpImg;
+	int _lpImg;
+	int _frameImg;
+
+	Result _result;
+	std::unique_ptr<TrimString> _trimString;
+
 public:
-	ResultScene();
+	ResultScene(const int& rpImg, const int& lpImg, const Result& result);
 	~ResultScene();
 
 	void Update(const Peripheral& p);
