@@ -32,7 +32,11 @@ void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 	if (_pal <= 0)
 	{
 		Result _result;
-		if (_players[0]->GetPlayerData().hp <= 0)
+		if (_players[0]->GetPlayerData().hp <= 0 && _players[1]->GetPlayerData().hp <= 0)
+		{
+			_result = Result::DRAW;
+		}
+		else if (_players[0]->GetPlayerData().hp <= 0)
 		{
 			_result = Result::PLAYER2WIN;
 		}
@@ -40,12 +44,7 @@ void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 		{
 			_result = Result::PLAYER1WIN;
 		}
-		else if (_players[0]->GetPlayerData().hp <= 0 && _players[1]->GetPlayerData().hp <= 0)
-		{
-			_result = Result::DRAW;
-		}
-
-
+		
 		DxLib::StopSoundMem(_bgm);
 		SceneManager::Instance().ChangeScene(std::make_unique<ResultScene>(_players[0]->GetPlayerData().img, _players[1]->GetPlayerData().img, _result));
 	}
