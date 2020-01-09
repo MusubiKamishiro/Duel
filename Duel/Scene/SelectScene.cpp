@@ -8,6 +8,7 @@
 #include "../Game.h"
 #include "../Loader/FileSystem.h"
 #include "../Loader/ImageLoader.h"
+#include "../CharData.h"
 
 
 void SelectScene::FadeinUpdate(const Peripheral& p)
@@ -27,24 +28,6 @@ void SelectScene::FadeoutUpdate(const Peripheral& p)
 {
 	if (_pal <= 0)
 	{
-		_initStatus[0].hp = 1000;
-		_initStatus[0].power[0] = 250;
-		_initStatus[0].power[1] = 200;
-		_initStatus[0].power[2] = 300;
-		_initStatus[0].skillName[0] = "腹パン";
-		_initStatus[0].skillName[1] = "喉切";
-		_initStatus[0].skillName[2] = "ビンタ";
-		_initStatus[0].goodSkill = 2;
-		_initStatus[1].hp = 1200;
-		_initStatus[1].power[0] = 200;
-		_initStatus[1].power[1] = 1000;
-		_initStatus[1].power[2] = 250;
-		_initStatus[1].skillName[0] = "ふくろだたき";
-		_initStatus[1].skillName[1] = "ハサミギロチン";
-		_initStatus[1].skillName[2] = "はっけい";
-		_initStatus[1].goodSkill = 1;
-		
-
 		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>(_initStatus));
 	}
 	else
@@ -105,6 +88,16 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 	if (p.IsTrigger(num, "DECIDE"))
 	{
 		_isDecide[num] = true;
+		_initStatus[num].charNum -= 1;
+		_initStatus[num].hp = _charData[_initStatus[num].charNum][static_cast<int>(charData::HP)];
+		_initStatus[num].power[0]	  = _charData[_initStatus[num].charNum][static_cast<int>(charData::ATK1)];
+		_initStatus[num].power[1]	  = _charData[_initStatus[num].charNum][static_cast<int>(charData::ATK2)];
+		_initStatus[num].power[2]	  = _charData[_initStatus[num].charNum][static_cast<int>(charData::ATK3)];
+		_initStatus[num].skillName[0] = _skName[_initStatus[num].charNum][static_cast<int>(Skill::ROCK)];
+		_initStatus[num].skillName[1] = _skName[_initStatus[num].charNum][static_cast<int>(Skill::SCISSORS)];
+		_initStatus[num].skillName[2] = _skName[_initStatus[num].charNum][static_cast<int>(Skill::PAPER)];
+		_initStatus[num].goodSkill	  = _goodSk[_initStatus[num].charNum];
+		_initStatus[num].charNum += 1;
 	}
 
 }
@@ -169,10 +162,10 @@ void SelectScene::Draw()
 		imageID = Game::Instance().GetFileSystem()->Load("img/icon" + std::to_string(_initStatus[i].charNum) + ".png");
 
 		/// 選択したキャラクターアイコンの描画
-		points[0] = Vector2<int>(_scrSize.x / 2 + (i == 0 ? -boxHalfWidth : boxHalfWidth),
+		points[0] = Vector2<int>(_scrSize.x / 2 + (i == 0 ? -_scrSize.x / 3 : _scrSize.x / 3),
 								 _scrSize.y / 6 - _boxSize.y / 2);
 
-		points[1] = Vector2<int>(_scrSize.x / 2 + (i == 0 ? -boxHalfWidth : boxHalfWidth) + _boxSize.x,
+		points[1] = Vector2<int>(_scrSize.x / 2 + (i == 0 ? -_scrSize.x / 3 : _scrSize.x / 3) + _boxSize.x,
 								 _scrSize.y / 6 + _boxSize.y);
 		DxLib::DrawRotaGraph(points[0].x , points[0].y + _boxSize.x * 3 / 4, 
 							 1.5, 0, imageID, true);

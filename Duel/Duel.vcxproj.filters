@@ -93,6 +93,9 @@
     <ClCompile Include="Loader\SoundLoader.cpp">
       <Filter>Loader\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="CharData.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\GamePlayingScene.h">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="Loader\SoundLoader.h">
       <Filter>Loader\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CharData.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
