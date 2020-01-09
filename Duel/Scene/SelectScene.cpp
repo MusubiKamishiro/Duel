@@ -133,7 +133,10 @@ void SelectScene::Draw()
 	_trimString->ChangeFontSize(50);
 	DxLib::DrawString(_trimString->GetStringCenterPosx("キャラクターを選んでね！"), _scrSize.y / 10, "キャラクターを選んでね！", 0xffffff);
 
+	/// 画像読み込み用ID
 	int imageID = 0;
+
+	/// 位置調整用
 	int boxHalfWidth = (_charID / 2) * (_boxSize.x / 2);
 	Vector2<int> points[2];
 
@@ -145,10 +148,10 @@ void SelectScene::Draw()
 		/// キャラセレクトのボックス描画
 
 		points[0] = Vector2<int>(_scrSize.x / 2 - boxHalfWidth + _boxSize.x * (i % (_charID / 2)),
-								 _scrSize.y / 2 + _boxSize.y * (i / (_charID / 2)));
+								 _scrSize.y * 3 / 5 + _boxSize.y * (i / (_charID / 2)));
 
 		points[1] = Vector2<int>(_scrSize.x / 2 - boxHalfWidth + _boxSize.x * (i % (_charID / 2) + 1),
-								 _scrSize.y / 2 + _boxSize.y * (i / (_charID / 2) + 1));
+								 _scrSize.y * 3 / 5 + _boxSize.y * (i / (_charID / 2) + 1));
 
 		DxLib::DrawGraph(points[0].x, points[0].y, imageID, true);
 		DxLib::DrawBox(points[0].x, points[0].y, points[1].x, points[1].y, 0x22cc00, false);
@@ -163,24 +166,24 @@ void SelectScene::Draw()
 
 		/// 選択したキャラクターアイコンの描画
 		points[0] = Vector2<int>(_scrSize.x / 2 + (i == 0 ? -_scrSize.x / 3 : _scrSize.x / 3),
-								 _scrSize.y / 6 - _boxSize.y / 2);
+								 _scrSize.y / 6 - _boxSize.y / 2 - (_boxSize.y / 5));
 
 		points[1] = Vector2<int>(_scrSize.x / 2 + (i == 0 ? -_scrSize.x / 3 : _scrSize.x / 3) + _boxSize.x,
-								 _scrSize.y / 6 + _boxSize.y);
+								 _scrSize.y / 6 + _boxSize.y - (_boxSize.y / 5));
 		DxLib::DrawRotaGraph(points[0].x , points[0].y + _boxSize.x * 3 / 4, 
 							 1.5, 0, imageID, true);
 
 		// DxLib::DrawString(points[0].x, points[0].y)
 
 		color = (i == 0 ? 0xff2055 : 0x3388ff);
-		DxLib::DrawBoxAA(points[0].x, points[0].y, points[1].x, points[1].y, color, false, 10.f);
+		DxLib::DrawBoxAA(points[0].x - _boxSize.x * 3 / 4, points[0].y, points[1].x - _boxSize.x / 4, points[1].y, color, false, 10.f);
 
 		/// 選択しているキャラクターの枠の描画 
 		points[0] = Vector2<int>(_scrSize.x / 2 - boxHalfWidth + _boxSize.x * ((_initStatus[i].charNum - 1) % (_charID / 2)) + (i * 6),
-								 _scrSize.y / 2 + _boxSize.y * ((_initStatus[i].charNum - 1) / (_charID / 2)) + (i * 6));
+								 _scrSize.y * 3 / 5 + _boxSize.y * ((_initStatus[i].charNum - 1) / (_charID / 2)) + (i * 6));
 
 		points[1] = Vector2<int>(_scrSize.x / 2 - boxHalfWidth + _boxSize.x * ((_initStatus[i].charNum - 1) % (_charID / 2) + 1) - (i * 6),
-								 _scrSize.y / 2 + _boxSize.y * ((_initStatus[i].charNum - 1) / (_charID / 2) + 1) - (i * 6));
+								 _scrSize.y * 3 / 5 + _boxSize.y * ((_initStatus[i].charNum - 1) / (_charID / 2) + 1) - (i * 6));
 		DxLib::DrawBoxAA(points[0].x, points[0].y, points[1].x, points[1].y, color, false, 8.f);
 	}
 
