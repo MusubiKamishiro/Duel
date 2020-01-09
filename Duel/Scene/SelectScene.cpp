@@ -62,6 +62,12 @@ void SelectScene::WaitUpdate(const Peripheral& p)
 
 void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 {
+	/// キャラクター選択をキャンセル
+	if (p.IsTrigger(num, "CANCEL"))
+	{
+		_isDecide[num] = false;
+	}
+
 	if (_isDecide[num])
 	{
 		return;
@@ -99,7 +105,6 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 		_initStatus[num].goodSkill	  = _goodSk[_initStatus[num].charNum];
 		_initStatus[num].charNum += 1;
 	}
-
 }
 
 SelectScene::SelectScene() : _charID(10), _boxSize(150, 150)
@@ -158,6 +163,11 @@ void SelectScene::Draw()
 	}
 	/// プレイヤー枠の色
 	int color;	
+	/// ステータス文字の保存用
+	std::string status;
+
+	int strX;
+	int strSpace;
 		/// キャラクターアイコンの描画
 	for (int i = 0; i < _initStatus.size(); ++i)
 	{
@@ -173,7 +183,35 @@ void SelectScene::Draw()
 		DxLib::DrawRotaGraph(points[0].x , points[0].y + _boxSize.x * 3 / 4, 
 							 1.5, 0, imageID, true);
 
-		// DxLib::DrawString(points[0].x, points[0].y)
+		/// 文字の表示を行っている　◆
+		_trimString->ChangeFontSize(25);
+		status = "HP : " + std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::HP)]);
+		strX = (i == 0 ? _boxSize.x : -_boxSize.x * 2);
+		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2));
+
+		DxLib::DrawString(points[0].x + strX,
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
+
+		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::ROCK)] + " : " +
+				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK1)]);
+		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 2;
+
+		DxLib::DrawString(points[0].x + strX,
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
+
+		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::SCISSORS)] + " : " +
+				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK2)]);
+		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 3;
+
+		DxLib::DrawString(points[0].x + strX,
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
+
+		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::PAPER)] + " : " +
+				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK3)]);
+		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 4;
+
+		DxLib::DrawString(points[0].x + strX,
+						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0xffffff);
 
 		color = (i == 0 ? 0xff2055 : 0x3388ff);
 		DxLib::DrawBoxAA(points[0].x - _boxSize.x * 3 / 4, points[0].y, points[1].x - _boxSize.x / 4, points[1].y, color, false, 10.f);
