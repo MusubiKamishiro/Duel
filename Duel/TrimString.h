@@ -19,7 +19,7 @@ public:
 	int GetStringCenterPosx(const std::string& name)const;
 
 	// 引数の文字列を右詰めにする座標を返す
-	int GetStringRightPosx(const std::string& name, const int& rpos);
+	int GetStringRightPosx(const std::string& name, const int& rpos)const;
 
 	// フォントサイズの変更
 	void ChangeFontSize(const int& fontSize);
