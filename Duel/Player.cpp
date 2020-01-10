@@ -29,6 +29,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 	_playerData.hp = _playerData.maxHp;
 	_playerData.power = initStatus.power;
 	_playerData.skillName = initStatus.skillName;
+	_playerData.goodSkill = initStatus.goodSkill;
 
 	_playerData.skill = Skill::MAX;
 	_playerData.decideFlag = false;

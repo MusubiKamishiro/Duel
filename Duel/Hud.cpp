@@ -84,6 +84,10 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			DxLib::DrawString(_trimString->GetStringRightPosx(rPlayerData.skillName[i].c_str(), _center.x - 180), _ssize.y - 175 + (i * (fontSize + 15)), rPlayerData.skillName[i].c_str(), 0x00ff00);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 			DxLib::DrawCircle(_center.x - 150, _ssize.y - 155 + (i * (fontSize + 15)), 20, _typeColor[i]);
+			if (i == rPlayerData.goodSkill)
+			{
+				DxLib::DrawString(_center.x - 150 - 20 + 2, _ssize.y - 155 + (i * (fontSize + 15)) - 20 - 2, "Åô", 0x000000);
+			}
 		}
 		if (lPlayerData.skillCount[i] > 0)
 		{
@@ -94,6 +98,10 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			DxLib::DrawString(_center.x + 180, _ssize.y - 175 + (i * (fontSize + 15)), lPlayerData.skillName[i].c_str(), 0x00ff00);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 			DxLib::DrawCircle(_center.x + 150, _ssize.y - 155 + (i * (fontSize + 15)), 20, _typeColor[i]);
+			if (i == lPlayerData.goodSkill)
+			{
+				DxLib::DrawString(_center.x + 150 - 20 + 2, _ssize.y - 155 + (i * (fontSize + 15)) - 20 - 2, "Åô", 0x000000);
+			}
 		}
 	}
 }
