@@ -53,7 +53,7 @@ ResultScene::ResultScene(const int& rpImg, const int& lpImg, const Result& resul
 	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/result.mp3");
 	_rpImg = rpImg;
 	_lpImg = lpImg;
-	_frameImg = Game::Instance().GetFileSystem()->Load("img/frame.png");
+	_frameImg = Game::Instance().GetFileSystem()->Load("img/frame2.png");
 	_result = result;
 
 	_trimString = std::make_unique<TrimString>();
@@ -87,10 +87,10 @@ void ResultScene::Draw()
 		DxLib::DrawString(_trimString->GetStringCenterPosx("ˆø‚«•ª‚¯"), 20, "ˆø‚«•ª‚¯", 0xff0000);
 
 		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75, _center.y * 3 + 150, 0.25, DX_PI_F / 2, _lpImg, true);
-		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75 + 16, _center.y * 3 + 151, 0.135, DX_PI_F / 2, _frameImg, true);
+		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75, _center.y * 3 + 150, 0.23, DX_PI_F / 2, _frameImg, true);
 
 		DxLib::DrawRotaGraph(_center.x / 2 - 75, _center.y * 3 + 150, 0.25, DX_PI_F / 2 * 3, _rpImg, true);
-		DxLib::DrawRotaGraph(_center.x / 2 - 75 - 16, _center.y * 3 + 151, 0.135, DX_PI_F / 2 * 3, _frameImg, true);
+		DxLib::DrawRotaGraph(_center.x / 2 - 75, _center.y * 3 + 150, 0.23, DX_PI_F / 2 * 3, _frameImg, true);
 	}
 	else if (_result == Result::PLAYER1WIN)
 	{
@@ -100,7 +100,7 @@ void ResultScene::Draw()
 		DxLib::DrawExtendGraph(_center.x - 500 / 2, _center.y - 50, _center.x + 500 / 2, _center.y + 620, _frameImg, true);
 
 		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75, _center.y * 3 + 150, 0.25, DX_PI_F / 2, _lpImg, true);
-		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75 + 16, _center.y * 3 + 151, 0.135, DX_PI_F / 2, _frameImg, true);
+		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75, _center.y * 3 + 150, 0.23, DX_PI_F / 2, _frameImg, true);
 	}
 	else if (_result == Result::PLAYER2WIN)
 	{
@@ -110,7 +110,7 @@ void ResultScene::Draw()
 		DxLib::DrawExtendGraph(_center.x - 500 / 2, _center.y - 50, _center.x + 500 / 2, _center.y + 620, _frameImg, true);
 
 		DxLib::DrawRotaGraph(_center.x / 2 - 75, _center.y * 3 + 150, 0.25, DX_PI_F / 2 * 3, _rpImg, true);
-		DxLib::DrawRotaGraph(_center.x / 2 - 75 - 16, _center.y * 3 + 151, 0.135, DX_PI_F / 2 * 3, _frameImg, true);
+		DxLib::DrawRotaGraph(_center.x / 2 - 75, _center.y * 3 + 150, 0.23, DX_PI_F / 2 * 3, _frameImg, true);
 	}
 
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));

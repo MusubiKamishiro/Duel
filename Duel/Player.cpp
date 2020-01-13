@@ -35,7 +35,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 	_playerData.decideFlag = false;
 	_pos = pos;
 
-	_frameImg = Game::Instance().GetFileSystem()->Load("img/frame.png");
+	_frameImg = Game::Instance().GetFileSystem()->Load("img/frame2.png");
 	_decideSound = Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
 	_damageSound = Game::Instance().GetFileSystem()->Load("sound/se/damage.mp3");
 
