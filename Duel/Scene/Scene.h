@@ -12,8 +12,11 @@ protected:
 	int _pal;
 	// 画面のサイズ
 	Vector2<int> _scrSize;
+	// シーン開始からの経過時間
+	
 
 public:
+	int _sceneTime;
 	Scene();
 	virtual ~Scene();
 
@@ -28,5 +31,8 @@ public:
 	virtual void FadeoutUpdate(const Peripheral& p) = 0;
 	// 待機中の処理を書く
 	virtual void WaitUpdate(const Peripheral& p) = 0;
+
+	
+	void AddSceneTime();
 };
 

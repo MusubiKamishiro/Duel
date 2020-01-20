@@ -15,7 +15,7 @@ void TitleScene::FadeinUpdate(const Peripheral & p)
 	if (_pal >= 255)
 	{
 		_pal = 255;
-		_updater = &TitleScene::WaitUpdate;
+		_updater = &TitleScene::StartUpdate;
 	}
 	else
 	{
@@ -38,21 +38,78 @@ void TitleScene::FadeoutUpdate(const Peripheral & p)
 
 void TitleScene::WaitUpdate(const Peripheral & p)
 {
+	
+}
+
+void TitleScene::StartUpdate(const Peripheral& p)
+{
+	if (p.IsTrigger(0, "DECIDE"))
+	{
+		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
+		_updater = &TitleScene::SelectPlayUpdate;
+		_drawer = &TitleScene::SelectPlayDraw;
+	}
+}
+
+void TitleScene::SelectPlayUpdate(const Peripheral& p)
+{
+	if (p.IsTrigger(0, "UP"))
+	{
+		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
+		--_selectCount;
+	}
+	if (p.IsTrigger(0, "DOWN"))
+	{
+		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
+		++_selectCount;
+	}
 	if (p.IsTrigger(0, "DECIDE"))
 	{
 		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
 		_updater = &TitleScene::FadeoutUpdate;
 	}
+
+	if (_selectCount < 0)
+	{
+		_selectCount = 0;
+	}
+	else if (_selectCount > 1)
+	{
+		_selectCount = 1;
+	}
+}
+
+void TitleScene::StartDraw()
+{
+	if ((_sceneTime / 30 % 2) == 0)
+	{
+		_trimString->ChangeFontSize(50);
+		DxLib::DrawString(_trimString->GetStringCenterPosx("press any key"), _trimString->GetFontSize() + 500, "press any key", 0x000000);
+	}
+}
+
+void TitleScene::SelectPlayDraw()
+{
+	_trimString->ChangeFontSize(50);
+	if ((_sceneTime / 30 % 3) != 0)
+	{
+		DxLib::DrawString(500, 500 + _selectCount * 60, "->", 0x000000);
+	}
+	
+	DxLib::DrawString(_trimString->GetStringCenterPosx(" 1P vs CPU"), 500, " 1P vs CPU", 0x000000);
+	DxLib::DrawString(_trimString->GetStringCenterPosx(" 1P vs 2P "), _trimString->GetFontSize() + 500 + 10, " 1P vs 2P ", 0x000000);
 }
 
 TitleScene::TitleScene()
 {
+	_selectCount = 0;
 	_pal = 0;
 	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/title.mp3");
 	_decideSE = Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
 	_trimString = std::make_unique<TrimString>();
 
 	_updater = &TitleScene::FadeinUpdate;
+	_drawer = &TitleScene::StartDraw;
 }
 
 
@@ -76,8 +133,10 @@ void TitleScene::Draw()
 	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0xffffff, true);
 
 	_trimString->ChangeFontSize(150);
-	DxLib::DrawString(_trimString->GetStringCenterPosx("Buttle"), 200, "Buttle", 0x000000);
-	DxLib::DrawString(_trimString->GetStringCenterPosx("Fighters"), _trimString->GetFontSize() + 205, "Fighters", 0x000000);
+	DxLib::DrawString(_trimString->GetStringCenterPosx("Buttle"), 100, "Buttle", 0x000000);
+	DxLib::DrawString(_trimString->GetStringCenterPosx("Fighters"), _trimString->GetFontSize() + 105, "Fighters", 0x000000);
+
+	(this->*_drawer)();
 
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));
 	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0x000000, true);

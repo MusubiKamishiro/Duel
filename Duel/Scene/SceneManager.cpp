@@ -33,6 +33,7 @@ void SceneManager::PopScene()
 
 void SceneManager::Update(Peripheral & p)
 {
+	scene.front()->AddSceneTime();
 	scene.front()->Update(p);
 }
 

@@ -22,13 +22,13 @@ int TrimString::GetStringRightPosx(const std::string& name, const int& rpos)cons
 	return (rpos - DxLib::GetDrawStringWidth(name.c_str(), std::strlen(name.c_str())));
 }
 
+int TrimString::GetFontSize() const
+{
+	return _fontSize;
+}
+
 void TrimString::ChangeFontSize(const int& fontSize)
 {
 	_fontSize = fontSize;
 	DxLib::SetFontSize(_fontSize);
-}
-
-int TrimString::GetFontSize() const
-{
-	return _fontSize;
 }
