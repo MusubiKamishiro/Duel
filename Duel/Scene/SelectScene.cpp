@@ -29,7 +29,7 @@ void SelectScene::FadeoutUpdate(const Peripheral& p)
 	if (_pal <= 0)
 	{
 		DxLib::StopSoundMem(_bgm);
-		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>(_initStatus));
+		SceneManager::Instance().ChangeScene(std::make_unique <GamePlayingScene>(_initStatus, _aiFlags));
 	}
 	else
 	{
@@ -117,7 +117,7 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 	}
 }
 
-SelectScene::SelectScene() : _charID(10), _boxSize(150, 150)
+SelectScene::SelectScene(const int& mode) : _charID(10), _boxSize(150, 150)
 {
 	_pal = 0;
 	_trimString = std::make_unique<TrimString>();
@@ -133,6 +133,15 @@ SelectScene::SelectScene() : _charID(10), _boxSize(150, 150)
 
 	/// キャラクター決定用判定の初期化
 	_isDecide = {false, false};
+
+	if (mode == 0)
+	{
+		_aiFlags = { false, true };
+	}
+	else if (mode == 1)
+	{
+		_aiFlags = { false, false };
+	}
 
 	updater = &SelectScene::FadeinUpdate;
 }

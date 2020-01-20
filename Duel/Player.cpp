@@ -4,12 +4,14 @@
 #include "Peripheral.h"
 #include "Game.h"
 
+#include "AI.h"
+
 #include "Loader/FileSystem.h"
 #include "Loader/ImageLoader.h"
 #include "Loader/SoundLoader.h"
 
 
-Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
+Player::Player(const Vector2<int>& pos, const InitStatus initStatus, const bool& aiFlag)
 {
 	for (int i = 0; i < static_cast<int>(Skill::MAX); ++i)
 	{
@@ -34,6 +36,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 	_playerData.skill = Skill::MAX;
 	_playerData.decideFlag = false;
 	_pos = pos;
+	_aiFlag = aiFlag;
 
 	_frameImg = Game::Instance().GetFileSystem()->Load("img/frame2.png");
 	_decideSound = Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
@@ -41,6 +44,11 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus)
 
 	_swing = Vector2<float>(0, 0);
 	_damageFlag = false;
+
+	if (aiFlag)
+	{
+		_ai.reset(new AI());
+	}
 }
 
 Player::~Player()
@@ -58,19 +66,30 @@ void Player::Check(const Skill& skill)
 	}
 }
 
-void Player::Update(const int& pno, const Peripheral& p)
+void Player::Update(const int& pno, const PlayerData& enemyData, const Peripheral& p)
 {
-	if (p.IsTrigger(pno, "ROCK"))
+	if (!_playerData.decideFlag)
 	{
-		Check(Skill::ROCK);
-	}
-	else if (p.IsTrigger(pno, "SCISSORS"))
-	{
-		Check(Skill::SCISSORS);
-	}
-	else if (p.IsTrigger(pno, "PAPER"))
-	{
-		Check(Skill::PAPER);
+		if (!_aiFlag)
+		{
+			if (p.IsTrigger(pno, "ROCK"))
+			{
+				Check(Skill::ROCK);
+			}
+			else if (p.IsTrigger(pno, "SCISSORS"))
+			{
+				Check(Skill::SCISSORS);
+			}
+			else if (p.IsTrigger(pno, "PAPER"))
+			{
+				Check(Skill::PAPER);
+			}
+		}
+		else
+		{
+			_ai->Update(_playerData, enemyData);
+			Check(_ai->GetAISkill());
+		}
 	}
 
 	if (_damageFlag)

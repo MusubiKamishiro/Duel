@@ -28,7 +28,7 @@ void TitleScene::FadeoutUpdate(const Peripheral & p)
 	if (_pal <= 0)
 	{
 		DxLib::StopSoundMem(_bgm);
-		SceneManager::Instance().ChangeScene(std::make_unique <SelectScene>());
+		SceneManager::Instance().ChangeScene(std::make_unique <SelectScene>(_selectCount));
 	}
 	else
 	{
@@ -55,12 +55,12 @@ void TitleScene::SelectPlayUpdate(const Peripheral& p)
 {
 	if (p.IsTrigger(0, "UP"))
 	{
-		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
+		DxLib::PlaySoundMem(_selSE, DX_PLAYTYPE_BACK);
 		--_selectCount;
 	}
 	if (p.IsTrigger(0, "DOWN"))
 	{
-		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
+		DxLib::PlaySoundMem(_selSE, DX_PLAYTYPE_BACK);
 		++_selectCount;
 	}
 	if (p.IsTrigger(0, "DECIDE"))
@@ -106,6 +106,8 @@ TitleScene::TitleScene()
 	_pal = 0;
 	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/title.mp3");
 	_decideSE = Game::Instance().GetFileSystem()->Load("sound/se/decide.mp3");
+	_selSE = Game::Instance().GetFileSystem()->Load("sound/se/cursor.mp3");
+
 	_trimString = std::make_unique<TrimString>();
 
 	_updater = &TitleScene::FadeinUpdate;

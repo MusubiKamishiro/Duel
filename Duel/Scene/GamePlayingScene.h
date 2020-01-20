@@ -32,7 +32,7 @@ private:
 	int _bgm;
 
 public:
-	GamePlayingScene(const std::array<InitStatus, 2>& initStatus);
+	GamePlayingScene(const std::array<InitStatus, 2>& initStatus, std::array<bool, 2>& aiFlags);
 	~GamePlayingScene();
 
 	void Update(const Peripheral& p);

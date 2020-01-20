@@ -63,7 +63,7 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 			SceneManager::Instance().PushScene(std::make_unique<PauseScene>());
 			break;
 		}
-		_players[i]->Update(i, p);
+		_players[i]->Update(i, _players[((i+1)%_players.size())]->GetPlayerData(), p);
 	}
 
 	if ((_players[0]->GetPlayerData().skill != Skill::MAX) && ((_players[1]->GetPlayerData().skill != Skill::MAX)))
@@ -145,10 +145,10 @@ void GamePlayingScene::ResultDraw()
 	_judge->Draw();
 }
 
-GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus)
+GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus, std::array<bool, 2> & aiFlags)
 {
-	_players[0].reset(new Player(Vector2<int>(_scrSize.x / 4, 150), initStatus[0]));
-	_players[1].reset(new Player(Vector2<int>(_scrSize.x / 4 * 3, 150), initStatus[1]));
+	_players[0].reset(new Player(Vector2<int>(_scrSize.x / 4, 150), initStatus[0], aiFlags[0]));
+	_players[1].reset(new Player(Vector2<int>(_scrSize.x / 4 * 3, 150), initStatus[1], aiFlags[1]));
 	
 	_judge.reset(new Judge());
 	_hud.reset(new Hud());

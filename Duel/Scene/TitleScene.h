@@ -24,6 +24,7 @@ private:
 
 	int _bgm;
 	int _decideSE;
+	int _selSE;
 
 	std::unique_ptr<TrimString> _trimString;
 

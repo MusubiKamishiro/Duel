@@ -1,8 +1,10 @@
 #pragma once
 #include <array>
+#include <memory>
 #include "Geometry.h"
 
 class Peripheral;
+class AI;
 
 // プレイヤーの使える技
 enum class Skill
@@ -47,6 +49,8 @@ class Player
 	int _frameImg;
 
 	Vector2<int> _pos;
+	bool _aiFlag;
+	std::shared_ptr<AI> _ai;
 	
 	// 技が使用可能か
 	void Check(const Skill& skill);
@@ -60,10 +64,10 @@ class Player
 	bool _damageFlag;
 
 public:
-	Player(const Vector2<int>& pos, const InitStatus initStatus);
+	Player(const Vector2<int>& pos, const InitStatus initStatus, const bool& aiFlag);
 	~Player();
 
-	void Update(const int& pno, const Peripheral& p);
+	void Update(const int& pno, const PlayerData& enemyData, const Peripheral& p);
 
 	void Draw();
 

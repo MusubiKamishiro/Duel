@@ -20,6 +20,7 @@ private:
 
 	std::array<InitStatus, 2> _initStatus;
 	std::unique_ptr<TrimString> _trimString;
+	std::array<bool, 2> _aiFlags;
 
 	int _bgm;
 	int _decideSE;
@@ -33,7 +34,7 @@ private:
 	const Vector2<int> _boxSize;
 
 public:
-	SelectScene();
+	SelectScene(const int& mode);
 	~SelectScene();
 
 	void Update(const Peripheral& p);
