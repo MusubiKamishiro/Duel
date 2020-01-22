@@ -11,8 +11,12 @@ private:
 	Skill _skill;
 	std::shared_ptr<Judge> _judge;
 
-	void Check(const int& score, const Skill& skill);
+	void ScoreCheck(const int& score, const Skill& skill);
 	int _scoreMax;
+
+	//@param score...Œ»İ‚Ìè‚Ì“_”
+	//@param count...s‰ñ”
+	int SkillThink(PlayerData myData, PlayerData enemyData, int& score, int count);
 
 public:
 	AI();

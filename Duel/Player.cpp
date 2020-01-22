@@ -168,6 +168,11 @@ const PlayerData& Player::GetPlayerData() const
 	return _playerData;
 }
 
+const Vector2<int>& Player::GetPos() const
+{
+	return _pos;
+}
+
 void Player::SetSkill()
 {
 	_playerData.decideFlag = false;

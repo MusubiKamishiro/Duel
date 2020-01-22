@@ -143,6 +143,24 @@ void GamePlayingScene::GameDraw()
 void GamePlayingScene::ResultDraw()
 {
 	_judge->Draw();
+	for (auto& player : _players)
+	{
+		int color = 0;
+		if (player->GetPlayerData().skill == Skill::ROCK)
+		{
+			color = 0xecdb33;
+		}
+		else if (player->GetPlayerData().skill == Skill::SCISSORS)
+		{
+			color = 0x40ccd0;
+		}
+		else if (player->GetPlayerData().skill == Skill::PAPER)
+		{
+			color = 0xd04242;
+		}
+
+		DxLib::DrawCircle(player->GetPos().x, 400, 200, color);
+	}
 }
 
 GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus, std::array<bool, 2> & aiFlags)
