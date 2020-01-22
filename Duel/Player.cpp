@@ -129,19 +129,6 @@ void Player::Update(const int& pno, const PlayerData& enemyData, const Periphera
 
 void Player::Draw()
 {
-	/*if (_playerData.skill == Skill::ROCK)
-	{
-		DxLib::DrawString(_pos.x, _pos.y, "グー", 0xff0000);
-	}
-	else if (_playerData.skill == Skill::SCISSORS)
-	{
-		DxLib::DrawString(_pos.x, _pos.y, "チョキ", 0xff0000);
-	}
-	else if (_playerData.skill == Skill::PAPER)
-	{
-		DxLib::DrawString(_pos.x, _pos.y, "パー", 0xff0000);
-	}*/
-
 	DxLib::DrawExtendGraph(_pos.x - 450/2 + _swing.x, _pos.y + _swing.y, _pos.x + 450/2 + _swing.x, _pos.y + 600 + _swing.y, _playerData.img, true);
 	DxLib::DrawExtendGraph(_pos.x - 500/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 500/2 + _swing.x, _pos.y + 620 + _swing.y, _frameImg, true);
 }
@@ -158,7 +145,7 @@ void Player::Damage(const int& power)
 	}
 }
 
-const int Player::GetPower() const
+const int& Player::GetPower() const
 {
 	return _playerData.power[static_cast<int>(_playerData.skill)];
 }

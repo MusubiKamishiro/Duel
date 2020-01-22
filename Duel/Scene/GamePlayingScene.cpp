@@ -107,7 +107,7 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 			player->SetSkill();
 		}
 
-		if (_hud->AdvanceTheTurn())
+		if (Hud::Instance().AdvanceTheTurn())
 		{
 			for (auto player : _players)
 			{
@@ -169,7 +169,7 @@ GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus,
 	_players[1].reset(new Player(Vector2<int>(_scrSize.x / 4 * 3, 150), initStatus[1], aiFlags[1]));
 	
 	_judge.reset(new Judge());
-	_hud.reset(new Hud());
+	Hud::Instance().Init();
 
 	_count = 0;
 	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/game.mp3");
@@ -201,7 +201,7 @@ void GamePlayingScene::Draw()
 	{
 		player->Draw();
 	}
-	_hud->Draw(_players[0]->GetPlayerData(), _players[1]->GetPlayerData());
+	Hud::Instance().Draw(_players[0]->GetPlayerData(), _players[1]->GetPlayerData());
 
 	(this->*_drawer)();
 

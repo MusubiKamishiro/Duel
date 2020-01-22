@@ -1,14 +1,15 @@
 #include "AI.h"
-#include "Judge.h"
 #include <array>
-//#include <random>
+#include <random>
+#include "Judge.h"
+#include "Hud.h"
 
 
 AI::AI()
 {
 	_skill = Skill::ROCK;
 	_judge.reset(new Judge());
-	_scoreMax = 0;
+	_scoreMax = INT_MIN;
 }
 
 AI::~AI()
@@ -85,16 +86,20 @@ int AI::SkillThink(PlayerData myData, PlayerData enemyData, int& score, int coun
 
 void AI::Update(const PlayerData& myData, const PlayerData& enemyData)
 {
-	/*std::random_device seed_gen;
+	std::random_device seed_gen;
 	std::mt19937 engine(seed_gen());
-
-	_skill = static_cast<Skill>(engine() % static_cast<int>(Skill::MAX));*/
+	int count = engine() % static_cast<int>(Skill::MAX);
+	
+	if (Hud::Instance().GetNowTurn() == 3)
+	{
+		count = 0;
+	}
 
 	Skill skill = Skill::MAX;
 	int score = 0;
-	_scoreMax = 0;
+	_scoreMax = INT_MIN;
 
-	SkillThink(myData, enemyData, score, 2);
+	SkillThink(myData, enemyData, score, (count+1));
 }
 
 Skill AI::GetAISkill() const

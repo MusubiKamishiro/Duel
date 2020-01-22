@@ -9,6 +9,10 @@ class TrimString;
 class Hud
 {
 private:
+	Hud();							// 生成禁止
+	Hud(const Hud&);				// コピー禁止
+	void operator=(const Hud&);	// 代入禁止
+
 	// ラウンドとターンの描画
 	void DrawRoundAndTurn()const;
 	int _roundCount;
@@ -41,8 +45,14 @@ private:
 	std::unique_ptr<TrimString> _trimString;
 
 public:
-	Hud();
+	static Hud& Instance()
+	{
+		static Hud instance;
+		return instance;
+	}
 	~Hud();
+
+	void Init();
 
 	// ターンを進める際に呼び出す
 	//@return ラウンドが進む際にtrueが返ってくる
@@ -50,5 +60,7 @@ public:
 
 	// Hudの描画全てが入っている
 	void Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData);
+
+	const int& GetNowTurn()const;
 };
 

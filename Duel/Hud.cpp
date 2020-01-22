@@ -32,6 +32,12 @@ Hud::~Hud()
 {
 }
 
+void Hud::Init()
+{
+	_roundCount = 1;
+	_turnCount = 1;
+}
+
 void Hud::DrawRoundAndTurn()const
 {
 	DxLib::DrawBox(_center.x - 100, 0, _center.x + 100, _topHudHeight - _topHudEdge, 0x0000ff, true);
@@ -129,4 +135,9 @@ void Hud::Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData)
 	DrawRoundAndTurn();
 	DrawPlayerSkill(rPlayerData, lPlayerData);
 	DrawType();
+}
+
+const int& Hud::GetNowTurn() const
+{
+	return _turnCount;
 }

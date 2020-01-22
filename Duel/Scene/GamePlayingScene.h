@@ -6,7 +6,7 @@
 
 #include "../Player.h"
 class Judge;
-class Hud;
+
 
 class GamePlayingScene : public Scene
 {
@@ -25,10 +25,8 @@ private:
 
 	std::array<std::shared_ptr<Player>, 2> _players;	
 	std::unique_ptr<Judge> _judge;
-	std::unique_ptr<Hud> _hud;
 
 	int _count;	
-
 	int _bgm;
 
 public:

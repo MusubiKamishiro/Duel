@@ -73,7 +73,7 @@ public:
 
 	void Damage(const int& power);
 
-	const int GetPower()const;
+	const int& GetPower()const;
 	const PlayerData& GetPlayerData()const;
 	const Vector2<int>& GetPos()const;
 
