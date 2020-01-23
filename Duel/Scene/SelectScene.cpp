@@ -39,7 +39,7 @@ void SelectScene::FadeoutUpdate(const Peripheral& p)
 
 void SelectScene::WaitUpdate(const Peripheral& p)
 {
-	for (int i = 0; i < _initStatus.size(); ++i)
+	for (unsigned int i = 0; i < _initStatus.size(); ++i)
 	{
 		if (_isDecide[i])
 		{
@@ -55,7 +55,7 @@ void SelectScene::WaitUpdate(const Peripheral& p)
 		}
 	}
 
-	for (int i = 0; i < _initStatus.size(); ++i)
+	for (unsigned int i = 0; i < _initStatus.size(); ++i)
 	{
 		ChangeCharacter(p, i);
 	}
@@ -105,7 +105,7 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
 		_isDecide[num] = true;
 		_initStatus[num].charNum -= 1;
-		_initStatus[num].hp = _charData[_initStatus[num].charNum][static_cast<int>(charData::HP)];
+		_initStatus[num].maxHp = _charData[_initStatus[num].charNum][static_cast<int>(charData::HP)];
 		_initStatus[num].power[0]	  = _charData[_initStatus[num].charNum][static_cast<int>(charData::ATK1)];
 		_initStatus[num].power[1]	  = _charData[_initStatus[num].charNum][static_cast<int>(charData::ATK2)];
 		_initStatus[num].power[2]	  = _charData[_initStatus[num].charNum][static_cast<int>(charData::ATK3)];
@@ -198,10 +198,9 @@ void SelectScene::Draw()
 	/// ステータス文字の保存用
 	std::string status;
 
-	int strX;
 	int strSpace;
-		/// キャラクターアイコンの描画
-	for (int i = 0; i < _initStatus.size(); ++i)
+	/// キャラクターアイコンの描画
+	for (unsigned int i = 0; i < _initStatus.size(); ++i)
 	{
 		/// アイコンイメージの読み込み
 		imageID = Game::Instance().GetFileSystem()->Load("img/icon" + std::to_string(_initStatus[i].charNum) + ".png");
@@ -217,33 +216,46 @@ void SelectScene::Draw()
 
 		/// 文字の表示を行っている　◆
 		_trimString->ChangeFontSize(25);
-		status = "HP : " + std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::HP)]);
-		strX = (i == 0 ? _boxSize.x : -_boxSize.x * 2);
 		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2));
+		if (i == 0)
+		{
+			status = "HP : %4d";
 
-		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
+			DxLib::DrawFormatString(_trimString->GetStringRightPosx(status.c_str(), (_scrSize.x / 2) - 100),
+				points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, 0x000000, status.c_str(), _charData[_initStatus[i].charNum - 1][static_cast<int>(charData::HP)]);
+		}
+		else
+		{
+			status = "%4d : HP";
 
-		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::ROCK)] + " : " +
-				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK1)]);
-		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 2;
+			DxLib::DrawFormatString((_scrSize.x / 2) + 100,
+				points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, 0x000000, status.c_str(), _charData[_initStatus[i].charNum - 1][static_cast<int>(charData::HP)]);
+		}
 
-		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
+		for (int j = 1; j < static_cast<int>(charData::MAX); ++j)
+		{
+			color = 0x000000;
+			if (_goodSk[_initStatus[i].charNum - 1] == (j - 1))
+			{
+				color = 0xff0000;
+			}
+			strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * (1 + j);
 
-		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::SCISSORS)] + " : " +
-				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK2)]);
-		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 3;
+			if (i == 0)
+			{
+				status = _skName[_initStatus[i].charNum - 1][j-1] + " : %4d";
 
-		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
+				DxLib::DrawFormatString(_trimString->GetStringRightPosx(status.c_str(), (_scrSize.x / 2) - 100),
+					points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, color, status.c_str(), _charData[_initStatus[i].charNum - 1][j]);
+			}
+			else
+			{
+				status =  "%4d : " + _skName[_initStatus[i].charNum - 1][j-1];
 
-		status = _skName[_initStatus[i].charNum - 1][static_cast<int>(Skill::PAPER)] + " : " +
-				  std::to_string(_charData[_initStatus[i].charNum - 1][static_cast<int>(charData::ATK3)]);
-		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2)) * 4;
-
-		DxLib::DrawString(points[0].x + strX,
-						  points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, status.c_str(), 0x000000);
+				DxLib::DrawFormatString((_scrSize.x / 2) + 100,
+					points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, color, status.c_str(), _charData[_initStatus[i].charNum - 1][j]);
+			}
+		}
 
 		color = (i == 0 ? 0xff2055 : 0x3388ff);
 		DxLib::DrawBoxAA(points[0].x - _boxSize.x * 3 / 4, points[0].y, points[1].x - _boxSize.x / 4, points[1].y, color, false, 10.f);

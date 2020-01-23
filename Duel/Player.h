@@ -20,7 +20,7 @@ enum class Skill
 struct InitStatus
 {
 	int charNum;	// ƒLƒƒƒ‰”Ô†
-	int hp;			// ‘Ì—Í
+	int maxHp;		// ‰Šú‘Ì—Í(Å‘å‘Ì—Í)
 	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// ‹Z–¼
 	std::array<int, static_cast<int>(Skill::MAX)> power;	// UŒ‚—Í
 	int goodSkill;	// “¾ˆÓ‹Z
@@ -31,15 +31,15 @@ struct PlayerData
 {
 	int img;	// ƒLƒƒƒ‰‰æ‘œ
 	int maxHp;	// Å‘å‘Ì—Í
-	float hp;		// ‘Ì—Í
+	float hp;	// ‘Ì—Í
 	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// ‹Z–¼
 	std::array<int, static_cast<int>(Skill::MAX)> power;	// UŒ‚—Í
-	int goodSkill;	// “¾ˆÓ‹Z
+	int goodSkill;		// “¾ˆÓ‹Z
 
-	std::array<int, static_cast<int>(Skill::MAX)> initSkillCount;
-	std::array<int, static_cast<int>(Skill::MAX)> skillCount;
-	bool decideFlag;
-	Skill skill;
+	std::array<int, static_cast<int>(Skill::MAX)> initSkillCount;	// g—p‰ñ”‚Ì‰Šú’l
+	std::array<int, static_cast<int>(Skill::MAX)> skillCount;		// c‚èg—p‰ñ”
+	bool decideFlag;	// è‚ğŒˆ‚ß‚Ä‚¢‚é‚©
+	Skill skill;		// Œ»İ‚Ìè
 };
 
 
@@ -66,7 +66,7 @@ class Player
 	int _damage;
 
 public:
-	Player(const Vector2<int>& pos, const InitStatus initStatus, const bool& aiFlag);
+	Player(const Vector2<int>& pos, const InitStatus& initStatus, const bool& aiFlag);
 	~Player();
 
 	void Update(const int& pno, const PlayerData& enemyData, const Peripheral& p);
