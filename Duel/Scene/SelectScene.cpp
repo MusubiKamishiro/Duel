@@ -127,6 +127,8 @@ SelectScene::SelectScene(const int& mode) : _charID(10), _boxSize(150, 150)
 	_cancelSE	= Game::Instance().GetFileSystem()->Load("sound/se/cancel.mp3");
 	_selSE		= Game::Instance().GetFileSystem()->Load("sound/se/cursor.mp3");
 
+	_frameImg = Game::Instance().GetFileSystem()->Load("img/statusFrame.png");
+
 	/// キャラクターのID指定(とりあえず直値)　◆
 	_initStatus[0].charNum = 1;
 	_initStatus[1].charNum = 5;
@@ -217,18 +219,19 @@ void SelectScene::Draw()
 		/// 文字の表示を行っている　◆
 		_trimString->ChangeFontSize(25);
 		strSpace = (_trimString->GetFontSize() + (_trimString->GetFontSize() / 2));
+		int strWidth = 150;
 		if (i == 0)
 		{
-			status = "HP : %4d";
+			status = "%4d : HP";
 
-			DxLib::DrawFormatString(_trimString->GetStringRightPosx(status.c_str(), (_scrSize.x / 2) - 100),
+			DxLib::DrawFormatString(strWidth,
 				points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, 0x000000, status.c_str(), _charData[_initStatus[i].charNum - 1][static_cast<int>(charData::HP)]);
 		}
 		else
 		{
-			status = "%4d : HP";
+			status = "HP : %4d";
 
-			DxLib::DrawFormatString((_scrSize.x / 2) + 100,
+			DxLib::DrawFormatString(_trimString->GetStringRightPosx("HP : 0000", _scrSize.x - strWidth),
 				points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, 0x000000, status.c_str(), _charData[_initStatus[i].charNum - 1][static_cast<int>(charData::HP)]);
 		}
 
@@ -243,19 +246,22 @@ void SelectScene::Draw()
 
 			if (i == 0)
 			{
-				status = _skName[_initStatus[i].charNum - 1][j-1] + " : %4d";
+				status = "%4d : " + _skName[_initStatus[i].charNum - 1][j - 1];
 
-				DxLib::DrawFormatString(_trimString->GetStringRightPosx(status.c_str(), (_scrSize.x / 2) - 100),
+				DxLib::DrawFormatString(strWidth,
 					points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, color, status.c_str(), _charData[_initStatus[i].charNum - 1][j]);
 			}
 			else
 			{
-				status =  "%4d : " + _skName[_initStatus[i].charNum - 1][j-1];
+				status = _skName[_initStatus[i].charNum - 1][j - 1] + " : %4d";
 
-				DxLib::DrawFormatString((_scrSize.x / 2) + 100,
+				DxLib::DrawFormatString(_trimString->GetStringRightPosx((_skName[_initStatus[i].charNum - 1][j - 1] + " : 0000"), _scrSize.x - strWidth),
 					points[0].y + _boxSize.y + (_boxSize.y / 2) + strSpace, color, status.c_str(), _charData[_initStatus[i].charNum - 1][j]);
 			}
 		}
+
+		DxLib::DrawExtendGraph(120, 260, (_scrSize.x / 2 - 150), 460, _frameImg, true);
+		DxLib::DrawExtendGraph((_scrSize.x - 120), 260, (_scrSize.x / 2 + 150), 460, _frameImg, true);
 
 		color = (i == 0 ? 0xff2055 : 0x3388ff);
 		DxLib::DrawBoxAA(points[0].x - _boxSize.x * 3 / 4, points[0].y, points[1].x - _boxSize.x / 4, points[1].y, color, false, 10.f);

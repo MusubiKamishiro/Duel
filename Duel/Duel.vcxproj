@@ -175,6 +175,7 @@
     <ClInclude Include="Loader\SoundLoader.h" />
     <ClInclude Include="Peripheral.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\GamePlayingScene.h" />
     <ClInclude Include="Scene\PauseScene.h" />
     <ClInclude Include="Scene\ResultScene.h" />
@@ -183,6 +184,12 @@
     <ClInclude Include="Scene\SelectScene.h" />
     <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="TrimString.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Duel.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="img\icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

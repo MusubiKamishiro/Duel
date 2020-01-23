@@ -33,6 +33,8 @@ private:
 	/// キャラクター枠のデバッグ描画用
 	const Vector2<int> _boxSize;
 
+	int _frameImg;
+
 public:
 	SelectScene(const int& mode);
 	~SelectScene();

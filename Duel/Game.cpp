@@ -4,7 +4,7 @@
 #include "Scene/SceneManager.h"
 #include "Loader/FileSystem.h"
 #include "FrameFixity.h"
-//#include "resource.h"
+#include "resource.h"
 
 
 Game::Game() : _screenSize(1440, 810)
@@ -44,7 +44,7 @@ void Game::Initialize()
 	}
 
 	DxLib::SetMainWindowText("ButtleFighters");		// タイトル
-	//DxLib::SetWindowIconID(IDI_ICON1);	// アイコン
+	DxLib::SetWindowIconID(IDI_ICON1);		// アイコン
 	DxLib::SetDrawScreen(DX_SCREEN_BACK);	// 裏画面に描画
 
 	// フォントの変更
