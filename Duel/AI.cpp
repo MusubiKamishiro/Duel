@@ -70,6 +70,16 @@ int AI::SkillThink(PlayerData myData, PlayerData enemyData, int& score, int coun
 				score += -enemyData.power[j];
 			}
 
+			// 得意属性が未使用の場合の考察
+			if ((myData.goodSkill == i) && (myData.skillCount[i] == 2))
+			{
+				score += myData.power[i] / 2;
+			}
+			if ((enemyData.goodSkill == j) && (enemyData.skillCount[j] == 2))
+			{
+				score -= enemyData.power[j] / 2;
+			}
+
 			// 一手先を再試行
 			--myData.skillCount[i];
 			--enemyData.skillCount[j];

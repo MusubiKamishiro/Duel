@@ -56,6 +56,30 @@ void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 
 void GamePlayingScene::WaitUpdate(const Peripheral & p)
 {
+	if (_count > 60)
+	{
+		if ((_players[0]->GetPlayerData().hp <= 0) || (_players[1]->GetPlayerData().hp <= 0))
+		{
+			_updater = &GamePlayingScene::FadeoutUpdate;
+		}
+		else
+		{
+			_updater = &GamePlayingScene::RoundUpdate;
+		}
+		_count = 0;
+	}
+	else
+	{
+		for (auto& player : _players)
+		{
+			player->DamageUpdate(_count);
+		}
+		++_count;
+	}
+}
+
+void GamePlayingScene::RoundUpdate(const Peripheral& p)
+{
 	for (int i = 0; i < _players.size(); ++i)
 	{
 		if (p.IsTrigger(i, "PAUSE"))
@@ -63,7 +87,7 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 			SceneManager::Instance().PushScene(std::make_unique<PauseScene>());
 			break;
 		}
-		_players[i]->Update(i, _players[((i+1)%_players.size())]->GetPlayerData(), p);
+		_players[i]->Update(i, _players[((i + 1) % _players.size())]->GetPlayerData(), p);
 	}
 
 	if ((_players[0]->GetPlayerData().skill != Skill::MAX) && ((_players[1]->GetPlayerData().skill != Skill::MAX)))
@@ -74,12 +98,6 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 	}
 }
 
-void GamePlayingScene::RoundUpdate(const Peripheral& p)
-{
-	_updater = &GamePlayingScene::WaitUpdate;
-	_count = 0;
-}
-
 void GamePlayingScene::ResultUpdate(const Peripheral& p)
 {
 	if (_count > 60)
@@ -88,18 +106,18 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 		{
 			_players[0]->Damage(_players[1]->GetPower());
 			_players[1]->Damage(_players[0]->GetPower());
-			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 2000);
-			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 2000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 1000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 1000);
 		}
 		else if(_judge->GetResult() == Result::PLAYER1WIN)
 		{
 			_players[1]->Damage(_players[0]->GetPower());
-			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 2000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 1000);
 		}
 		else if (_judge->GetResult() == Result::PLAYER2WIN)
 		{
 			_players[0]->Damage(_players[1]->GetPower());
-			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 2000);
+			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 1000);
 		}
 
 		for (auto player : _players)
@@ -114,14 +132,7 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 				player->ResetCount();
 			}
 		}
-		if ((_players[0]->GetPlayerData().hp <= 0) || (_players[1]->GetPlayerData().hp <= 0))
-		{
-			_updater = &GamePlayingScene::FadeoutUpdate;
-		}
-		else
-		{
-			_updater = &GamePlayingScene::RoundUpdate;
-		}
+		_updater = &GamePlayingScene::WaitUpdate;
 		_drawer = &GamePlayingScene::RoundDraw;
 		_count = 0;
 	}

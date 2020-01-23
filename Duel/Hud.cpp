@@ -61,10 +61,17 @@ void Hud::DrawHp(const PlayerData& rPlayerData, const PlayerData& lPlayerData)co
 	DxLib::DrawBox(_topHudEdge, 0, _ssize.x - _topHudEdge, _topHudHeight - _topHudEdge,  0xffffff, true);
 
 	DxLib::DrawBox((_center.x - hurfHudLenght) - (_maxHpLenght.x * (static_cast<float>(rPlayerData.hp) / static_cast<float>(rPlayerData.maxHp))), 10, (_center.x - hurfHudLenght), _maxHpLenght.y + 10, 0x00ff00, true);
-	DxLib::DrawFormatString(_trimString->GetStringRightPosx("HP:" + std::to_string(rPlayerData.hp), (_center.x - hurfHudLenght - 10)), _maxHpLenght.y + 10, 0xff0000, "HP:%d", rPlayerData.hp);
+	DxLib::DrawFormatString(_trimString->GetStringRightPosx("HP:" + std::to_string(rPlayerData.hp), (_center.x - hurfHudLenght - 10)), _maxHpLenght.y + 10, 0xff0000, "HP:%.0f", rPlayerData.hp);
 
 	DxLib::DrawBox((_center.x + hurfHudLenght), 10, (_center.x + hurfHudLenght) + (_maxHpLenght.x * (static_cast<float>(lPlayerData.hp) / static_cast<float>(lPlayerData.maxHp))), _maxHpLenght.y + 10, 0x00ff00, true);
-	DxLib::DrawFormatString((_center.x + hurfHudLenght)+ 10, _maxHpLenght.y + 10, 0xff0000, "HP:%d", lPlayerData.hp);
+	DxLib::DrawFormatString((_center.x + hurfHudLenght)+ 10, _maxHpLenght.y + 10, 0xff0000, "HP:%.0f", lPlayerData.hp);
+
+
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	DxLib::DrawBox((_center.x - hurfHudLenght) - (_maxHpLenght.x * (static_cast<float>(rPlayerData.hp) / static_cast<float>(rPlayerData.maxHp))), 10, (_center.x - hurfHudLenght), _maxHpLenght.y + 10, 0x000000, true);
+
+	DxLib::DrawBox((_center.x + hurfHudLenght), 10, (_center.x + hurfHudLenght) + (_maxHpLenght.x * (static_cast<float>(lPlayerData.hp) / static_cast<float>(lPlayerData.maxHp))), _maxHpLenght.y + 10, 0x000000, true);
+	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
 void Hud::DrawType()

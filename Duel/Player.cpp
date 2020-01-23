@@ -44,6 +44,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus initStatus, const bool&
 
 	_swing = Vector2<float>(0, 0);
 	_damageFlag = false;
+	_damage = 0;
 
 	if (aiFlag)
 	{
@@ -63,6 +64,28 @@ void Player::Check(const Skill& skill)
 		_playerData.decideFlag = true;
 
 		DxLib::PlaySoundMem(_decideSound, DX_PLAYTYPE_BACK);
+	}
+}
+
+void Player::DamageUpdate(const int& count)
+{
+	if (_damageFlag)
+	{
+		_swing = Vector2<float>(10, 10);
+		_damageFlag = false;
+	}
+
+	if (count < 30)
+	{
+		_playerData.hp -= static_cast<float>(_damage) / 30;
+	}
+	else
+	{
+		_damage = 0;
+	}
+	if (_playerData.hp < 0)
+	{
+		_playerData.hp = 0;
 	}
 }
 
@@ -91,13 +114,10 @@ void Player::Update(const int& pno, const PlayerData& enemyData, const Periphera
 			Check(_ai->GetAISkill());
 		}
 	}
+}
 
-	if (_damageFlag)
-	{
-		_swing = Vector2<float>(10, 10);
-		_damageFlag = false;
-	}
-
+void Player::Draw()
+{
 	if (std::abs(_swing.x) < 0.5f)
 	{
 		_swing = Vector2<float>(0, 0);
@@ -125,10 +145,7 @@ void Player::Update(const int& pno, const PlayerData& enemyData, const Periphera
 			_swing = Vector2<float>(-_swing.x, -_swing.y);
 		}
 	}
-}
 
-void Player::Draw()
-{
 	DxLib::DrawExtendGraph(_pos.x - 450/2 + _swing.x, _pos.y + _swing.y, _pos.x + 450/2 + _swing.x, _pos.y + 600 + _swing.y, _playerData.img, true);
 	DxLib::DrawExtendGraph(_pos.x - 500/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 500/2 + _swing.x, _pos.y + 620 + _swing.y, _frameImg, true);
 }
@@ -138,11 +155,7 @@ void Player::Damage(const int& power)
 	DxLib::PlaySoundMem(_damageSound, DX_PLAYTYPE_BACK);
 
 	_damageFlag = true;
-	_playerData.hp -= power;
-	if (_playerData.hp < 0)
-	{
-		_playerData.hp = 0;
-	}
+	_damage += power;
 }
 
 const int& Player::GetPower() const

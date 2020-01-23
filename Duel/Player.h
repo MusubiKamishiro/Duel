@@ -31,7 +31,7 @@ struct PlayerData
 {
 	int img;	// ƒLƒƒƒ‰‰æ‘œ
 	int maxHp;	// Å‘å‘Ì—Í
-	int hp;		// ‘Ì—Í
+	float hp;		// ‘Ì—Í
 	std::array<std::string, static_cast<int>(Skill::MAX)> skillName;	// ‹Z–¼
 	std::array<int, static_cast<int>(Skill::MAX)> power;	// UŒ‚—Í
 	int goodSkill;	// “¾ˆÓ‹Z
@@ -63,6 +63,8 @@ class Player
 	Vector2<float> _swing;
 	bool _damageFlag;
 
+	int _damage;
+
 public:
 	Player(const Vector2<int>& pos, const InitStatus initStatus, const bool& aiFlag);
 	~Player();
@@ -72,6 +74,8 @@ public:
 	void Draw();
 
 	void Damage(const int& power);
+	void DamageUpdate(const int& count);
+
 
 	const int& GetPower()const;
 	const PlayerData& GetPlayerData()const;
