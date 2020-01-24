@@ -58,6 +58,11 @@ int AI::SkillThink(PlayerData myData, PlayerData enemyData, int& score, int coun
 			if (res == Result::DRAW)
 			{
 				score += myData.power[i] - enemyData.power[j];
+
+				if (((myData.hp - enemyData.power[j]) <= 0) && ((enemyData.hp - myData.power[i]) >= 0))
+				{
+					score -= enemyData.power[j];
+				}
 			}
 			else if (res == Result::PLAYER1WIN)
 			{
@@ -67,7 +72,12 @@ int AI::SkillThink(PlayerData myData, PlayerData enemyData, int& score, int coun
 			else if (res == Result::PLAYER2WIN)
 			{
 				// ëäéËÇ™èüÇ¡ÇΩ
-				score += -enemyData.power[j];
+				score -= enemyData.power[j];
+
+				if ((myData.hp - enemyData.power[j]) <= 0)
+				{
+					score -= enemyData.power[j];
+				}
 			}
 
 			// ìæà”ëÆê´Ç™ñ¢égópÇÃèÍçáÇÃçlé@

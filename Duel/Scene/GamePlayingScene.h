@@ -29,6 +29,12 @@ private:
 	int _count;	
 	int _bgm;
 
+	// エフェクトリソース
+	int _bgEffect;
+	int _effectTime;
+	Vector2<float> _effectPos;
+	int _playingEffect;
+
 public:
 	GamePlayingScene(const std::array<InitStatus, 2>& initStatus, std::array<bool, 2>& aiFlags);
 	~GamePlayingScene();

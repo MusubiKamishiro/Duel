@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <DxLib.h>
+#include <EffekseerForDXLib.h>
 #include "Peripheral.h"
 #include "Scene/SceneManager.h"
 #include "Loader/FileSystem.h"
@@ -34,23 +35,46 @@ void Game::Initialize()
 	{
 		DxLib::ChangeWindowMode(true);
 	}
-#endif // DEBUG
+#endif // _DEBUG
 
+	// 画面サイズの設定
 	DxLib::SetGraphMode(_screenSize.x, _screenSize.y, 32);
 
+	// Effekseerを使用ために設定
+	DxLib::SetUseDirect3DVersion(DX_DIRECT3D_11);
+
+	// DxLibの初期化
 	if (DxLib::DxLib_Init() == -1)
 	{
 		return;
 	}
 
-	DxLib::SetMainWindowText("ButtleFighters");		// タイトル
-	DxLib::SetWindowIconID(IDI_ICON1);		// アイコン
-	DxLib::SetDrawScreen(DX_SCREEN_BACK);	// 裏画面に描画
+	DxLib::SetMainWindowText("ButtleFighters");	// タイトル
+	DxLib::SetWindowIconID(IDI_ICON1);			// アイコン
+	DxLib::SetDrawScreen(DX_SCREEN_BACK);		// 裏画面に描画
 
 	// フォントの変更
 	AddFontResourceEx("fonts/PixelMplus10-Regular.ttf", FR_PRIVATE, nullptr);
 	DxLib::ChangeFont("PixelMplus10", DX_CHARSET_DEFAULT);
+	
 
+	// Effekseerの初期化
+	// 引数は画面に表示する最大パーティクル数
+	if (Effekseer_Init(10000) == -1)
+	{
+		DxLib_End();
+		return;
+	}
+	// フルスクリーンウインドウの切り替えでリソースが消えるのを防ぐ。
+	DxLib::SetChangeScreenModeGraphicsSystemResetFlag(false);
+	// Zバッファを有効にする。
+	DxLib::SetUseZBuffer3D(true);
+	// Zバッファへの書き込みを有効にする。
+	DxLib::SetWriteZBuffer3D(true);
+	// Effekseerに2D描画の設定をする。
+	Effekseer_Set2DSetting(_screenSize.x, _screenSize.y);
+
+	
 	_peripheral.reset(new Peripheral());
 	_fileSystem.reset(new FileSystem());
 }
