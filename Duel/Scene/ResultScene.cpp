@@ -96,8 +96,8 @@ void ResultScene::Draw()
 	{
 		DxLib::DrawString(_trimString->GetStringCenterPosx("ç∂ÇÃèüÇø"), 20, "ç∂ÇÃèüÇø", 0xff0000);
 		
-		DxLib::DrawExtendGraph(_center.x - 450 / 2, _center.y, _center.x + 450 / 2, _center.y + 600, _rpImg, true);
-		DxLib::DrawExtendGraph(_center.x - 500 / 2, _center.y - 50, _center.x + 500 / 2, _center.y + 620, _frameImg, true);
+		DxLib::DrawExtendGraph(_center.x - 450 / 2, _center.y - 30, _center.x + 450 / 2, _center.y + 570, _rpImg, true);
+		DxLib::DrawExtendGraph(_center.x - 500 / 2, _center.y - 50, _center.x + 500 / 2, _center.y + 590, _frameImg, true);
 
 		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75, _center.y * 3 + 150, 0.25, DX_PI_F / 2, _lpImg, true);
 		DxLib::DrawRotaGraph(_center.x / 2 * 3 + 75, _center.y * 3 + 150, 0.23, DX_PI_F / 2, _frameImg, true);
@@ -106,8 +106,8 @@ void ResultScene::Draw()
 	{
 		DxLib::DrawString(_trimString->GetStringCenterPosx("âEÇÃèüÇø"), 20, "âEÇÃèüÇø", 0xff0000);
 
-		DxLib::DrawExtendGraph(_center.x - 450 / 2, _center.y, _center.x + 450 / 2, _center.y + 600, _lpImg, true);
-		DxLib::DrawExtendGraph(_center.x - 500 / 2, _center.y - 50, _center.x + 500 / 2, _center.y + 620, _frameImg, true);
+		DxLib::DrawExtendGraph(_center.x - 450 / 2, _center.y - 30, _center.x + 450 / 2, _center.y + 570, _lpImg, true);
+		DxLib::DrawExtendGraph(_center.x - 500 / 2, _center.y - 50, _center.x + 500 / 2, _center.y + 590, _frameImg, true);
 
 		DxLib::DrawRotaGraph(_center.x / 2 - 75, _center.y * 3 + 150, 0.25, DX_PI_F / 2 * 3, _rpImg, true);
 		DxLib::DrawRotaGraph(_center.x / 2 - 75, _center.y * 3 + 150, 0.23, DX_PI_F / 2 * 3, _frameImg, true);

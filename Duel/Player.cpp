@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <DxLib.h>
+#include <EffekseerForDXLib.h>
 #include <random>
 #include "Peripheral.h"
 #include "Game.h"
@@ -45,6 +46,9 @@ Player::Player(const Vector2<int>& pos, const InitStatus& initStatus, const bool
 	_swing = Vector2<float>(0, 0);
 	_damageFlag = false;
 	_damage = 0;
+
+	_damageEffect = LoadEffekseerEffect("Effect/Attack/attack.efk", 100.f);
+	_playingEffect = -1;
 
 	if (aiFlag)
 	{
@@ -144,10 +148,15 @@ void Player::Draw()
 		{
 			_swing = Vector2<float>(-_swing.x, -_swing.y);
 		}
+
+		// エフェクトを再生する。
+		_playingEffect = PlayEffekseer2DEffect(_damageEffect);
 	}
 
 	DxLib::DrawExtendGraph(_pos.x - 450/2 + _swing.x, _pos.y - 30 + _swing.y, _pos.x + 450/2 + _swing.x, _pos.y + 570 + _swing.y, _playerData.img, true);
 	DxLib::DrawExtendGraph(_pos.x - 500/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 500/2 + _swing.x, _pos.y + 590 + _swing.y, _frameImg, true);
+
+	DrawDamage();
 }
 
 void Player::Damage(const int& power)
@@ -156,6 +165,18 @@ void Player::Damage(const int& power)
 
 	_damageFlag = true;
 	_damage += power;
+}
+
+void Player::DrawDamage()
+{
+	// 再生中のエフェクトを移動する。
+	SetPosPlayingEffekseer2DEffect(_playingEffect, _pos.x, _pos.y + 300, 0);
+
+	// Effekseerにより再生中のエフェクトを更新する。
+	UpdateEffekseer2D();
+
+	// Effekseerにより再生中のエフェクトを描画する。
+	DrawEffekseer2D();
 }
 
 const int& Player::GetPower() const

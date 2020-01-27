@@ -64,6 +64,11 @@ class Player
 	bool _damageFlag;
 
 	int _damage;
+	void DrawDamage();
+
+	// エフェクトリソース
+	int _damageEffect;
+	int _playingEffect;
 
 public:
 	Player(const Vector2<int>& pos, const InitStatus& initStatus, const bool& aiFlag);

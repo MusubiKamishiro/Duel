@@ -1,5 +1,4 @@
 #include <DxLib.h>
-#include <EffekseerForDXLib.h>
 #include "GamePlayingScene.h"
 #include "ResultScene.h"
 #include "SceneManager.h"
@@ -186,12 +185,6 @@ GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus,
 	_count = 0;
 	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/game.mp3");
 
-	//_bgEffect = LoadEffekseerEffect("Effect/WarningArea/warningArea.efk", 0.01f);
-	_bgEffect = LoadEffekseerEffect("Effect/Attack/attack.efk", 100.f);
-	_effectTime = 0;
-	_effectPos = Vector2<float>(_scrSize.x/2, _scrSize.y/2);
-	_playingEffect = -1;
-
 	_updater = &GamePlayingScene::FadeinUpdate;
 	_drawer  = &GamePlayingScene::RoundDraw;
 }
@@ -222,23 +215,6 @@ void GamePlayingScene::Draw()
 	Hud::Instance().Draw(_players[0]->GetPlayerData(), _players[1]->GetPlayerData());
 
 	(this->*_drawer)();
-
-	// 定期的にエフェクトを再生する
-	if (_effectTime % 120 == 0)
-	{
-		// エフェクトを再生する。
-		_playingEffect = PlayEffekseer2DEffect(_bgEffect);
-	}
-
-	// 再生中のエフェクトを移動する。
-	SetPosPlayingEffekseer2DEffect(_playingEffect, _effectPos.x, _effectPos.y, 0);
-
-	// Effekseerにより再生中のエフェクトを更新する。
-	UpdateEffekseer2D();
-
-	// Effekseerにより再生中のエフェクトを描画する。
-	DrawEffekseer2D();
-	++_effectTime;
 
 	// フェードイン,アウトのための幕
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::abs(_pal - 255));

@@ -60,7 +60,7 @@ void Game::Initialize()
 
 	// Effekseerの初期化
 	// 引数は画面に表示する最大パーティクル数
-	if (Effekseer_Init(10000) == -1)
+	if (Effekseer_Init(1000) == -1)
 	{
 		DxLib_End();
 		return;
