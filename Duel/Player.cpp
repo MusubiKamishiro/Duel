@@ -146,8 +146,8 @@ void Player::Draw()
 		}
 	}
 
-	DxLib::DrawExtendGraph(_pos.x - 450/2 + _swing.x, _pos.y + _swing.y, _pos.x + 450/2 + _swing.x, _pos.y + 600 + _swing.y, _playerData.img, true);
-	DxLib::DrawExtendGraph(_pos.x - 500/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 500/2 + _swing.x, _pos.y + 620 + _swing.y, _frameImg, true);
+	DxLib::DrawExtendGraph(_pos.x - 450/2 + _swing.x, _pos.y - 30 + _swing.y, _pos.x + 450/2 + _swing.x, _pos.y + 570 + _swing.y, _playerData.img, true);
+	DxLib::DrawExtendGraph(_pos.x - 500/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 500/2 + _swing.x, _pos.y + 590 + _swing.y, _frameImg, true);
 }
 
 void Player::Damage(const int& power)
