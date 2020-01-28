@@ -28,7 +28,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus& initStatus, const bool
 		}
 	}
 	_playerData.img = Game::Instance().GetFileSystem()->Load("img/char" + std::to_string(initStatus.charNum) + ".png");
-	_playerData.maxHp = initStatus.maxHp;
+	_playerData.maxHp = initStatus.maxHp + 2000;
 	_playerData.hp = _playerData.maxHp;
 	_playerData.power = initStatus.power;
 	_playerData.skillName = initStatus.skillName;
@@ -149,12 +149,13 @@ void Player::Draw()
 			_swing = Vector2<float>(-_swing.x, -_swing.y);
 		}
 
-		// エフェクトを再生する。
+		// エフェクトを再生する
 		_playingEffect = PlayEffekseer2DEffect(_damageEffect);
 	}
 
-	DxLib::DrawExtendGraph(_pos.x - 450/2 + _swing.x, _pos.y - 30 + _swing.y, _pos.x + 450/2 + _swing.x, _pos.y + 570 + _swing.y, _playerData.img, true);
-	DxLib::DrawExtendGraph(_pos.x - 500/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 500/2 + _swing.x, _pos.y + 590 + _swing.y, _frameImg, true);
+	// 75:100
+	DxLib::DrawExtendGraph(_pos.x - 375/2 + _swing.x, _pos.y - 30 + _swing.y, _pos.x + 375/2 + _swing.x, _pos.y + 470 + _swing.y, _playerData.img, true);
+	DxLib::DrawExtendGraph(_pos.x - 425/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 425/2 + _swing.x, _pos.y + 490 + _swing.y, _frameImg, true);
 
 	DrawDamage();
 }
@@ -169,13 +170,13 @@ void Player::Damage(const int& power)
 
 void Player::DrawDamage()
 {
-	// 再生中のエフェクトを移動する。
+	// 再生中のエフェクトを移動する
 	SetPosPlayingEffekseer2DEffect(_playingEffect, _pos.x, _pos.y + 300, 0);
 
-	// Effekseerにより再生中のエフェクトを更新する。
+	// Effekseerにより再生中のエフェクトを更新する
 	UpdateEffekseer2D();
 
-	// Effekseerにより再生中のエフェクトを描画する。
+	// Effekseerにより再生中のエフェクトを描画する
 	DrawEffekseer2D();
 }
 

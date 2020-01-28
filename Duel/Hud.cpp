@@ -22,10 +22,11 @@ Hud::Hud()
 	_trimString = std::make_unique<TrimString>();
 
 	_typeImg = Game::Instance().GetFileSystem()->Load("img/type.png");
+	_frameImg = Game::Instance().GetFileSystem()->Load("img/statusFrame.png");
 
-	_typeColor[0] = 0xecdb33;
-	_typeColor[1] = 0x40ccd0;
-	_typeColor[2] = 0xd04242;
+	_typeColor[0] = Game::Instance().GetFileSystem()->Load("img/ki.png");
+	_typeColor[1] = Game::Instance().GetFileSystem()->Load("img/ao.png");
+	_typeColor[2] = Game::Instance().GetFileSystem()->Load("img/aka.png");
 }
 
 Hud::~Hud()
@@ -80,7 +81,11 @@ void Hud::DrawType()
 
 void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData) const
 {
-	DxLib::DrawBox(0, _ssize.y - 200, _ssize.x, _ssize.y, 0x0000ff, true);
+	DxLib::DrawExtendGraph(0, _ssize.y - 200, (_ssize.x / 2 - 100), _ssize.y, _frameImg, true);
+	DxLib::DrawExtendGraph(_ssize.x, _ssize.y - 200, (_ssize.x / 2 + 100), _ssize.y, _frameImg, true);
+
+	static int t = 0;
+	++t;
 
 	_trimString->ChangeFontSize(40);
 	for (int i = 0; i < static_cast<int>(Skill::MAX); ++i)
@@ -93,12 +98,14 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			{
 				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 64);
 			}
-			DxLib::DrawString(_trimString->GetStringRightPosx(rPlayerData.skillName[i].c_str(), _center.x - 180), _ssize.y - 175 + (i * (fontSize + 15)), rPlayerData.skillName[i].c_str(), 0x00ff00);
+			DxLib::DrawString(_trimString->GetStringRightPosx(rPlayerData.skillName[i].c_str(), _center.x - 180), _ssize.y - 175 + (i * (fontSize + 15)), rPlayerData.skillName[i].c_str(), 0x000000);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
-			DxLib::DrawCircle(_center.x - 150, _ssize.y - 155 + (i * (fontSize + 15)), 20, _typeColor[i]);
+			DxLib::DrawExtendGraph(_center.x - 175, _ssize.y - 175 + (i * (fontSize + 15)), _center.x - 135, _ssize.y - 135 + (i * (fontSize + 15)), _typeColor[i], true);
 			if (i == rPlayerData.goodSkill)
 			{
-				DxLib::DrawString(_center.x - 150 - 20 + 2, _ssize.y - 155 + (i * (fontSize + 15)) - 20 - 2, "Åô", 0x000000);
+				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, (std::abs(t % 256 / 2 - 64) * 2));
+				DxLib::DrawExtendGraph(_center.x - 185, _ssize.y - 185 + (i * (fontSize + 15)), _center.x - 125, _ssize.y - 125 + (i * (fontSize + 15)), _typeColor[i], true);
+				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 			}
 		}
 		if (lPlayerData.skillCount[i] > 0)
@@ -107,12 +114,14 @@ void Hud::DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlay
 			{
 				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 64);
 			}
-			DxLib::DrawString(_center.x + 180, _ssize.y - 175 + (i * (fontSize + 15)), lPlayerData.skillName[i].c_str(), 0x00ff00);
+			DxLib::DrawString(_center.x + 180, _ssize.y - 175 + (i * (fontSize + 15)), lPlayerData.skillName[i].c_str(), 0x000000);
 			DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
-			DxLib::DrawCircle(_center.x + 150, _ssize.y - 155 + (i * (fontSize + 15)), 20, _typeColor[i]);
+			DxLib::DrawExtendGraph(_center.x + 135, _ssize.y - 175 + (i * (fontSize + 15)), _center.x + 175, _ssize.y - 135 + (i * (fontSize + 15)), _typeColor[i], true);
 			if (i == lPlayerData.goodSkill)
 			{
-				DxLib::DrawString(_center.x + 150 - 20 + 2, _ssize.y - 155 + (i * (fontSize + 15)) - 20 - 2, "Åô", 0x000000);
+				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, (std::abs(t % 256 / 2 - 64) * 2));
+				DxLib::DrawExtendGraph(_center.x + 125, _ssize.y - 185 + (i * (fontSize + 15)), _center.x + 185, _ssize.y - 125 + (i * (fontSize + 15)), _typeColor[i], true);
+				DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 			}
 		}
 	}

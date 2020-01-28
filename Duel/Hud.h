@@ -9,8 +9,8 @@ class TrimString;
 class Hud
 {
 private:
-	Hud();							// 生成禁止
-	Hud(const Hud&);				// コピー禁止
+	Hud();						// 生成禁止
+	Hud(const Hud&);			// コピー禁止
 	void operator=(const Hud&);	// 代入禁止
 
 	// ラウンドとターンの描画
@@ -28,13 +28,14 @@ private:
 
 	// プレイヤーの技の描画
 	void DrawPlayerSkill(const PlayerData& rPlayerData, const PlayerData& lPlayerData)const;
+	int _frameImg;
 
 	// ゲーム画面のサイズ
 	Vector2<int> _ssize;
 	// 画面の中央
 	Vector2<int> _center;
 
-	// 技の色(のちに画像で扱いたい)
+	// 技の画像
 	std::array<int, 3> _typeColor;
 
 	// 上のHudの縦幅

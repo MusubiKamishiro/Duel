@@ -20,7 +20,6 @@ private:
 
 	void (GamePlayingScene::*_drawer)();
 	void RoundDraw();
-	void GameDraw();
 	void ResultDraw();
 
 	std::array<std::shared_ptr<Player>, 2> _players;	
@@ -28,6 +27,9 @@ private:
 
 	int _count;	
 	int _bgm;
+
+	// ‹Z‚Ì‰æ‘œ
+	std::array<int, 3> _typeColor;
 
 public:
 	GamePlayingScene(const std::array<InitStatus, 2>& initStatus, std::array<bool, 2>& aiFlags);

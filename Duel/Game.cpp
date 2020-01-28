@@ -65,13 +65,13 @@ void Game::Initialize()
 		DxLib_End();
 		return;
 	}
-	// フルスクリーンウインドウの切り替えでリソースが消えるのを防ぐ。
+	// フルスクリーンウインドウの切り替えでリソースが消えるのを防ぐ
 	DxLib::SetChangeScreenModeGraphicsSystemResetFlag(false);
 	// Zバッファを有効にする。
 	DxLib::SetUseZBuffer3D(true);
-	// Zバッファへの書き込みを有効にする。
+	// Zバッファへの書き込みを有効にする
 	DxLib::SetWriteZBuffer3D(true);
-	// Effekseerに2D描画の設定をする。
+	// Effekseerに2D描画の設定をする
 	Effekseer_Set2DSetting(_screenSize.x, _screenSize.y);
 
 	

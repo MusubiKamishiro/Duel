@@ -14,6 +14,29 @@
 #include "../Loader/SoundLoader.h"
 
 
+GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus, std::array<bool, 2> & aiFlags)
+{
+	_players[0].reset(new Player(Vector2<int>(_scrSize.x / 5, 125), initStatus[0], aiFlags[0]));
+	_players[1].reset(new Player(Vector2<int>(_scrSize.x / 5 * 4, 125), initStatus[1], aiFlags[1]));
+
+	_judge.reset(new Judge());
+	Hud::Instance().Init();
+
+	_count = 0;
+	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/game.mp3");
+
+	_typeColor[0] = Game::Instance().GetFileSystem()->Load("img/ki.png");
+	_typeColor[1] = Game::Instance().GetFileSystem()->Load("img/ao.png");
+	_typeColor[2] = Game::Instance().GetFileSystem()->Load("img/aka.png");
+
+	_updater = &GamePlayingScene::FadeinUpdate;
+	_drawer = &GamePlayingScene::RoundDraw;
+}
+
+GamePlayingScene::~GamePlayingScene()
+{
+}
+
 void GamePlayingScene::FadeinUpdate(const Peripheral & p)
 {
 	if (_pal > 255)
@@ -64,6 +87,18 @@ void GamePlayingScene::WaitUpdate(const Peripheral & p)
 		}
 		else
 		{
+			for (auto player : _players)
+			{
+				player->SetSkill();
+			}
+			if (Hud::Instance().AdvanceTheTurn())
+			{
+				for (auto player : _players)
+				{
+					player->ResetCount();
+				}
+			}
+
 			_updater = &GamePlayingScene::RoundUpdate;
 		}
 		_count = 0;
@@ -120,18 +155,6 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 1000);
 		}
 
-		for (auto player : _players)
-		{
-			player->SetSkill();
-		}
-
-		if (Hud::Instance().AdvanceTheTurn())
-		{
-			for (auto player : _players)
-			{
-				player->ResetCount();
-			}
-		}
 		_updater = &GamePlayingScene::WaitUpdate;
 		_drawer = &GamePlayingScene::RoundDraw;
 		_count = 0;
@@ -147,50 +170,14 @@ void GamePlayingScene::RoundDraw()
 	
 }
 
-void GamePlayingScene::GameDraw()
-{
-}
-
 void GamePlayingScene::ResultDraw()
 {
 	_judge->Draw();
 	for (auto& player : _players)
 	{
-		int color = 0;
-		if (player->GetPlayerData().skill == Skill::ROCK)
-		{
-			color = 0xecdb33;
-		}
-		else if (player->GetPlayerData().skill == Skill::SCISSORS)
-		{
-			color = 0x40ccd0;
-		}
-		else if (player->GetPlayerData().skill == Skill::PAPER)
-		{
-			color = 0xd04242;
-		}
-
-		DxLib::DrawCircle(player->GetPos().x, 400, 200, color);
+		DxLib::DrawExtendGraph(player->GetPos().x - 200, 150, player->GetPos().x + 200, 550, 
+			_typeColor[static_cast<int>(player->GetPlayerData().skill)], true);
 	}
-}
-
-GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus, std::array<bool, 2> & aiFlags)
-{
-	_players[0].reset(new Player(Vector2<int>(_scrSize.x / 4, 150), initStatus[0], aiFlags[0]));
-	_players[1].reset(new Player(Vector2<int>(_scrSize.x / 4 * 3, 150), initStatus[1], aiFlags[1]));
-	
-	_judge.reset(new Judge());
-	Hud::Instance().Init();
-
-	_count = 0;
-	_bgm = Game::Instance().GetFileSystem()->Load("sound/bgm/game.mp3");
-
-	_updater = &GamePlayingScene::FadeinUpdate;
-	_drawer  = &GamePlayingScene::RoundDraw;
-}
-
-GamePlayingScene::~GamePlayingScene()
-{
 }
 
 void GamePlayingScene::Update(const Peripheral& p)
