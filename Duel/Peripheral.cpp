@@ -93,4 +93,7 @@ void Peripheral::AddCommand(const int& pno, const char* cmd, const unsigned int&
 {
 	assert(pno < inputTable.size());
 	inputTable[pno].emplace(cmd, PeripheralInfo(padNo, code));
+
+	// どのボタンを使用しても良い場合に使用する
+	inputTable[pno].emplace("ANY", PeripheralInfo(padNo, code));
 }

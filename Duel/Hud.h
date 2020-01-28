@@ -61,6 +61,7 @@ public:
 	// Hud‚Ì•`‰æ‘S‚Ä‚ª“ü‚Á‚Ä‚¢‚é
 	void Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData);
 
+	// Œ»İ‚Ìƒ^[ƒ“‚ğæ“¾‚·‚é
 	const int& GetNowTurn()const;
 };
 

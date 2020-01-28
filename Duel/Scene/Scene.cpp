@@ -9,7 +9,6 @@ Scene::Scene()
 	_sceneTime = 0;
 }
 
-
 Scene::~Scene()
 {
 }

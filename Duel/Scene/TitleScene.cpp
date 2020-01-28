@@ -43,11 +43,12 @@ void TitleScene::WaitUpdate(const Peripheral & p)
 
 void TitleScene::StartUpdate(const Peripheral& p)
 {
-	if (p.IsTrigger(0, "DECIDE"))
+	if (p.IsTrigger(0, "ANY"))
 	{
 		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
 		_updater = &TitleScene::SelectPlayUpdate;
 		_drawer = &TitleScene::SelectPlayDraw;
+		_sceneTime = 0;
 	}
 }
 
@@ -57,11 +58,13 @@ void TitleScene::SelectPlayUpdate(const Peripheral& p)
 	{
 		DxLib::PlaySoundMem(_selSE, DX_PLAYTYPE_BACK);
 		--_selectCount;
+		_sceneTime = 0;
 	}
 	if (p.IsTrigger(0, "DOWN"))
 	{
 		DxLib::PlaySoundMem(_selSE, DX_PLAYTYPE_BACK);
 		++_selectCount;
+		_sceneTime = 0;
 	}
 	if (p.IsTrigger(0, "DECIDE"))
 	{
@@ -91,7 +94,7 @@ void TitleScene::StartDraw()
 void TitleScene::SelectPlayDraw()
 {
 	_trimString->ChangeFontSize(50);
-	if ((_sceneTime / 30 % 3) != 0)
+	if ((_sceneTime / 30 % 3) != 2)
 	{
 		DxLib::DrawString(500, 500 + _selectCount * 60, "->", 0x000000);
 	}

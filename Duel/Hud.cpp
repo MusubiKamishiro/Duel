@@ -19,7 +19,7 @@ Hud::Hud()
 	_ssize = Game::Instance().GetScreenSize();
 	_center = Vector2<int>(_ssize.x / 2, _ssize.y / 2);
 
-	_trimString = (std::make_unique<TrimString>());
+	_trimString = std::make_unique<TrimString>();
 
 	_typeImg = Game::Instance().GetFileSystem()->Load("img/type.png");
 

@@ -13,10 +13,9 @@ protected:
 	// 画面のサイズ
 	Vector2<int> _scrSize;
 	// シーン開始からの経過時間
-	
+	int _sceneTime;
 
 public:
-	int _sceneTime;
 	Scene();
 	virtual ~Scene();
 
@@ -32,7 +31,7 @@ public:
 	// 待機中の処理を書く
 	virtual void WaitUpdate(const Peripheral& p) = 0;
 
-	
+	// シーンの進行時間を計っている
 	void AddSceneTime();
 };
 
