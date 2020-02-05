@@ -85,6 +85,7 @@ public:
 	const int& GetPower()const;
 	const PlayerData& GetPlayerData()const;
 	const Vector2<int>& GetPos()const;
+	const bool& GetAiFlag()const;
 
 	void SetSkill();
 	// Skillの使用回数をリセットする

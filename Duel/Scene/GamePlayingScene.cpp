@@ -31,6 +31,67 @@ GamePlayingScene::GamePlayingScene(const std::array<InitStatus, 2> & initStatus,
 
 	_updater = &GamePlayingScene::FadeinUpdate;
 	_drawer = &GamePlayingScene::RoundDraw;
+
+	// ２ポリゴン分の頂点のデータをセットアップ
+	Vertex[0].pos = VGet(0.0f, _scrSize.y, 0.0f);
+	Vertex[0].norm = VGet(0.0f, 0.0f, -1.0f);
+	Vertex[0].dif = GetColorU8(255, 0, 255, 255);
+	Vertex[0].spc = GetColorU8(0, 0, 0, 0);
+	Vertex[0].u = 0.0f;
+	Vertex[0].v = 0.0f;
+	Vertex[0].su = 0.0f;
+	Vertex[0].sv = 0.0f;
+
+	Vertex[1].pos = VGet(_scrSize.x, _scrSize.y, 0.0f);
+	Vertex[1].norm = VGet(0.0f, 0.0f, -1.0f);
+	Vertex[1].dif = GetColorU8(0, 0, 255, 255);
+	Vertex[1].spc = GetColorU8(0, 0, 0, 0);
+	Vertex[1].u = 1.0f;
+	Vertex[1].v = 0.0f;
+	Vertex[1].su = 0.0f;
+	Vertex[1].sv = 0.0f;
+
+	Vertex[2].pos = VGet(0.0f, 0.0f, 0.0f);
+	Vertex[2].norm = VGet(0.0f, 0.0f, -1.0f);
+	Vertex[2].dif = GetColorU8(255, 255, 0, 255);
+	Vertex[2].spc = GetColorU8(0, 0, 0, 0);
+	Vertex[2].u = 0.0f;
+	Vertex[2].v = 1.0f;
+	Vertex[2].su = 0.0f;
+	Vertex[2].sv = 0.0f;
+
+
+	Vertex[3].pos = VGet(0.0f, 0.0f, 0.0f);
+	Vertex[3].norm = VGet(0.0f, 0.0f, -1.0f);
+	Vertex[3].dif = GetColorU8(255, 255, 0, 255);
+	Vertex[3].spc = GetColorU8(0, 0, 0, 0);
+	Vertex[3].u = 0.0f;
+	Vertex[3].v = 1.0f;
+	Vertex[3].su = 0.0f;
+	Vertex[3].sv = 0.0f;
+
+	Vertex[4].pos = VGet(_scrSize.x, _scrSize.y, 0.0f);
+	Vertex[4].norm = VGet(0.0f, 0.0f, -1.0f);
+	Vertex[4].dif = GetColorU8(0, 0, 255, 255);
+	Vertex[4].spc = GetColorU8(0, 0, 0, 0);
+	Vertex[4].u = 1.0f;
+	Vertex[4].v = 0.0f;
+	Vertex[4].su = 0.0f;
+	Vertex[4].sv = 0.0f;
+
+	Vertex[5].pos = VGet(_scrSize.x, 0.0f, 0.0f);
+	Vertex[5].norm = VGet(0.0f, 0.0f, -1.0f);
+	Vertex[5].dif = GetColorU8(255, 0, 0, 255);
+	Vertex[5].spc = GetColorU8(0, 0, 0, 0);
+	Vertex[5].u = 1.0f;
+	Vertex[5].v = 1.0f;
+	Vertex[5].su = 0.0f;
+	Vertex[5].sv = 0.0f;
+
+	// 頂点シェーダーを読み込む
+	vshandle = LoadVertexShader("shader/VertShader.vso");
+	// ピクセルシェーダーを読み込む
+	pshandle = LoadPixelShader("shader/PixShader.pso");
 }
 
 GamePlayingScene::~GamePlayingScene()
@@ -55,7 +116,7 @@ void GamePlayingScene::FadeoutUpdate(const Peripheral & p)
 	if (_pal <= 0)
 	{
 		Result _result;
-		if (_players[0]->GetPlayerData().hp <= 0 && _players[1]->GetPlayerData().hp <= 0)
+		if ((_players[0]->GetPlayerData().hp <= 0) && (_players[1]->GetPlayerData().hp <= 0))
 		{
 			_result = Result::DRAW;
 		}
@@ -142,12 +203,19 @@ void GamePlayingScene::ResultUpdate(const Peripheral& p)
 			_players[0]->Damage(_players[1]->GetPower());
 			_players[1]->Damage(_players[0]->GetPower());
 			DxLib::StartJoypadVibration(DX_INPUT_PAD1, 1000, 1000);
-			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 1000);
+			if (_players[1]->GetAiFlag() == false)
+			{
+				DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 1000);
+			}
+			
 		}
 		else if(_judge->GetResult() == Result::PLAYER1WIN)
 		{
 			_players[1]->Damage(_players[0]->GetPower());
-			DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 1000);
+			if (_players[1]->GetAiFlag() == false)
+			{
+				DxLib::StartJoypadVibration(DX_INPUT_PAD2, 1000, 1000);
+			}
 		}
 		else if (_judge->GetResult() == Result::PLAYER2WIN)
 		{
@@ -194,6 +262,40 @@ void GamePlayingScene::Draw()
 {
 	DxLib::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	DxLib::DrawBox(0, 0, _scrSize.x, _scrSize.y, 0xffffff, true);
+
+	spos.y += 0.001;
+	// 座標値を頂点シェーダー float4型定数０番にセット
+	f4.x = 0.0f;
+	f4.y = 0.0f;
+	f4.z = 0.0f;
+	f4.w = 0.0f;
+	DxLib::SetVSConstF(0, f4);
+
+	// 色の値をピクセルシェーダー float4型定数０番にセット
+	f4.x = 0;
+	f4.y = 1;
+	f4.z = 0;
+	f4.w = 1.0f;
+	DxLib::SetPSConstF(0, f4);
+
+	f4.x = spos.x;
+	f4.y = spos.y;
+	f4.z = 0.0f;
+	f4.w = 1.0f;
+	DxLib::SetPSConstF(1, f4);
+
+	// 使用する頂点シェーダーのセット
+	DxLib::SetUseVertexShader(vshandle);
+
+	// 使用するピクセルシェーダーをセット
+	DxLib::SetUsePixelShader(pshandle);
+
+	// 使用するテクスチャを０番にセット
+	DxLib::SetUseTextureToShader(0, -1);
+
+	// シェーダーを使用した２ポリゴンの描画
+	DxLib::DrawPolygon3DToShader(Vertex, 2);
+
 
 	for (auto& player : _players)
 	{

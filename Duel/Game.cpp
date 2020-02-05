@@ -41,7 +41,7 @@ void Game::Initialize()
 	DxLib::SetGraphMode(_screenSize.x, _screenSize.y, 32);
 
 	// Effekseer‚ğg—p‚½‚ß‚Éİ’è
-	DxLib::SetUseDirect3DVersion(DX_DIRECT3D_11);
+	DxLib::SetUseDirect3DVersion(DX_DIRECT3D_9EX);
 
 	// DxLib‚Ì‰Šú‰»
 	if (DxLib::DxLib_Init() == -1)

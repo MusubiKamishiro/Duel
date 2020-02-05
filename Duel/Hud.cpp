@@ -146,6 +146,8 @@ bool Hud::AdvanceTheTurn()
 
 void Hud::Draw(const PlayerData& rPlayerData, const PlayerData& lPlayerData)
 {
+	DxLib::DrawBox(0, _ssize.y - 200, _ssize.x, _ssize.y, 0xffffff, true);
+
 	DrawHp(rPlayerData, lPlayerData);
 	DrawRoundAndTurn();
 	DrawPlayerSkill(rPlayerData, lPlayerData);

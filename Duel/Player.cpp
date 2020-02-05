@@ -28,7 +28,7 @@ Player::Player(const Vector2<int>& pos, const InitStatus& initStatus, const bool
 		}
 	}
 	_playerData.img = Game::Instance().GetFileSystem()->Load("img/char" + std::to_string(initStatus.charNum) + ".png");
-	_playerData.maxHp = initStatus.maxHp + 2000;
+	_playerData.maxHp = initStatus.maxHp;
 	_playerData.hp = _playerData.maxHp;
 	_playerData.power = initStatus.power;
 	_playerData.skillName = initStatus.skillName;
@@ -153,6 +153,7 @@ void Player::Draw()
 		_playingEffect = PlayEffekseer2DEffect(_damageEffect);
 	}
 
+	DxLib::DrawBox(_pos.x - 375 / 2 + _swing.x, _pos.y - 30 + _swing.y, _pos.x + 375 / 2 + _swing.x, _pos.y + 470 + _swing.y, 0xffffff, true);
 	// 75:100
 	DxLib::DrawExtendGraph(_pos.x - 375/2 + _swing.x, _pos.y - 30 + _swing.y, _pos.x + 375/2 + _swing.x, _pos.y + 470 + _swing.y, _playerData.img, true);
 	DxLib::DrawExtendGraph(_pos.x - 425/2 + _swing.x, _pos.y - 50 + _swing.y, _pos.x + 425/2 + _swing.x, _pos.y + 490 + _swing.y, _frameImg, true);
@@ -193,6 +194,11 @@ const PlayerData& Player::GetPlayerData() const
 const Vector2<int>& Player::GetPos() const
 {
 	return _pos;
+}
+
+const bool & Player::GetAiFlag() const
+{
+	return _aiFlag;
 }
 
 void Player::SetSkill()

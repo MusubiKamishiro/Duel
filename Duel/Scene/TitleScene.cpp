@@ -43,7 +43,7 @@ void TitleScene::WaitUpdate(const Peripheral & p)
 
 void TitleScene::StartUpdate(const Peripheral& p)
 {
-	if (p.IsTrigger(0, "ANY"))
+	if (p.IsTrigger(0, "DECIDE"))
 	{
 		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
 		_updater = &TitleScene::SelectPlayUpdate;
@@ -87,7 +87,7 @@ void TitleScene::StartDraw()
 	if ((_sceneTime / 30 % 2) == 0)
 	{
 		_trimString->ChangeFontSize(50);
-		DxLib::DrawString(_trimString->GetStringCenterPosx("press any key"), _trimString->GetFontSize() + 500, "press any key", 0x000000);
+		DxLib::DrawString(_trimString->GetStringCenterPosx("press A Button"), _trimString->GetFontSize() + 500, "press A Button", 0x000000);
 	}
 }
 

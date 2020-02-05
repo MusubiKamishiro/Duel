@@ -31,6 +31,12 @@ private:
 	// ‹Z‚Ì‰æ‘œ
 	std::array<int, 3> _typeColor;
 
+	DxLib::VERTEX3DSHADER Vertex[6];
+	int vshandle;
+	int pshandle;
+	DxLib::FLOAT4 f4;
+	Vector2<float> spos;
+
 public:
 	GamePlayingScene(const std::array<InitStatus, 2>& initStatus, std::array<bool, 2>& aiFlags);
 	~GamePlayingScene();

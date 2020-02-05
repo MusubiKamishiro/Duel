@@ -1,4 +1,5 @@
 #include <DxLib.h>
+#include <random>
 #include "SelectScene.h"
 #include "GamePlayingScene.h"
 #include "SceneManager.h"
@@ -114,6 +115,26 @@ void SelectScene::ChangeCharacter(const Peripheral& p, const int& num)
 		_initStatus[num].skillName[2] = _skName[_initStatus[num].charNum][static_cast<int>(Skill::PAPER)];
 		_initStatus[num].goodSkill	  = _goodSk[_initStatus[num].charNum];
 		_initStatus[num].charNum += 1;
+	}
+
+	if (_aiFlags[1] && (_isDecide[1] == false))
+	{
+		std::random_device seed_gen;
+		std::mt19937 engine(seed_gen());
+		int cnum = engine() % 10 + 1;
+		
+		DxLib::PlaySoundMem(_decideSE, DX_PLAYTYPE_BACK);
+		_isDecide[1] = true;
+		_initStatus[1].charNum = cnum - 1;
+		_initStatus[1].maxHp = _charData[_initStatus[1].charNum][static_cast<int>(charData::HP)];
+		_initStatus[1].power[0] = _charData[_initStatus[1].charNum][static_cast<int>(charData::ATK1)];
+		_initStatus[1].power[1] = _charData[_initStatus[1].charNum][static_cast<int>(charData::ATK2)];
+		_initStatus[1].power[2] = _charData[_initStatus[1].charNum][static_cast<int>(charData::ATK3)];
+		_initStatus[1].skillName[0] = _skName[_initStatus[1].charNum][static_cast<int>(Skill::ROCK)];
+		_initStatus[1].skillName[1] = _skName[_initStatus[1].charNum][static_cast<int>(Skill::SCISSORS)];
+		_initStatus[1].skillName[2] = _skName[_initStatus[1].charNum][static_cast<int>(Skill::PAPER)];
+		_initStatus[1].goodSkill = _goodSk[_initStatus[1].charNum];
+		_initStatus[1].charNum += 1;
 	}
 }
 
